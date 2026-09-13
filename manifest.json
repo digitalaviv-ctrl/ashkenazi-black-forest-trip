@@ -1,0 +1,27 @@
+{
+  "name": "חופשת משפחת אשכנזי - היער השחור, אלזס ושווייץ",
+  "short_name": "חופשת אשכנזי",
+  "description": "יועץ טיולים אישי, מפות, ניווט וכרטיסי מסעדות לחופשת המשפחה 2026",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#094d48",
+  "theme_color": "#0f766e",
+  "dir": "rtl",
+  "lang": "he",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

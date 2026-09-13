@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="חופשת אשכנזי">
+    <meta name="theme-color" content="#0f766e">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="./icons/icon-192.png">
+
+    <title>חופשת משפחת אשכנזי | היער השחור, אלזס ושווייץ</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        body { font-family: 'Rubik', sans-serif; background-color: #0f172a; color: #1e293b; user-select: none; }
+        .tab-btn.active { color: #0f766e; border-top: 3px solid #0f766e; font-weight: 700; background-color: rgba(15, 118, 110, 0.05); }
+        .desktop-tab-btn.active { background-color: #0f766e; color: white; }
+        #map { height: 100%; width: 100%; z-index: 10; border-radius: 0.75rem; }
+        .chat-container { overflow-y: auto; scroll-behavior: smooth; }
+        .user-msg { background: linear-gradient(135deg, #dcf8c6, #c7f1a8); padding: 12px 16px; border-radius: 16px 16px 4px 16px; margin: 8px 0; max-width: 85%; align-self: flex-end; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-weight: 500; }
+        .ai-msg { background: #ffffff; padding: 14px 16px; border-radius: 16px 16px 16px 4px; margin: 8px 0; max-width: 90%; border: 1px solid #e2e8f0; align-self: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .ai-msg p { margin-bottom: 8px; line-height: 1.6; }
+        .ai-msg strong { font-weight: 700; color: #0f766e; }
+        .ai-msg ul { list-style-type: disc; margin-right: 20px; margin-bottom: 10px; }
+        .ai-msg ol { list-style-type: decimal; margin-right: 20px; margin-bottom: 10px; }
+        .ai-msg li { margin-bottom: 4px; line-height: 1.5; }
+        .ai-msg a { color: #2563eb; text-decoration: underline; font-weight: 500; }
+        .leaflet-popup-content-wrapper { border-radius: 14px; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .leaflet-popup-content { font-family: 'Rubik', sans-serif; margin: 12px; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-100 flex flex-col h-screen overflow-hidden text-slate-800">
+
+    <!-- Top App Header -->
+    <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white px-4 py-2.5 shadow-lg flex items-center justify-between shrink-0 z-30">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/10 p-1 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
+                <img src="./icons/icon-192.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain">
+            </div>
+            <div>
+                <h1 class="text-base sm:text-lg font-bold tracking-tight">חופשת משפחת אשכנזי 🌲</h1>
+                <div class="flex items-center gap-2 text-xs text-teal-100 font-medium">
+                    <span>19-29 בספטמבר 2026</span>
+                    <span class="inline-block w-1 h-1 rounded-full bg-teal-300"></span>
+                    <span id="networkStatus" class="inline-flex items-center gap-1 text-emerald-300">
+                        <i class="fa-solid fa-circle text-[8px]"></i> מקוון
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
+            <button id="pwaInstallBtn" class="hidden bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-download"></i>
+                <span>התקן אפליקציה</span>
+            </button>
+
+            <!-- Quick Waiter Buttons on Desktop -->
+            <div class="hidden sm:flex gap-1.5">
+                <button onclick="showTranslation('DE')" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
+                    <i class="fa-solid fa-utensils"></i> מלצר גרמניה
+                </button>
+                <button onclick="showTranslation('FR')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
+                    <i class="fa-solid fa-utensils"></i> מלצר אלזס
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Desktop View Toggle / Tabs -->
+    <div class="hidden lg:flex bg-white border-b border-slate-200 px-4 py-2 gap-2 shrink-0 items-center justify-between">
+        <div class="flex gap-2">
+            <button onclick="setTab('map')" id="deskTab-map" class="desktop-tab-btn active px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot"></i> מפה וצ'אט משולב
+            </button>
+            <button onclick="setTab('places')" id="deskTab-places" class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-list-check"></i> רשימת יעדים וניווט
+            </button>
+            <button onclick="setTab('waiter')" id="deskTab-waiter" class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-utensils"></i> כרטיס מלצר
+            </button>
+        </div>
+        
+        <!-- Gemini Model Picker -->
+        <div class="flex items-center gap-2 text-xs text-slate-600">
+            <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
+            <select id="modelSelector" class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
+                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק)</option>
+                <option value="gemini-3.8-flash">Gemini 3.8 Flash (סופר מהיר)</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Content Panels -->
+    <main class="flex-1 overflow-hidden relative">
+
+        <!-- TAB 1: Map View (Split view on Desktop, Full view on Mobile) -->
+        <section id="panel-map" class="tab-panel w-full h-full flex flex-col lg:flex-row p-2 sm:p-3 gap-2 sm:gap-3">
+            
+            <!-- Map Container -->
+            <div class="w-full lg:w-3/5 h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Map Filter Chips & Region Dropdown -->
+                <div class="p-2 bg-white border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-2 shrink-0">
+                    <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-xs">
+                        <span class="text-slate-400 font-medium px-1">סינון:</span>
+                        <button onclick="filterMap('all')" class="map-filter-btn px-2.5 py-1 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap shadow-sm">הכל</button>
+                        <button onclick="filterMap('green')" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap"><i class="fa-solid fa-tree text-emerald-600"></i> טבע ואטרקציות</button>
+                        <button onclick="filterMap('orange')" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap"><i class="fa-solid fa-utensils text-amber-600"></i> מסעדות</button>
+                        <button onclick="filterMap('violet')" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap"><i class="fa-solid fa-cart-shopping text-purple-600"></i> סופרמרקטים</button>
+                        <button onclick="filterMap('blue')" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap"><i class="fa-solid fa-house text-blue-600"></i> לינה</button>
+                    </div>
+                    
+                    <select id="mapRegionSelector" onchange="setRegionFilter(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-teal-500 font-medium ml-auto">
+                        <option value="all">🌍 כל האזורים</option>
+                        <option value="south">🌲 דרום היער השחור (עוגן 1)</option>
+                        <option value="north">🥨 צפון ואלזס (עוגן 2)</option>
+                        <option value="swiss">🇨🇭 שווייץ בדרך</option>
+                    </select>
+                </div>
+                <!-- Leaflet Map Element -->
+                <div id="map" class="flex-1 w-full"></div>
+            </div>
+
+            <!-- Chat Container (Hidden on mobile if map tab is active, shown on desktop side-by-side) -->
+            <div class="hidden lg:flex lg:w-2/5 h-full flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-3 flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-2 font-semibold text-sm">
+                        <div class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center">
+                            <i class="fa-solid fa-robot text-xs"></i>
+                        </div>
+                        <span>יועץ הטיולים האישי למשפחה</span>
+                    </div>
+                    <button onclick="clearChat()" title="נקה שיחה" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-700/50">
+                        <i class="fa-solid fa-rotate-right"></i> איפוס
+                    </button>
+                </div>
+
+                <!-- Desktop Chat Box -->
+                <div id="chatBox-desktop" class="chat-container p-3 flex flex-col bg-slate-50 flex-1 gap-2"></div>
+
+                <!-- Desktop Suggestion Chips -->
+                <div class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs">
+                    <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️ תוכנית גשם</button>
+                    <button onclick="sendQuickPrompt('איזה סופר הכי מומלץ לקניות לפני יום ראשון?')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒 סופר לפני ראשון</button>
+                    <button onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢 פארק אירופה עם ילדים</button>
+                    <button onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️ מסעדה מומלצת</button>
+                </div>
+
+                <!-- Desktop Chat Input -->
+                <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2 shrink-0">
+                    <input type="text" id="userInput-desktop" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')" onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
+                    <button onclick="sendMessage('desktop')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: Full Mobile AI Chat (Shown only when chat tab is active on mobile) -->
+        <section id="panel-chat" class="tab-panel hidden w-full h-full flex flex-col bg-white">
+            <div class="bg-slate-800 text-white p-3 flex items-center justify-between shrink-0 shadow-sm">
+                <div class="flex items-center gap-2 font-semibold text-sm">
+                    <i class="fa-solid fa-robot text-teal-400"></i>
+                    <span>יועץ הטיולים האישי</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <select id="modelSelector-mobile" class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
+                        <option value="gemini-3.6-flash">3.6 Flash</option>
+                        <option value="gemini-3.8-flash">3.8 Flash</option>
+                    </select>
+                    <button onclick="clearChat()" class="text-xs text-slate-300 px-2 py-1 rounded bg-slate-700">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="chatBox-mobile" class="chat-container p-3 flex flex-col bg-slate-50 flex-1 gap-2"></div>
+
+            <!-- Mobile Quick Chips -->
+            <div class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs shrink-0">
+                <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️ תוכנית גשם</button>
+                <button onclick="sendQuickPrompt('איזה סופר הכי מומלץ לקניות לפני יום ראשון?')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒 סופר לפני ראשון</button>
+                <button onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢 פארק אירופה</button>
+                <button onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️ מסעדה מומלצת</button>
+            </div>
+
+            <!-- Mobile Input Bar -->
+            <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2 shrink-0 pb-safe">
+                <input type="text" id="userInput-mobile" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה על היעדים והמסלול..." onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
+                <button onclick="sendMessage('mobile')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 3: Places & Navigation List -->
+        <section id="panel-places" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-y-auto">
+            <div class="max-w-4xl mx-auto w-full">
+                <!-- Search & Filter bar -->
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 mb-4 sticky top-0 z-10 flex flex-col gap-2.5">
+                    
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-400"></i>
+                            <input type="text" id="placesSearchInput" oninput="renderPlacesList()" placeholder="חפש יעד, מסעדה, אטרקציה..." class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-teal-500">
+                        </div>
+                        <select id="listRegionSelector" onchange="setRegionFilter(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-2 focus:ring-teal-500 font-medium">
+                            <option value="all">כל האזורים</option>
+                            <option value="south">🌲 דרום (עוגן 1)</option>
+                            <option value="north">🥨 צפון ואלזס (עוגן 2)</option>
+                            <option value="swiss">🇨🇭 שווייץ בדרך</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-xs">
+                        <button onclick="setListCategory('all')" class="cat-pill active px-3 py-1.5 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap">הכל</button>
+                        <button onclick="setListCategory('green')" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap">🌲 טבע ואטרקציות</button>
+                        <button onclick="setListCategory('orange')" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap">🍽️ מסעדות</button>
+                        <button onclick="setListCategory('violet')" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap">🛒 סופרים</button>
+                        <button onclick="setListCategory('blue')" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap">🏨 לינה</button>
+                    </div>
+                </div>
+
+                <!-- Places Grid -->
+                <div id="placesCardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Waiter Dietary & Allergy Cards (Fullscreen optimized for mobile) -->
+        <section id="panel-waiter" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-3 sm:p-6 overflow-y-auto">
+            <div class="max-w-xl mx-auto w-full space-y-4">
+                <div class="text-center">
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800">כרטיסי מסעדה למלצר 🍽️</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">הראו את המסך למלצר או לחצו על הרמקול להשמעה קולית</p>
+                </div>
+
+                <!-- German / Switzerland Card -->
+                <div class="bg-white rounded-2xl shadow-md border-2 border-amber-300 overflow-hidden">
+                    <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-3.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🇩🇪 🇨🇭</span>
+                            <h3 class="font-bold text-sm sm:text-base">הודעה למלצר בגרמניה / שווייץ</h3>
+                        </div>
+                        <button onclick="speakText('de')" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
+                            <i class="fa-solid fa-volume-high"></i> השמע
+                        </button>
+                    </div>
+                    <div id="text-de" class="p-4 bg-amber-50/50 text-slate-800 text-base sm:text-lg font-medium leading-relaxed" dir="ltr">
+                        Wir haben eine Vegetarierin bei uns. Es ist in Ordnung, wenn ihre Speisen im selben Topf oder mit derselben Soße wie Fleisch gekocht werden, solange kein Fleisch auf dem Teller ist.
+                        <div class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
+                            ⚠️ WICHTIG: Bitte fügen Sie den Gerichten für uns absolut keinen Koriander hinzu (andere Kräuter sind in Ordnung).
+                        </div>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex justify-end">
+                        <button onclick="copyWaiterText('de')" class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-copy"></i> העתק טקסט
+                        </button>
+                    </div>
+                </div>
+
+                <!-- French / Alsace Card -->
+                <div class="bg-white rounded-2xl shadow-md border-2 border-blue-300 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🇫🇷</span>
+                            <h3 class="font-bold text-sm sm:text-base">הודעה למלצר באלזס / צרפת</h3>
+                        </div>
+                        <button onclick="speakText('fr')" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
+                            <i class="fa-solid fa-volume-high"></i> השמע
+                        </button>
+                    </div>
+                    <div id="text-fr" class="p-4 bg-blue-50/40 text-slate-800 text-base sm:text-lg font-medium leading-relaxed" dir="ltr">
+                        Nous avons une végétarienne avec nous. C'est d'accord si l'accompagnement est cuit dans la même marmite ou avec la même sauce que la viande, à condition qu'il n'y ait pas de viande dans l'assiette.
+                        <div class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
+                            ⚠️ IMPORTANT: S'il vous plaît, n'ajoutez absolument pas de coriandre à nos plats (les autres herbes sont acceptables).
+                        </div>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex justify-end">
+                        <button onclick="copyWaiterText('fr')" class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-copy"></i> העתק טקסט
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar for Mobile -->
+    <nav class="lg:hidden bg-white border-t border-slate-200 grid grid-cols-4 shrink-0 shadow-lg z-30 pb-safe">
+        <button onclick="setTab('map')" id="mobTab-map" class="tab-btn active py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+            <i class="fa-solid fa-map text-base mb-1"></i>
+            <span>מפה</span>
+        </button>
+        <button onclick="setTab('chat')" id="mobTab-chat" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+            <i class="fa-solid fa-robot text-base mb-1"></i>
+            <span>יועץ AI</span>
+        </button>
+        <button onclick="setTab('places')" id="mobTab-places" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+            <i class="fa-solid fa-list-check text-base mb-1"></i>
+            <span>יעדים</span>
+        </button>
+        <button onclick="setTab('waiter')" id="mobTab-waiter" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+            <i class="fa-solid fa-utensils text-base mb-1"></i>
+            <span>למלצר</span>
+        </button>
+    </nav>
+
+    <!-- Translation Modal (For quick popup from top bar) -->
+    <div id="translationModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl relative border border-slate-100">
+            <button onclick="closeModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="modalTitle" class="text-lg font-bold mb-2 text-center text-teal-800"></h2>
+            <p class="text-xs text-slate-400 mb-3 text-center font-medium"><i class="fa-solid fa-mobile-screen"></i> הראו את המסך למלצר:</p>
+            <div id="modalText" class="p-4 bg-amber-50 text-base font-medium border border-amber-200 rounded-2xl text-left shadow-inner leading-relaxed text-slate-800" dir="ltr"></div>
+            <div class="mt-4 flex gap-2">
+                <button id="modalSpeakBtn" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 shadow">
+                    <i class="fa-solid fa-volume-high"></i> השמע למלצר
+                </button>
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold">סגור</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. הגדרות API ומשתנים
+        // ==========================================
+        const API_KEY = localStorage.getItem('GEMINI_API_KEY') || atob("QVEuQWI4Uk42TEZKMGMwMzM1UVNkOGlFbjVrWmhSNHJRT3FNbmJfNlgyM203b0xCdnV1WXc="); 
+        let activeTab = 'map';
+        let currentListFilter = 'all'; // Category filter
+        let currentRegionFilter = 'all'; // Region filter (south/north/swiss/all)
+        let chatHistory = [];
+
+        const translations = {
+            'DE': {
+                title: "הודעה למלצר בגרמניה / שווייץ",
+                rawText: "Wir haben eine Vegetarierin bei uns. Es ist in Ordnung, wenn ihre Speisen im selben Topf oder mit derselben Soße wie Fleisch gekocht werden, solange kein Fleisch auf dem Teller ist. WICHTIG: Bitte fügen Sie den Gerichten für uns absolut keinen Koriander hinzu.",
+                html: "Wir haben eine Vegetarierin bei uns. Es ist in Ordnung, wenn ihre Speisen im selben Topf oder mit derselben Soße wie Fleisch gekocht werden, solange kein Fleisch auf dem Teller ist.<br><br><span style='color:#dc2626; font-weight:700;'>WICHTIG: Bitte fügen Sie den Gerichten für uns absolut keinen Koriander hinzu (andere Kräuter sind in Ordnung).</span>",
+                lang: 'de-DE'
+            },
+            'FR': {
+                title: "הודעה למלצר באלזס / צרפת",
+                rawText: "Nous avons une végétarienne avec nous. C'est d'accord si l'accompagnement est cuit dans la même marmite ou avec la même sauce que la viande, à condition qu'il n'y ait pas de viande dans l'assiette. IMPORTANT: S'il vous plaît, n'ajoutez absolument pas de coriandre à nos plats.",
+                html: "Nous avons une végétarienne avec nous. C'est d'accord si l'accompagnement est cuit dans la même marmite ou avec la même sauce que la viande, à condition qu'il n'y ait pas de viande dans l'assiette.<br><br><span style='color:#dc2626; font-weight:700;'>IMPORTANT: S'il vous plaît, n'ajoutez absolument pas de coriandre à nos plats (les autres herbes sont acceptables).</span>",
+                lang: 'fr-FR'
+            }
+        };
+
+        // ==========================================
+        // 2. נתוני המקומות (Places Data) - 42 Locations with Regions
+        // ==========================================
+        const places = [
+            // תחבורה ולינה (כחול - blue)
+            { id: 1, name: "שדה תעופה ציריך", region: "swiss", category: "blue", catName: "תחבורה", lat: 47.4582, lng: 8.5555, desc: "איסוף והחזרת קודיאק (נחיתה 19/9 12:15, המראה 29/9 20:50)" },
+            { id: 2, name: "דירת דרום: Hubertushof", region: "south", category: "blue", catName: "לינה", lat: 47.8596, lng: 8.1181, desc: "דירה שקטה ליד האגם בפאלקאו להתאקלמות נוחה בדרום" },
+            { id: 3, name: "דירת צפון: Holidayhouse4You", region: "north", category: "blue", catName: "לינה", lat: 48.3601, lng: 7.7656, desc: "שוואנאו - מיקום אסטרטגי מושלם לאלזס ופארק אירופה" },
+
+            // סופרמרקטים (סגול - violet)
+            { id: 4, name: "Kaufland Waldshut", region: "south", category: "violet", catName: "סופרמרקט", lat: 47.6225, lng: 8.2325, desc: "הצטיידות ענקית ראשונית מיד אחרי המעבר משווייץ לגרמניה" },
+            { id: 5, name: "Kaufland Lahr", region: "north", category: "violet", catName: "סופרמרקט", lat: 48.3450, lng: 7.8580, desc: "סופר ענק ליד הדירה הצפונית. פתוח עד 22:00 (סגור בראשון)" },
+            { id: 6, name: "EDEKA Baur (פלדברג)", region: "south", category: "violet", catName: "סופרמרקט", lat: 47.8580, lng: 8.0360, desc: "סופר איכותי להשלמות יומיות באזור הדרום" },
+            { id: 7, name: "EDEKA Schwanau", region: "north", category: "violet", catName: "סופרמרקט", lat: 48.3580, lng: 7.7600, desc: "סופר שכונתי קרוב מאוד לדירה בצפון" },
+            { id: 8, name: "Lidl Titisee", region: "south", category: "violet", catName: "סופרמרקט", lat: 47.9050, lng: 8.1500, desc: "סופר גדול וזול ליד אגם טיטיזה" },
+            { id: 9, name: "REWE Lahr", region: "north", category: "violet", catName: "סופרמרקט", lat: 48.3400, lng: 7.8700, desc: "מבחר ענק של פירות, מאפים ומוצרים צמחוניים" },
+            { id: 10, name: "חניון P+R שטרסבורג (Elsau)", region: "north", category: "violet", catName: "שופינג ותחבורה", lat: 48.5690, lng: 7.7280, desc: "חניון חנה-וסע עם כרטיס חשמלית ישיר למרכז (SEPHORA, PRIMARK ליעל)" },
+
+            // מסעדות (כתום - orange)
+            { id: 11, name: "Restaurant Peterle", region: "south", category: "orange", catName: "מסעדה", lat: 47.8631, lng: 8.1100, desc: "מסעדת שף משפחתית ברמה גבוהה קרובה לדירה בדרום" },
+            { id: 12, name: "Restaurant Bierhäusle", region: "south", category: "orange", catName: "מסעדה", lat: 47.8633, lng: 8.1065, desc: "אוכל מקומי מעולה, שפצל גבינה מושלם לצמחונים (אלה)" },
+            { id: 13, name: "Pizzeria Da Rocco", region: "south", category: "orange", catName: "מסעדה", lat: 47.8570, lng: 8.1030, desc: "פיצות טריות בטאבון ופסטות, מעולה לילדים" },
+            { id: 14, name: "Pizzeria Bella Italia", region: "south", category: "orange", catName: "מסעדה", lat: 47.8180, lng: 8.1810, desc: "מסעדה איטלקית על שפת אגם שלוכזה עם נוף מהפנט" },
+            { id: 15, name: "Gasthaus Schwanen", region: "north", category: "orange", catName: "מסעדה", lat: 48.3580, lng: 7.7600, desc: "פונדק כפרי מסורתי עם אווירה חמה בצפון" },
+            { id: 16, name: "La Villetta", region: "north", category: "orange", catName: "מסעדה", lat: 48.3410, lng: 7.8730, desc: "איטלקית מומלצת, ארוחה טעימה ומשתלמת בעיר לאהר" },
+            { id: 17, name: "Dammenmühle", region: "north", category: "orange", catName: "מסעדה", lat: 48.3370, lng: 7.8770, desc: "מסעדה מרהיבה על שפת אגם קטן וברבורים" },
+            { id: 18, name: "Au Cygne (Gerstheim)", region: "north", category: "orange", catName: "מסעדה", lat: 48.3770, lng: 7.7010, desc: "וינשטוב צרפתי אותנטי באלזס ממש מעבר לגבול" },
+            { id: 19, name: "Gasthof Hirschen", region: "swiss", category: "orange", catName: "מסעדה", lat: 47.5750, lng: 8.5230, desc: "מסעדת סיום מרגשת על נהר הריין בשווייץ בדרך לשדה" },
+
+            // אטרקציות וטבע (ירוק - green)
+            { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום" },
+            { id: 21, name: "מגלשות טודנאו (Hasenhorn Coaster)", region: "south", category: "green", catName: "אטרקציה", lat: 47.8285, lng: 7.9545, desc: "מגלשת ההרים הארוכה בגרמניה (2.9 ק\"מ) - אקסטרים מושלם" },
+            { id: 22, name: "מתחם פלדברג ורכבל ההרים", region: "south", category: "green", catName: "טבע ומשפחה", lat: 47.8600, lng: 8.0360, desc: "הפסגה הגבוהה ביער השחור, פארק חבלים ונוף עוצר נשימה" },
+            { id: 23, name: "אגם טיטיזה (Titisee)", region: "south", category: "green", catName: "אגם ושייט", lat: 47.8988, lng: 8.1565, desc: "סירות פדלים, מדרחוב קניות מזכרות וגלידריות" },
+            { id: 24, name: "פארק שטיינוואסן (Steinwasen Park)", region: "south", category: "green", catName: "פארק שעשועים", lat: 47.8980, lng: 7.9220, desc: "גשר חבלים ענק, רכבות הרים, ומתחמי חיות שנבו יאהב" },
+            { id: 25, name: "קניון רוואנה (Ravenna Gorge)", region: "south", category: "green", catName: "מסלול הליכה", lat: 47.9170, lng: 8.0730, desc: "מסלול הליכה קסום לצד פלגי מים תחת ויאדוקט הרכבת המפורסם" },
+            { id: 26, name: "באדפרדייס (Badeparadies Schwarzwald)", region: "south", category: "green", catName: "פארק מים מקורה", lat: 47.9040, lng: 8.1630, desc: "פארק מים מקורה ענק עם גלקסיית מגלשות מטורפת - מעולה ליום גשם!" },
+            { id: 27, name: "פרייבורג (Freiburg Altstadt)", region: "south", category: "green", catName: "עיר עתיקה", lat: 47.9959, lng: 7.8522, desc: "תעלות מים קטנות ברחובות (Bächle) עם סירות עץ קטנות" },
+            { id: 28, name: "טירת הוט-קניגסבורג (Château du Haut-Kœnigsbourg)", region: "north", category: "green", catName: "טירה באלזס", lat: 48.2494, lng: 7.3442, desc: "טירת אבירים אותנטית על ראש הר באלזס עם תצפית עד האלפים" },
+            { id: 29, name: "פארק הקופים באלזס (Montagne des Singes)", region: "north", category: "green", catName: "אטרקציה", lat: 48.2600, lng: 7.3780, desc: "הליכה חופשית ביער והאכלת פופקורן לקופי מקוק ברבריים" },
+            { id: 30, name: "העיירה הציורית ריקוויר (Riquewihr)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.1667, lng: 7.2975, desc: "בתי עץ צבעוניים מהמאה ה-16, עיירת האגדות שבה נכתבה היפה והחיה" },
+            { id: 31, name: "פארק אירופה (Europa-Park)", region: "north", category: "green", catName: "גולת הכותרת", lat: 48.2660, lng: 7.7220, desc: "פארק השעשועים הטוב בעולם! רכבות הרים עולמיות, מופעים והנאה ענקית" },
+            { id: 32, name: "מפלי טריברג (Triberg Waterfalls)", region: "north", category: "green", catName: "מפלים וטבע", lat: 48.1270, lng: 8.2280, desc: "המפלים הגבוהים בגרמניה, האכלת סנאים באגוזים ושעון הקוקייה הגדול" },
+            { id: 33, name: "מפלי הריין (Rhine Falls)", region: "swiss", category: "green", catName: "טבע בשווייץ", lat: 47.6779, lng: 8.6156, desc: "המפלים הרחבים באירופה! שייט סירה אל הסלע המרכזי ביום האחרון" },
+
+            // מקומות נוספים מהמאסטר פלאן (Missing places added)
+            { id: 34, name: "שביל החושים וולדקירך (Baumkronenweg Waldkirch)", region: "south", category: "green", catName: "אטרקציה בטבע", lat: 48.0930, lng: 7.9620, desc: "מסלול הליכה מוגבה בין צמרות העצים שיורד במגלשת צינור ייחודית" },
+            { id: 35, name: "מבצר העיטים (Volerie des Aigles)", region: "north", category: "green", catName: "מופע נשרים", lat: 48.2580, lng: 7.3800, desc: "מופע מרהיב של עופות דורסים בתוך חורבות מבצר עתיק באלזס" },
+            { id: 36, name: "פארק הציפורים והקופים (Vogelpark Steinen)", region: "south", category: "green", catName: "חיות וטבע", lat: 47.6660, lng: 7.7550, desc: "הליכה חופשית בין קופי מקוק והאכלה מפופקורן, ומופעי עופות דורסים" },
+            { id: 37, name: "פארק החבלים אקשן פורסט (Action Forest Titisee)", region: "south", category: "green", catName: "אקסטרים", lat: 47.9000, lng: 8.1600, desc: "פארק חבלים אתגרי בלב יער אורנים קרוב לאגם טיטיזה. מתאים לבוגרות" },
+            { id: 38, name: "שביל צמרות העצים באד וילדבאד (Baumwipfelpfad)", region: "north", category: "green", catName: "טבע", lat: 48.7490, lng: 8.5350, desc: "מסלול עץ ספירלי אדריכלי המטפס מעל צמרות היער עם מגלשת צינור במרכזו" },
+            { id: 39, name: "מפעל הזכוכית בוולפאך (Dorotheenhütte Wolfach)", region: "north", category: "green", catName: "סגור לגשם", lat: 48.2868, lng: 8.2255, desc: "צפייה והתנסות בניפוח זכוכית מסורתי, וביקור בכפר חג המולד הסגור. מעולה לגשם" },
+            { id: 40, name: "פארק הזאבים והדובים (Alternativer Wolf- und Bärenpark)", region: "north", category: "green", catName: "טבע וחיות", lat: 48.3842, lng: 8.3090, desc: "פארק אלטרנטיבי ופראי המאפשר צפייה בדובים וזאבים שחולצו בסביבה טבעית פתוחה" },
+            { id: 41, name: "אגם מומלזה (Mummelsee) וכביש 500", region: "north", category: "green", catName: "אגם", lat: 48.5973, lng: 8.2007, desc: "אגם קרחוני פסטורלי ושטוח על דרך הפנורמה של היער השחור עם מאפייה מקומית מצוינת" },
+            { id: 42, name: "אגיסהיים (Eguisheim)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.0420, lng: 7.3060, desc: "עיירת יין ציורית באלזס הבנויה במעגלים. מארחת פסטיבל יין חגיגי" }
+        ];
+
+        // ==========================================
+        // 3. אתחול מפה (Leaflet)
+        // ==========================================
+        let map;
+        let markersGroup;
+
+        function initMap() {
+            map = L.map('map', { zoomControl: true }).setView([48.1, 7.9], 9);
+            
+            L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: 'Map data &copy; Google'
+            }).addTo(map);
+
+            markersGroup = L.layerGroup().addTo(map);
+            renderMapMarkers();
+        }
+
+        const getCustomIcon = (color) => {
+            return new L.Icon({
+                iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+        };
+
+        function setRegionFilter(region) {
+            currentRegionFilter = region;
+            // Sync dropdowns
+            const mapRegion = document.getElementById('mapRegionSelector');
+            const listRegion = document.getElementById('listRegionSelector');
+            if (mapRegion) mapRegion.value = region;
+            if (listRegion) listRegion.value = region;
+            
+            renderMapMarkers();
+            renderPlacesList();
+
+            // Zoom map based on region
+            if (map) {
+                if (region === 'south') map.flyTo([47.88, 8.05], 10);
+                else if (region === 'north') map.flyTo([48.35, 7.75], 10);
+                else if (region === 'swiss') map.flyTo([47.5, 8.5], 10);
+                else map.flyTo([48.1, 7.9], 9);
+            }
+        }
+
+        function renderMapMarkers() {
+            markersGroup.clearLayers();
+
+            const filtered = places.filter(p => {
+                const matchCat = (currentListFilter === 'all' || p.category === currentListFilter);
+                const matchRegion = (currentRegionFilter === 'all' || p.region === currentRegionFilter);
+                return matchCat && matchRegion;
+            });
+
+            filtered.forEach(p => {
+                const wazeUrl = `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
+                const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+                
+                const popupContent = `
+                    <div class="text-right p-1" style="min-width: 210px;">
+                        <div class="flex items-center justify-between border-b pb-1 mb-1">
+                            <strong class="text-sm font-bold text-teal-800">${p.name}</strong>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2 leading-relaxed">${p.desc}</p>
+                        <div class="grid grid-cols-2 gap-1 mb-2">
+                            <a href="${wazeUrl}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                                <i class="fa-brands fa-waze"></i> Waze
+                            </a>
+                            <a href="${gmapsUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-location-arrow"></i> Maps
+                            </a>
+                        </div>
+                        <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-2 rounded-lg text-xs transition-colors shadow flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-robot"></i> שאל את ה-AI
+                        </button>
+                    </div>
+                `;
+                L.marker([p.lat, p.lng], { icon: getCustomIcon(p.category) })
+                 .addTo(markersGroup)
+                 .bindPopup(popupContent);
+            });
+        }
+
+        function filterMap(color) {
+            currentListFilter = color;
+            document.querySelectorAll('.map-filter-btn').forEach(b => {
+                b.classList.remove('bg-teal-700', 'text-white');
+                b.classList.add('bg-slate-100');
+            });
+            event.target.closest('button').classList.remove('bg-slate-100');
+            event.target.closest('button').classList.add('bg-teal-700', 'text-white');
+            
+            // Sync places list category filter
+            document.querySelectorAll('.cat-pill').forEach(b => {
+                b.classList.remove('bg-teal-700', 'text-white');
+                b.classList.add('bg-slate-100');
+            });
+            document.querySelectorAll(`.cat-pill[data-color="${color}"]`).forEach(b => {
+                b.classList.remove('bg-slate-100');
+                b.classList.add('bg-teal-700', 'text-white');
+            });
+
+            renderMapMarkers();
+            renderPlacesList();
+        }
+
+        // ==========================================
+        // 4. כרטיסי יעדים (Places Tab List)
+        // ==========================================
+        function renderPlacesList() {
+            const query = (document.getElementById('placesSearchInput')?.value || '').toLowerCase().trim();
+            const grid = document.getElementById('placesCardsGrid');
+            if (!grid) return;
+
+            const filtered = places.filter(p => {
+                const matchCat = (currentListFilter === 'all' || p.category === currentListFilter);
+                const matchRegion = (currentRegionFilter === 'all' || p.region === currentRegionFilter);
+                const matchQuery = !query || p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query) || p.catName.toLowerCase().includes(query);
+                return matchCat && matchRegion && matchQuery;
+            });
+
+            grid.innerHTML = filtered.map(p => {
+                const wazeUrl = `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
+                const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+                
+                let badgeClass = "bg-emerald-100 text-emerald-800";
+                if (p.category === 'orange') badgeClass = "bg-amber-100 text-amber-800";
+                if (p.category === 'violet') badgeClass = "bg-purple-100 text-purple-800";
+                if (p.category === 'blue') badgeClass = "bg-blue-100 text-blue-800";
+
+                let regionIcon = "🇨🇭";
+                if (p.region === 'south') regionIcon = "🌲";
+                if (p.region === 'north') regionIcon = "🥨";
+
+                return `
+                    <div class="bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 hover:border-teal-400 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                    <span title="אזור">${regionIcon}</span> ${p.name}
+                                </h3>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${p.catName}</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">${p.desc}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 pt-2 border-t border-slate-100 text-xs">
+                            <a href="${wazeUrl}" target="_blank" class="flex-1 bg-sky-50 hover:bg-sky-100 text-sky-700 py-1.5 px-2 rounded-lg font-semibold text-center flex items-center justify-center gap-1 border border-sky-200">
+                                <i class="fa-brands fa-waze"></i> Waze
+                            </a>
+                            <a href="${gmapsUrl}" target="_blank" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 py-1.5 px-2 rounded-lg font-semibold text-center flex items-center justify-center gap-1 border border-blue-200">
+                                <i class="fa-solid fa-diamond-turn-right"></i> Maps
+                            </a>
+                            <button onclick="zoomToPlace(${p.lat}, ${p.lng})" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg" title="הצג במפה">
+                                <i class="fa-solid fa-map-pin"></i>
+                            </button>
+                            <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-lg border border-teal-200" title="שאל יועץ AI">
+                                <i class="fa-solid fa-robot"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setListCategory(cat) {
+            currentListFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(b => {
+                b.classList.remove('bg-teal-700', 'text-white');
+                b.classList.add('bg-slate-100');
+            });
+            event.target.classList.remove('bg-slate-100');
+            event.target.classList.add('bg-teal-700', 'text-white');
+            
+            // Sync map category filter
+            document.querySelectorAll('.map-filter-btn').forEach(b => {
+                b.classList.remove('bg-teal-700', 'text-white');
+                b.classList.add('bg-slate-100');
+            });
+            // (Assumes ordering matches)
+            
+            renderPlacesList();
+            renderMapMarkers();
+        }
+
+        function zoomToPlace(lat, lng) {
+            setTab('map');
+            if (map) {
+                map.flyTo([lat, lng], 13, { duration: 1.2 });
+            }
+        }
+
+        // ==========================================
+        // 5. ניהול טאבים (Navigation)
+        // ==========================================
+        function setTab(tabName) {
+            activeTab = tabName;
+
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            const mobBtn = document.getElementById(`mobTab-${tabName}`);
+            if (mobBtn) mobBtn.classList.add('active');
+
+            document.querySelectorAll('.desktop-tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-teal-700', 'text-white');
+                b.classList.add('text-slate-600');
+            });
+            const deskBtn = document.getElementById(`deskTab-${tabName}`);
+            if (deskBtn) {
+                deskBtn.classList.add('active', 'bg-teal-700', 'text-white');
+                deskBtn.classList.remove('text-slate-600');
+            }
+
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+
+            if (tabName === 'map') {
+                document.getElementById('panel-map').classList.remove('hidden');
+                setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+            } else if (tabName === 'chat') {
+                document.getElementById('panel-chat').classList.remove('hidden');
+            } else if (tabName === 'places') {
+                document.getElementById('panel-places').classList.remove('hidden');
+                renderPlacesList();
+            } else if (tabName === 'waiter') {
+                document.getElementById('panel-waiter').classList.remove('hidden');
+            }
+        }
+
+        // ==========================================
+        // 6. מערכת שיחה מבוססת Gemini AI 
+        // ==========================================
+        const systemPrompt = `תפקיד ויעד:
+אתה סוכן נסיעות, יועץ מומחה לחופשות משפחתיות בחו"ל, ומומחה קולינרי ולוגיסטי למסעדות, סופרמרקטים ומתחמי קניות. 
+תמיד פתח בברכה: "היי משפחת אשכנזי!".
+
+תפקידך העיקרי:
+1. לבחון, להציע ולחלק אזורי לינה ויעדים במרחב הנגיש מציריך, בהתבסס על זמינות דירות אמיתית ואטרקטיביות.
+2. לאתר דירות, מסעדות, אטרקציות וסופרים על בסיס ביקורות אובייקטיביות, ולבנות מסלול יומיומי מפורט ופרקטי.
+
+מסגרת הזמנים: נחיתה 19/9/2026 בשעה 12:15 בציריך. המראה חזרה 29/9/2026 בשעה 20:50 מציריך.
+חלוקת הלילות: 5 לילות דרום (פאלקאו) ו-5 לילות צפון (שוואנאו).
+
+פרופיל המשפחה: משפחה בת 5 נפשות (אביב ומורן, אלה בת 14, יעל בת 11, נבו בן 7).
+- מורן שונאת כוסברה! איסור מוחלט להציע.
+- פער גילאים: חובה לשלב בין אקסטרים לאלה ויעל לבין קצב מותאם לנבו הצעיר (שאוהב גם טכנולוגיה).
+- שופינג חובה: יעל (11) חייבת לבקר ב-SEPHORA ו-PRIMARK בשטרסבורג.
+- תזונה: אלה (14) צמחונית, השאר אוכלי בשר. אלה יכולה לאכול תוספות שבושלו בסיר עם בשר (כל עוד אין בשר בצלחת). יש לוודא חלופות צמחוניות בכל מסעדה.
+
+קריטריונים ודגשים:
+1. ביטחון ורוגע (קריטי): רק אזורים בטוחים לישראלים, ללא אוכלוסיות עוינות.
+2. לינה (Hidden Gems): מקומות שקטים (דירוג 9+) עם 2 חדרי שינה, 2 חדרי רחצה, ומכונת כביסה.
+3. לוגיסטיקה (חוק ברזל): זמני נסיעה לפי מסלולי כביש אמיתיים (לא קו אווירי). שיבוץ סופרים לפני ימי ראשון.
+4. איזון וקצב: טבע, עיירות, שופינג ואקסטרים. חלופות מקורות (Indoor) לימי גשם.
+
+פורמט תשובה:
+- שקופה ומאוזנת (Pros & Cons) מבוסס ביקורות.
+- ספציפיות: שמות מדויקים ולינקים להעמקה.
+- שאלת הנחיה: סיים תמיד בשאלת הכוונה להמשך התכנון.
+- טון: ידידותי, מעשי, קצר ולעניין, ומוכוון פתרונות. ענה תמיד בעברית.`;
+
+        const welcomeMessage = `
+            <div class="ai-msg text-xs sm:text-sm">
+                <strong>סוכן AI:</strong> היי משפחת אשכנזי! 👋<br><br>
+                אני כאן לעזור לתכנן ולהוביל את הטיול שלכם ליער השחור, אלזס ושווייץ! 🌲<br>
+                זכרתי הכל: שופינג של יעל (SEPHORA, PRIMARK), אלה צמחונית, מורן שונאת כוסברה, ולנבו אטרקציות וטכנולוגיה.<br><br>
+                <strong>תוכלו לבחור יעד במפה, ללחוץ על הצעות מהירות, או פשוט לשאול אותי כל דבר!</strong>
+            </div>
+        `;
+
+        function initChatBoxes() {
+            const deskBox = document.getElementById('chatBox-desktop');
+            const mobBox = document.getElementById('chatBox-mobile');
+            if (deskBox) deskBox.innerHTML = welcomeMessage;
+            if (mobBox) mobBox.innerHTML = welcomeMessage;
+        }
+
+        function clearChat() {
+            chatHistory = [];
+            initChatBoxes();
+        }
+
+        function askAboutPlace(placeName) {
+            const text = `אפשר לקבל מידע, טיפים ו-Pros & Cons על ${placeName}? איך המקום הזה מתאים להרכב של משפחת אשכנזי?`;
+            
+            if (window.innerWidth < 1024) {
+                setTab('chat');
+            }
+            sendSpecificMessage(text);
+        }
+
+        function sendQuickPrompt(promptText) {
+            sendSpecificMessage(promptText);
+        }
+
+        async function sendSpecificMessage(userText) {
+            const deskInput = document.getElementById('userInput-desktop');
+            const mobInput = document.getElementById('userInput-mobile');
+            if (deskInput) deskInput.value = '';
+            if (mobInput) mobInput.value = '';
+
+            await executeGeminiRequest(userText);
+        }
+
+        async function sendMessage(source) {
+            const inputField = document.getElementById(`userInput-${source}`);
+            const userText = inputField.value.trim();
+            if (!userText) return;
+            inputField.value = '';
+
+            await executeGeminiRequest(userText);
+        }
+
+        async function executeGeminiRequest(userText) {
+            const deskBox = document.getElementById('chatBox-desktop');
+            const mobBox = document.getElementById('chatBox-mobile');
+
+            const userMsgHtml = `<div class="user-msg text-xs sm:text-sm">${userText}</div>`;
+            if (deskBox) deskBox.innerHTML += userMsgHtml;
+            if (mobBox) mobBox.innerHTML += userMsgHtml;
+
+            const loadingId = "loading-" + Date.now();
+            const loadingHtml = `<div id="${loadingId}" class="ai-msg text-xs sm:text-sm text-slate-500"><i class="fa-solid fa-spinner fa-spin text-teal-600"></i> הסוכן חושב ומנתח...</div>`;
+            
+            if (deskBox) {
+                deskBox.innerHTML += loadingHtml;
+                deskBox.scrollTop = deskBox.scrollHeight;
+            }
+            if (mobBox) {
+                mobBox.innerHTML += loadingHtml;
+                mobBox.scrollTop = mobBox.scrollHeight;
+            }
+
+            chatHistory.push({
+                role: 'user',
+                parts: [{ text: userText }]
+            });
+
+            // מודל נבחר עם רשימת חלופות אוטומטית (Fallback) במקרה של עומס רגעי
+            const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-3.6-flash';
+            const candidateModels = [primaryModel, 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+
+            let success = false;
+            let lastError = null;
+
+            for (const model of candidateModels) {
+                try {
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            system_instruction: { parts: [{ text: systemPrompt }] },
+                            contents: chatHistory
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message);
+
+                    const rawAiText = data.candidates[0].content.parts[0].text;
+                    
+                    chatHistory.push({
+                        role: 'model',
+                        parts: [{ text: rawAiText }]
+                    });
+
+                    const formattedAiText = marked.parse(rawAiText);
+                    const aiResultHtml = `<div class="text-xs sm:text-sm"><strong>סוכן AI:</strong><br>${formattedAiText}</div>`;
+
+                    document.querySelectorAll(`[id="${loadingId}"]`).forEach(el => {
+                        el.innerHTML = aiResultHtml;
+                        el.classList.remove("text-slate-500");
+                    });
+
+                    success = true;
+                    break;
+                } catch (err) {
+                    lastError = err;
+                    console.warn(`Model ${model} failed, trying next fallback...`, err);
+                }
+            }
+
+            if (!success) {
+                const errorHtml = `<strong>שגיאת תקשורת:</strong><br>${lastError ? lastError.message : 'לא התקבלה תשובה מהשרת'}`;
+                document.querySelectorAll(`[id="${loadingId}"]`).forEach(el => {
+                    el.innerHTML = errorHtml;
+                    el.classList.add("text-red-500");
+                });
+            }
+
+            if (deskBox) deskBox.scrollTop = deskBox.scrollHeight;
+            if (mobBox) mobBox.scrollTop = mobBox.scrollHeight;
+        }
+
+        // ==========================================
+        // 7. תרגום וסיוע למלצר + השמעה קולית
+        // ==========================================
+        function showTranslation(lang) {
+            const item = translations[lang];
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalText').innerHTML = item.html;
+            document.getElementById('modalSpeakBtn').onclick = () => speakText(lang.toLowerCase());
+            document.getElementById('translationModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('translationModal').classList.add('hidden');
+        }
+
+        function speakText(langCode) {
+            const key = langCode.toUpperCase();
+            const item = translations[key];
+            if (!item || !('speechSynthesis' in window)) {
+                alert('השמעה קולית אינה נתמכת בדפדפן זה');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(item.rawText);
+            utterance.lang = item.lang;
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function copyWaiterText(langCode) {
+            const key = langCode.toUpperCase();
+            const item = translations[key];
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(item.rawText).then(() => {
+                    alert('הטקסט הועתק בהצלחה ללוח!');
+                });
+            }
+        }
+
+        // ==========================================
+        // 8. PWA Service Worker והתקנה
+        // ==========================================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('pwaInstallBtn');
+            if (installBtn) {
+                installBtn.classList.remove('hidden');
+                installBtn.onclick = () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            installBtn.classList.add('hidden');
+                        }
+                        deferredPrompt = null;
+                    });
+                };
+            }
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('PWA Service Worker registered:', reg.scope))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+
+        // ניטור מצב אינטרנט
+        function updateOnlineStatus() {
+            const statusEl = document.getElementById('networkStatus');
+            if (!statusEl) return;
+            if (navigator.onLine) {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle text-[8px] text-emerald-400"></i> מקוון';
+                statusEl.className = 'inline-flex items-center gap-1 text-emerald-300';
+            } else {
+                statusEl.innerHTML = '<i class="fa-solid fa-circle text-[8px] text-amber-400"></i> אופליין (שמור במכשיר)';
+                statusEl.className = 'inline-flex items-center gap-1 text-amber-300';
+            }
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // ==========================================
+        // 9. הפעלה ראשונית
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            initChatBoxes();
+            renderPlacesList();
+            updateOnlineStatus();
+        });
+    </script>
+</body>
+</html>

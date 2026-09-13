@@ -1,0 +1,9 @@
+{
+  "name": "black-forest-trip-pwa",
+  "version": "1.0.0",
+  "description": "Black Forest, Alsace & Switzerland Family Trip PWA for the Ashkenazi Family",
+  "scripts": {
+    "dev": "npx -y serve . -l 5173",
+    "start": "npx -y serve . -l 5173"
+  }
+}
