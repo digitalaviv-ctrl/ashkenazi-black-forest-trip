@@ -158,9 +158,10 @@
         <div class="flex items-center gap-2 text-xs text-slate-600">
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
             <select id="modelSelector" class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק)</option>
-                <option value="gemini-3.8-flash">Gemini 3.8 Flash (סופר מהיר)</option>
-                <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)</option>
+                <option value="gemini-3.8-flash">Gemini 3.8 Flash (סופר מהיר, טוב לשאלות קצרות)</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash (מהיר ויעיל)</option>
+                <option value="gemini-3.1-pro">Gemini 3.1 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)</option>
             </select>
         </div>
     </div>
@@ -223,11 +224,18 @@
                 </div>
 
                 <!-- Desktop Chat Input -->
-                <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2 shrink-0">
-                    <input type="text" id="userInput-desktop" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')" onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
-                    <button onclick="sendMessage('desktop')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
+                <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
+                    <div id="imagePreviewContainer-desktop" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
+                    <div class="flex gap-2 w-full">
+                        <label for="imageUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" id="imageUpload-desktop" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'desktop')">
+                        </label>
+                        <input type="text" id="userInput-desktop" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')" onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
+                        <button onclick="sendMessage('desktop')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -242,8 +250,10 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <select id="modelSelector-mobile" class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
-                        <option value="gemini-3.6-flash">3.6 Flash</option>
-                        <option value="gemini-3.8-flash">3.8 Flash</option>
+                        <option value="gemini-3.6-flash">3.6 Flash (יציב)</option>
+                        <option value="gemini-3.8-flash">3.8 Flash (מהיר)</option>
+                        <option value="gemini-3.5-flash">3.5 Flash</option>
+                        <option value="gemini-3.1-pro">3.1 Pro (חכם לתמונות)</option>
                     </select>
                     <button onclick="clearChat()" class="text-xs text-slate-300 px-2 py-1 rounded bg-slate-700">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -262,11 +272,18 @@
             </div>
 
             <!-- Mobile Input Bar -->
-            <div class="p-2.5 bg-white border-t border-slate-200 flex gap-2 shrink-0 pb-safe">
-                <input type="text" id="userInput-mobile" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה על היעדים והמסלול..." onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
-                <button onclick="sendMessage('mobile')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
+            <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0 pb-safe">
+                <div id="imagePreviewContainer-mobile" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
+                <div class="flex gap-2 w-full">
+                    <label for="imageUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm">
+                        <i class="fa-solid fa-camera"></i>
+                        <input type="file" id="imageUpload-mobile" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'mobile')">
+                    </label>
+                    <input type="text" id="userInput-mobile" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה על היעדים והמסלול..." onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
+                    <button onclick="sendMessage('mobile')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -596,6 +613,59 @@
         // 1. הגדרות API ומשתנים
         // ==========================================
         const API_KEY = localStorage.getItem('GEMINI_API_KEY') || atob("QVEuQWI4Uk42TEZKMGMwMzM1UVNkOGlFbjVrWmhSNHJRT3FNbmJfNlgyM203b0xCdnV1WXc="); 
+        
+        // מערכת העלאת תמונות ל-AI
+        let pendingImages = { desktop: [], mobile: [] };
+
+        function handleImageUpload(event, source) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const base64Data = e.target.result.split(',')[1];
+                    pendingImages[source].push({
+                        mimeType: file.type,
+                        data: base64Data
+                    });
+                    renderImagePreviews(source);
+                };
+                reader.readAsDataURL(file);
+            }
+            event.target.value = ''; // Reset input
+        }
+
+        function removePendingImage(index, source) {
+            pendingImages[source].splice(index, 1);
+            renderImagePreviews(source);
+        }
+
+        function renderImagePreviews(source) {
+            const container = document.getElementById(`imagePreviewContainer-${source}`);
+            if (!container) return;
+            
+            if (pendingImages[source].length === 0) {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            let html = '';
+            pendingImages[source].forEach((img, idx) => {
+                html += `
+                <div class="relative inline-block shrink-0">
+                    <img src="data:${img.mimeType};base64,${img.data}" class="h-12 w-12 object-cover rounded-lg border border-slate-200">
+                    <button onclick="removePendingImage(${idx}, '${source}')" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow-sm hover:bg-red-600">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
         let activeTab = 'map';
         let currentListFilter = 'all'; // Category filter
         let currentRegionFilter = 'all'; // Region filter (south/north/swiss/all)
@@ -1102,17 +1172,34 @@
         async function sendMessage(source) {
             const inputField = document.getElementById(`userInput-${source}`);
             const userText = inputField.value.trim();
-            if (!userText) return;
-            inputField.value = '';
+            const images = pendingImages[source] || [];
 
-            await executeGeminiRequest(userText);
+            if (!userText && images.length === 0) return;
+            
+            inputField.value = '';
+            pendingImages[source] = [];
+            renderImagePreviews(source);
+
+            await executeGeminiRequest(userText, images);
         }
 
-        async function executeGeminiRequest(userText) {
+        async function executeGeminiRequest(userText, images = []) {
             const deskBox = document.getElementById('chatBox-desktop');
             const mobBox = document.getElementById('chatBox-mobile');
 
-            const userMsgHtml = `<div class="user-msg text-xs sm:text-sm">${userText}</div>`;
+            let userMsgHtml = `<div class="user-msg text-xs sm:text-sm flex flex-col gap-2">`;
+            if (images.length > 0) {
+                userMsgHtml += `<div class="flex gap-2 overflow-x-auto">`;
+                images.forEach(img => {
+                    userMsgHtml += `<img src="data:${img.mimeType};base64,${img.data}" class="h-16 w-16 object-cover rounded-lg border border-slate-200">`;
+                });
+                userMsgHtml += `</div>`;
+            }
+            if (userText) {
+                userMsgHtml += `<span>${userText}</span>`;
+            }
+            userMsgHtml += `</div>`;
+
             if (deskBox) deskBox.innerHTML += userMsgHtml;
             if (mobBox) mobBox.innerHTML += userMsgHtml;
 
@@ -1128,14 +1215,27 @@
                 mobBox.scrollTop = mobBox.scrollHeight;
             }
 
+            let messageParts = [];
+            if (userText) messageParts.push({ text: userText });
+            if (images.length > 0) {
+                images.forEach(img => {
+                    messageParts.push({
+                        inlineData: {
+                            mimeType: img.mimeType,
+                            data: img.data
+                        }
+                    });
+                });
+            }
+
             chatHistory.push({
                 role: 'user',
-                parts: [{ text: userText }]
+                parts: messageParts
             });
 
             // מודל נבחר עם רשימת חלופות אוטומטית (Fallback) במקרה של עומס רגעי
             const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-3.6-flash';
-            const candidateModels = [primaryModel, 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+            const candidateModels = [primaryModel, 'gemini-3.1-pro', 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
 
             let success = false;
             let lastError = null;
