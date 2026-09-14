@@ -1434,7 +1434,7 @@
                                 <span class="text-[10px] px-1.5 py-0.5 rounded ${badgeClass}">${p.catName}</span>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-600 mb-1 leading-relaxed">${p.desc}</p>
+                        <div class="text-xs text-slate-600 mb-1 leading-relaxed overflow-y-auto max-h-[160px] pl-1 hide-scrollbar">${p.desc}</div>
                         ${addressRow}
                         ${websiteRow}
                         <div class="grid grid-cols-2 gap-1.5 mb-1.5">
@@ -1752,7 +1752,7 @@
                     <div class="relative group">
                         <!-- Timeline node -->
                         <div class="absolute -right-[23px] top-1 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
-                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up" style="animation-delay: ${index * 0.05}s">
+                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up ${!isItineraryEditMode ? 'cursor-pointer hover:bg-slate-50 transition-colors' : ''}" style="animation-delay: ${index * 0.05}s" ${!isItineraryEditMode ? `onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.title)}', '_blank')"` : ''}>
                             <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5 flex flex-col items-center">
                                 <i class="fa-solid ${item.icon} text-lg mb-1"></i>
                                 <span class="text-[10px] font-bold tracking-tighter">${item.time}</span>
@@ -1762,11 +1762,11 @@
                                 <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
                             </div>
                             ${isItineraryEditMode ? `
-                                <button onclick="deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm">
+                                <button onclick="event.stopPropagation(); deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             ` : `
-                                <button onclick="sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 p-2 rounded-lg self-center shrink-0 border border-teal-100 transition-colors shadow-sm" title="שאל את ה-AI">
+                                <button onclick="event.stopPropagation(); sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 p-2 rounded-lg self-center shrink-0 border border-teal-100 transition-colors shadow-sm" title="שאל את ה-AI">
                                     <i class="fa-solid fa-robot"></i>
                                 </button>
                             `}
