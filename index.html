@@ -36,9 +36,45 @@
         .ai-msg ul { list-style-type: disc; margin-right: 20px; margin-bottom: 10px; }
         .ai-msg ol { list-style-type: decimal; margin-right: 20px; margin-bottom: 10px; }
         .ai-msg li { margin-bottom: 4px; line-height: 1.5; }
-        .ai-msg a { color: #2563eb; text-decoration: underline; font-weight: 500; }
         .leaflet-popup-content-wrapper { border-radius: 14px; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
         .leaflet-popup-content { font-family: 'Rubik', sans-serif; margin: 12px; }
+        .leaflet-container a.nav-btn,
+        .leaflet-popup-content a.nav-btn,
+        a.nav-btn-waze,
+        a.nav-btn-maps {
+            text-decoration: none !important;
+            color: #ffffff !important;
+        }
+        .nav-btn-waze,
+        .leaflet-container .nav-btn-waze,
+        .leaflet-popup-content .nav-btn-waze {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+        }
+        .nav-btn-waze:hover {
+            background-color: #0369a1 !important;
+            color: #ffffff !important;
+        }
+        .nav-btn-waze *,
+        .nav-btn-waze i,
+        .nav-btn-waze span {
+            color: #ffffff !important;
+        }
+        .nav-btn-maps,
+        .leaflet-container .nav-btn-maps,
+        .leaflet-popup-content .nav-btn-maps {
+            background-color: #1d4ed8 !important;
+            color: #ffffff !important;
+        }
+        .nav-btn-maps:hover {
+            background-color: #1e40af !important;
+            color: #ffffff !important;
+        }
+        .nav-btn-maps *,
+        .nav-btn-maps i,
+        .nav-btn-maps span {
+            color: #ffffff !important;
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -742,12 +778,14 @@
                         <p class="text-xs text-slate-600 mb-1 leading-relaxed">${p.desc}</p>
                         ${addressRow}
                         ${websiteRow}
-                        <div class="grid grid-cols-2 gap-1 mb-1.5">
-                            <a href="${wazeUrl}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
-                                <i class="fa-brands fa-waze"></i> Waze
+                        <div class="grid grid-cols-2 gap-1.5 mb-1.5">
+                            <a href="${wazeUrl}" target="_blank" class="nav-btn nav-btn-waze active:scale-95 text-center py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all" style="background-color: #0284c7 !important; color: #ffffff !important; text-decoration: none !important;">
+                                <i class="fa-brands fa-waze text-sm" style="color: #ffffff !important;"></i>
+                                <span style="color: #ffffff !important; font-weight: 700;">Waze</span>
                             </a>
-                            <a href="${gmapsUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
-                                <i class="fa-solid fa-location-arrow"></i> Maps
+                            <a href="${gmapsUrl}" target="_blank" class="nav-btn nav-btn-maps active:scale-95 text-center py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all" style="background-color: #1d4ed8 !important; color: #ffffff !important; text-decoration: none !important;">
+                                <i class="fa-solid fa-location-arrow text-sm" style="color: #ffffff !important;"></i>
+                                <span style="color: #ffffff !important; font-weight: 700;">Maps</span>
                             </a>
                         </div>
                         <div class="grid grid-cols-2 gap-1 mb-2">
@@ -851,20 +889,22 @@
                             ${websiteRow}
                         </div>
                         <div class="flex items-center gap-1.5 pt-2 border-t border-slate-100 text-xs">
-                            <a href="${wazeUrl}" target="_blank" class="flex-1 bg-sky-50 hover:bg-sky-100 text-sky-700 py-1.5 px-2 rounded-lg font-semibold text-center flex items-center justify-center gap-1 border border-sky-200">
-                                <i class="fa-brands fa-waze"></i> Waze
+                            <a href="${wazeUrl}" target="_blank" class="flex-1 nav-btn-waze active:scale-95 py-2 px-2.5 rounded-xl font-bold text-center flex items-center justify-center gap-1.5 shadow-xs transition-all" style="background-color: #0284c7 !important; color: #ffffff !important; text-decoration: none !important;">
+                                <i class="fa-brands fa-waze text-sm" style="color: #ffffff !important;"></i>
+                                <span style="color: #ffffff !important; font-weight: 700;">Waze</span>
                             </a>
-                            <a href="${gmapsUrl}" target="_blank" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 py-1.5 px-2 rounded-lg font-semibold text-center flex items-center justify-center gap-1 border border-blue-200">
-                                <i class="fa-solid fa-diamond-turn-right"></i> Maps
+                            <a href="${gmapsUrl}" target="_blank" class="flex-1 nav-btn-maps active:scale-95 py-2 px-2.5 rounded-xl font-bold text-center flex items-center justify-center gap-1.5 shadow-xs transition-all" style="background-color: #1d4ed8 !important; color: #ffffff !important; text-decoration: none !important;">
+                                <i class="fa-solid fa-location-arrow text-sm" style="color: #ffffff !important;"></i>
+                                <span style="color: #ffffff !important; font-weight: 700;">Maps</span>
                             </a>
-                            <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-700 rounded-lg border border-amber-200" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
-                                <i class="fa-solid fa-cloud-sun"></i>
+                            <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="px-2.5 py-2 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center justify-center" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
+                                <i class="fa-solid fa-cloud-sun text-sm"></i>
                             </button>
-                            <button onclick="zoomToPlace(${p.lat}, ${p.lng})" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg" title="הצג במפה">
-                                <i class="fa-solid fa-map-pin"></i>
+                            <button onclick="zoomToPlace(${p.lat}, ${p.lng})" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-all" title="הצג במפה">
+                                <i class="fa-solid fa-map-pin text-sm"></i>
                             </button>
-                            <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-lg border border-teal-200" title="שאל יועץ AI">
-                                <i class="fa-solid fa-robot"></i>
+                            <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow-xs transition-all flex items-center justify-center" title="שאל יועץ AI">
+                                <i class="fa-solid fa-robot text-sm"></i>
                             </button>
                         </div>
                     </div>
