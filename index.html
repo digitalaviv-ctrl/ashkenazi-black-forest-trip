@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,21 +25,103 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body { font-family: 'Rubik', sans-serif; background-color: #0f172a; color: #1e293b; user-select: none; }
-        .tab-btn.active { color: #0f766e; border-top: 3px solid #0f766e; font-weight: 700; background-color: rgba(15, 118, 110, 0.05); }
-        .desktop-tab-btn.active { background-color: #0f766e; color: white; }
-        #map { height: 100%; width: 100%; z-index: 10; border-radius: 0.75rem; }
-        .chat-container { overflow-y: auto; scroll-behavior: smooth; }
-        .user-msg { background: linear-gradient(135deg, #dcf8c6, #c7f1a8); padding: 12px 16px; border-radius: 16px 16px 4px 16px; margin: 8px 0; max-width: 85%; align-self: flex-end; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-weight: 500; }
-        .ai-msg { background: #ffffff; padding: 14px 16px; border-radius: 16px 16px 16px 4px; margin: 8px 0; max-width: 90%; border: 1px solid #e2e8f0; align-self: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-        .ai-msg p { margin-bottom: 8px; line-height: 1.6; }
-        .ai-msg strong { font-weight: 700; color: #0f766e; }
-        .ai-msg ul { list-style-type: disc; margin-right: 20px; margin-bottom: 10px; }
-        .ai-msg ol { list-style-type: decimal; margin-right: 20px; margin-bottom: 10px; }
-        .ai-msg li { margin-bottom: 4px; line-height: 1.5; }
-        .leaflet-popup-content-wrapper { border-radius: 14px; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-        .leaflet-popup-content { font-family: 'Rubik', sans-serif; margin: 12px; }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #0f172a;
+            color: #1e293b;
+            user-select: none;
+        }
+
+        .tab-btn.active {
+            color: #0f766e;
+            border-top: 3px solid #0f766e;
+            font-weight: 700;
+            background-color: rgba(15, 118, 110, 0.05);
+        }
+
+        .desktop-tab-btn.active {
+            background-color: #0f766e;
+            color: white;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+            border-radius: 0.75rem;
+        }
+
+        .chat-container {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .user-msg {
+            background: linear-gradient(135deg, #dcf8c6, #c7f1a8);
+            padding: 12px 16px;
+            border-radius: 16px 16px 4px 16px;
+            margin: 8px 0;
+            max-width: 85%;
+            align-self: flex-end;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+        }
+
+        .ai-msg {
+            background: #ffffff;
+            padding: 14px 16px;
+            border-radius: 16px 16px 16px 4px;
+            margin: 8px 0;
+            max-width: 90%;
+            border: 1px solid #e2e8f0;
+            align-self: flex-start;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .ai-msg p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .ai-msg strong {
+            font-weight: 700;
+            color: #0f766e;
+        }
+
+        .ai-msg ul {
+            list-style-type: disc;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .ai-msg ol {
+            list-style-type: decimal;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .ai-msg li {
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 14px;
+            text-align: right;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .leaflet-popup-content {
+            font-family: 'Rubik', sans-serif;
+            margin: 12px;
+        }
+
         .leaflet-container a.nav-btn,
         .leaflet-popup-content a.nav-btn,
         a.nav-btn-waze,
@@ -45,50 +129,68 @@
             text-decoration: none !important;
             color: #ffffff !important;
         }
+
         .nav-btn-waze,
         .leaflet-container .nav-btn-waze,
         .leaflet-popup-content .nav-btn-waze {
             background-color: #0284c7 !important;
             color: #ffffff !important;
         }
+
         .nav-btn-waze:hover {
             background-color: #0369a1 !important;
             color: #ffffff !important;
         }
+
         .nav-btn-waze *,
         .nav-btn-waze i,
         .nav-btn-waze span {
             color: #ffffff !important;
         }
+
         .nav-btn-maps,
         .leaflet-container .nav-btn-maps,
         .leaflet-popup-content .nav-btn-maps {
             background-color: #1d4ed8 !important;
             color: #ffffff !important;
         }
+
         .nav-btn-maps:hover {
             background-color: #1e40af !important;
             color: #ffffff !important;
         }
+
         .nav-btn-maps *,
         .nav-btn-maps i,
         .nav-btn-maps span {
             color: #ffffff !important;
         }
+
         .custom-airport-marker-wrapper {
             background: transparent !important;
             border: none !important;
         }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
+
 <body class="bg-slate-100 flex flex-col h-screen overflow-hidden text-slate-800">
 
     <!-- Top App Header -->
-    <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white px-4 pb-2.5 shadow-lg flex items-center justify-between shrink-0 z-30" style="padding-top: max(0.625rem, env(safe-area-inset-top));">
+    <header
+        class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white px-4 pb-2.5 shadow-lg flex items-center justify-between shrink-0 z-30"
+        style="padding-top: max(0.625rem, env(safe-area-inset-top));">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white/10 p-1 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
+            <div
+                class="w-10 h-10 rounded-xl bg-white/10 p-1 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner">
                 <img src="./icons/icon-192.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain">
             </div>
             <div>
@@ -105,29 +207,36 @@
 
         <div class="flex items-center gap-1.5 sm:gap-2">
             <!-- Quick Weather Forecast Button -->
-            <button onclick="openWeatherModal()" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
+            <button onclick="openWeatherModal()"
+                class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20"
+                title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
                 <i class="fa-solid fa-cloud-sun text-amber-300 text-sm"></i>
                 <span class="hidden sm:inline">מזג אוויר</span>
             </button>
 
             <!-- Quick Translator Button -->
-            <button onclick="openTranslatorModal()" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20" title="מתרגם גרמנית/צרפתית ⇄ עברית/אנגלית">
+            <button onclick="openTranslatorModal()"
+                class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20"
+                title="מתרגם גרמנית/צרפתית ⇄ עברית/אנגלית">
                 <i class="fa-solid fa-language text-sky-300 text-sm"></i>
                 <span class="hidden sm:inline">מתרגם</span>
             </button>
 
             <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
-            <button id="pwaInstallBtn" class="hidden bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-all flex items-center gap-1.5">
+            <button id="pwaInstallBtn"
+                class="hidden bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-all flex items-center gap-1.5">
                 <i class="fa-solid fa-download"></i>
                 <span>התקן</span>
             </button>
 
             <!-- Quick Waiter Buttons on Desktop -->
             <div class="hidden md:flex gap-1.5">
-                <button onclick="showTranslation('DE')" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
+                <button onclick="showTranslation('DE')"
+                    class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
                     <i class="fa-solid fa-utensils"></i> מלצר גרמניה
                 </button>
-                <button onclick="showTranslation('FR')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
+                <button onclick="showTranslation('FR')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
                     <i class="fa-solid fa-utensils"></i> מלצר אלזס
                 </button>
             </div>
@@ -135,33 +244,46 @@
     </header>
 
     <!-- Desktop View Toggle / Tabs -->
-    <div class="hidden lg:flex bg-white border-b border-slate-200 px-4 py-2 gap-2 shrink-0 items-center justify-between">
+    <div
+        class="hidden lg:flex bg-white border-b border-slate-200 px-4 py-2 gap-2 shrink-0 items-center justify-between">
         <div class="flex gap-2">
-            <button onclick="setTab('map')" id="deskTab-map" class="desktop-tab-btn active px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+            <button onclick="setTab('map')" id="deskTab-map"
+                class="desktop-tab-btn active px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot"></i> מפה וצ'אט משולב
             </button>
-            <button onclick="setTab('places')" id="deskTab-places" class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+            <button onclick="setTab('places')" id="deskTab-places"
+                class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
                 <i class="fa-solid fa-list-check"></i> רשימת יעדים וניווט
             </button>
-            <button onclick="setTab('waiter')" id="deskTab-waiter" class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+            <button onclick="setTab('itinerary')" id="deskTab-itinerary"
+                class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-calendar-days"></i> לו"ז יומי
+            </button>
+            <button onclick="setTab('waiter')" id="deskTab-waiter"
+                class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
                 <i class="fa-solid fa-utensils"></i> כרטיס מלצר
             </button>
-            <button onclick="openWeatherModal()" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
+            <button onclick="openWeatherModal()"
+                class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
                 <i class="fa-solid fa-cloud-sun text-amber-500"></i> תחזית מזג אוויר
             </button>
-            <button onclick="openTranslatorModal()" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
+            <button onclick="openTranslatorModal()"
+                class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
                 <i class="fa-solid fa-language text-indigo-600"></i> מתרגם דו-כיווני
             </button>
         </div>
-        
+
         <!-- Gemini Model Picker -->
         <div class="flex items-center gap-2 text-xs text-slate-600">
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
-            <select id="modelSelector" class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)</option>
+            <select id="modelSelector"
+                class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
+                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)
+                </option>
                 <option value="gemini-3.8-flash">Gemini 3.8 Flash (סופר מהיר, טוב לשאלות קצרות)</option>
                 <option value="gemini-3.5-flash">Gemini 3.5 Flash (מהיר ויעיל)</option>
-                <option value="gemini-3.1-pro">Gemini 3.1 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)</option>
+                <option value="gemini-3.1-pro">Gemini 3.1 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)
+                </option>
             </select>
         </div>
     </div>
@@ -171,24 +293,42 @@
 
         <!-- TAB 1: Map View (Split view on Desktop, Full view on Mobile) -->
         <section id="panel-map" class="tab-panel w-full h-full flex flex-col lg:flex-row p-2 sm:p-3 gap-2 sm:gap-3">
-            
+
             <!-- Map Container -->
-            <div class="w-full lg:w-3/5 h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div
+                class="w-full lg:w-3/5 h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <!-- Map Filter Chips & Region Dropdown -->
-                <div class="p-2 bg-white border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-2 shrink-0">
+                <div
+                    class="p-2 bg-white border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-2 shrink-0">
                     <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-xs">
                         <span class="text-slate-400 font-medium px-1">סינון:</span>
-                        <button onclick="filterMap('all')" data-color="all" class="map-filter-btn px-2.5 py-1 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap shadow-sm">הכל</button>
-                        <button onclick="filterMap('airport')" data-color="airport" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-sky-800 hover:bg-sky-50 font-medium whitespace-nowrap"><i class="fa-solid fa-plane-departure text-sky-600"></i> שדה תעופה</button>
-                        <button onclick="filterMap('blue')" data-color="blue" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap"><i class="fa-solid fa-house text-blue-600"></i> דירות לינה</button>
-                        <button onclick="filterMap('red')" data-color="red" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-rose-800 hover:bg-rose-50 font-medium whitespace-nowrap"><i class="fa-solid fa-cart-shopping text-rose-600"></i> סופרים למעברים</button>
-                        <button onclick="filterMap('green')" data-color="green" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap"><i class="fa-solid fa-tree text-emerald-600"></i> טבע ואטרקציות</button>
-                        <button onclick="filterMap('orange')" data-color="orange" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap"><i class="fa-solid fa-utensils text-amber-600"></i> מסעדות</button>
-                        <button onclick="filterMap('violet')" data-color="violet" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap"><i class="fa-solid fa-basket-shopping text-purple-600"></i> סופרים שוטפים</button>
-                        <button onclick="filterMap('shopping')" data-color="shopping" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap"><i class="fa-solid fa-bag-shopping text-pink-600"></i> שופינג</button>
+                        <button onclick="filterMap('all')" data-color="all"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap shadow-sm">הכל</button>
+                        <button onclick="filterMap('airport')" data-color="airport"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-sky-800 hover:bg-sky-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-plane-departure text-sky-600"></i> שדה תעופה</button>
+                        <button onclick="filterMap('blue')" data-color="blue"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-house text-blue-600"></i> דירות לינה</button>
+                        <button onclick="filterMap('red')" data-color="red"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-rose-800 hover:bg-rose-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-cart-shopping text-rose-600"></i> סופרים למעברים</button>
+                        <button onclick="filterMap('green')" data-color="green"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-tree text-emerald-600"></i> טבע ואטרקציות</button>
+                        <button onclick="filterMap('orange')" data-color="orange"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-utensils text-amber-600"></i> מסעדות</button>
+                        <button onclick="filterMap('violet')" data-color="violet"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-basket-shopping text-purple-600"></i> סופרים שוטפים</button>
+                        <button onclick="filterMap('shopping')" data-color="shopping"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-bag-shopping text-pink-600"></i> שופינג</button>
                     </div>
-                    
-                    <select id="mapRegionSelector" onchange="setRegionFilter(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-teal-500 font-medium ml-auto">
+
+                    <select id="mapRegionSelector" onchange="setRegionFilter(this.value)"
+                        class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-teal-500 font-medium ml-auto">
                         <option value="all">🌍 כל האזורים</option>
                         <option value="south">🌲 דרום היער השחור (עוגן 1)</option>
                         <option value="north">🥨 צפון ואלזס (עוגן 2)</option>
@@ -200,15 +340,18 @@
             </div>
 
             <!-- Chat Container (Hidden on mobile if map tab is active, shown on desktop side-by-side) -->
-            <div class="hidden lg:flex lg:w-2/5 h-full flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-3 flex items-center justify-between shrink-0">
+            <div
+                class="hidden lg:flex lg:w-2/5 h-full flex-col bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div
+                    class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-3 flex items-center justify-between shrink-0">
                     <div class="flex items-center gap-2 font-semibold text-sm">
                         <div class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center">
                             <i class="fa-solid fa-robot text-xs"></i>
                         </div>
                         <span>יועץ הטיולים האישי למשפחה</span>
                     </div>
-                    <button onclick="clearChat()" title="נקה שיחה" class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-700/50">
+                    <button onclick="clearChat()" title="נקה שיחה"
+                        class="text-xs text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-700/50">
                         <i class="fa-solid fa-rotate-right"></i> איפוס
                     </button>
                 </div>
@@ -217,27 +360,54 @@
                 <div id="chatBox-desktop" class="chat-container p-3 flex flex-col bg-slate-50 flex-1 gap-2"></div>
 
                 <!-- Desktop Suggestion Chips -->
-                <div class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs">
-                    <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️ תוכנית גשם</button>
-                    <button onclick="sendQuickPrompt('ספר לי על 2 הסופרים הגדולים למעברים (Kaufland) ואיך לתכנן את הקניות')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒 סופרים גדולים למעברים</button>
-                    <button onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢 פארק אירופה עם ילדים</button>
-                    <button onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')" class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️ מסעדה מומלצת</button>
+                <div
+                    class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs">
+                    <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')"
+                        class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️
+                        תוכנית גשם</button>
+                    <button
+                        onclick="sendQuickPrompt('ספר לי על 2 הסופרים הגדולים למעברים (Kaufland) ואיך לתכנן את הקניות')"
+                        class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒
+                        סופרים גדולים למעברים</button>
+                    <button
+                        onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')"
+                        class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢
+                        פארק אירופה עם ילדים</button>
+                    <button
+                        onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')"
+                        class="bg-white hover:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️
+                        מסעדה מומלצת</button>
                 </div>
 
                 <!-- Desktop Chat Input -->
                 <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
                     <div id="imagePreviewContainer-desktop" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
                     <div class="flex gap-2 w-full">
-                        <label for="cameraUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="צילום ישירות מהמצלמה">
+                        <label for="cameraUpload-desktop"
+                            class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm"
+                            title="צילום ישירות מהמצלמה">
                             <i class="fa-solid fa-camera"></i>
-                            <input type="file" id="cameraUpload-desktop" class="hidden" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'desktop')">
+                            <input type="file" id="cameraUpload-desktop" class="hidden" accept="image/*"
+                                capture="environment" onchange="handleImageUpload(event, 'desktop')">
                         </label>
-                        <label for="imageUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה מהגלריה">
+                        <label for="imageUpload-desktop"
+                            class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm"
+                            title="העלאת תמונה מהגלריה">
                             <i class="fa-solid fa-image"></i>
-                            <input type="file" id="imageUpload-desktop" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'desktop')">
+                            <input type="file" id="imageUpload-desktop" class="hidden" accept="image/*" multiple
+                                onchange="handleImageUpload(event, 'desktop')">
                         </label>
-                        <input type="text" id="userInput-desktop" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')" onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
-                        <button onclick="sendMessage('desktop')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                        <input type="text" id="userInput-desktop"
+                            class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                            placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')"
+                            onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
+                        <button onclick="startSpeechRecognition('desktop')"
+                            class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-3 py-2 rounded-xl transition-colors border border-indigo-200 shadow-sm"
+                            title="הכתבה קולית">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <button onclick="sendMessage('desktop')"
+                            class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -254,7 +424,8 @@
                     <span>יועץ הטיולים האישי</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <select id="modelSelector-mobile" class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
+                    <select id="modelSelector-mobile"
+                        class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
                         <option value="gemini-3.6-flash">3.6 Flash (יציב)</option>
                         <option value="gemini-3.8-flash">3.8 Flash (מהיר)</option>
                         <option value="gemini-3.5-flash">3.5 Flash</option>
@@ -269,27 +440,53 @@
             <div id="chatBox-mobile" class="chat-container p-3 flex flex-col bg-slate-50 flex-1 gap-2"></div>
 
             <!-- Mobile Quick Chips -->
-            <div class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs shrink-0">
-                <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️ תוכנית גשם</button>
-                <button onclick="sendQuickPrompt('ספר לי על 2 הסופרים הגדולים למעברים (Kaufland) ואיך לתכנן את הקניות')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒 סופרים גדולים למעברים</button>
-                <button onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢 פארק אירופה</button>
-                <button onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')" class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️ מסעדה מומלצת</button>
+            <div
+                class="p-2 bg-slate-100 border-t border-slate-200 flex gap-1.5 overflow-x-auto hide-scrollbar text-xs shrink-0">
+                <button onclick="sendQuickPrompt('תכנן לנו אלטרנטיבה ליום גשם ביער השחור')"
+                    class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🌧️
+                    תוכנית גשם</button>
+                <button onclick="sendQuickPrompt('ספר לי על 2 הסופרים הגדולים למעברים (Kaufland) ואיך לתכנן את הקניות')"
+                    class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🛒
+                    סופרים גדולים למעברים</button>
+                <button
+                    onclick="sendQuickPrompt('איך לתכנן את פארק אירופה כך שיתאים לאקסטרים של הגדולות וגם לנבו בן ה-7?')"
+                    class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🎢
+                    פארק אירופה</button>
+                <button
+                    onclick="sendQuickPrompt('המלץ על מסעדה מצוינת ליד הדירה בדרום עם שפצל צמחוני לאלה (ללא כוסברה!)')"
+                    class="bg-white active:bg-teal-50 border border-slate-200 text-teal-800 px-2.5 py-1 rounded-full whitespace-nowrap shadow-2xs">🍽️
+                    מסעדה מומלצת</button>
             </div>
 
             <!-- Mobile Input Bar -->
             <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0 pb-safe">
                 <div id="imagePreviewContainer-mobile" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
                 <div class="flex gap-2 w-full">
-                    <label for="cameraUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="צילום ישירות מהמצלמה">
+                    <label for="cameraUpload-mobile"
+                        class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm"
+                        title="צילום ישירות מהמצלמה">
                         <i class="fa-solid fa-camera"></i>
-                        <input type="file" id="cameraUpload-mobile" class="hidden" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'mobile')">
+                        <input type="file" id="cameraUpload-mobile" class="hidden" accept="image/*"
+                            capture="environment" onchange="handleImageUpload(event, 'mobile')">
                     </label>
-                    <label for="imageUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה מהגלריה">
+                    <label for="imageUpload-mobile"
+                        class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm"
+                        title="העלאת תמונה מהגלריה">
                         <i class="fa-solid fa-image"></i>
-                        <input type="file" id="imageUpload-mobile" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'mobile')">
+                        <input type="file" id="imageUpload-mobile" class="hidden" accept="image/*" multiple
+                            onchange="handleImageUpload(event, 'mobile')">
                     </label>
-                    <input type="text" id="userInput-mobile" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה על היעדים והמסלול..." onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
-                    <button onclick="sendMessage('mobile')" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
+                    <input type="text" id="userInput-mobile"
+                        class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+                        placeholder="שאלו כל שאלה על היעדים והמסלול..."
+                        onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
+                    <button onclick="startSpeechRecognition('mobile')"
+                        class="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-3 py-2 rounded-xl transition-colors border border-indigo-200 shadow-sm"
+                        title="הכתבה קולית">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                    <button onclick="sendMessage('mobile')"
+                        class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-md">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </div>
@@ -297,17 +494,22 @@
         </section>
 
         <!-- TAB 3: Places & Navigation List -->
-        <section id="panel-places" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-y-auto">
+        <section id="panel-places"
+            class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-y-auto">
             <div class="max-w-4xl mx-auto w-full">
                 <!-- Search & Filter bar -->
-                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 mb-4 sticky top-0 z-10 flex flex-col gap-2.5">
-                    
+                <div
+                    class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 mb-4 sticky top-0 z-10 flex flex-col gap-2.5">
+
                     <div class="flex gap-2">
                         <div class="relative flex-1">
                             <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-400"></i>
-                            <input type="text" id="placesSearchInput" oninput="renderPlacesList()" placeholder="חפש יעד, מסעדה, אטרקציה..." class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-teal-500">
+                            <input type="text" id="placesSearchInput" oninput="renderPlacesList()"
+                                placeholder="חפש יעד, מסעדה, אטרקציה..."
+                                class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-teal-500">
                         </div>
-                        <select id="listRegionSelector" onchange="setRegionFilter(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-2 focus:ring-teal-500 font-medium">
+                        <select id="listRegionSelector" onchange="setRegionFilter(this.value)"
+                            class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-xl px-2 focus:ring-teal-500 font-medium">
                             <option value="all">כל האזורים</option>
                             <option value="south">🌲 דרום (עוגן 1)</option>
                             <option value="north">🥨 צפון ואלזס (עוגן 2)</option>
@@ -316,14 +518,29 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-xs">
-                        <button onclick="setListCategory('all')" data-color="all" class="cat-pill active px-3 py-1.5 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap">הכל</button>
-                        <button onclick="setListCategory('airport')" data-color="airport" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-sky-800 hover:bg-sky-50 font-medium whitespace-nowrap">✈️ שדה תעופה</button>
-                        <button onclick="setListCategory('blue')" data-color="blue" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap">🏨 דירות לינה</button>
-                        <button onclick="setListCategory('red')" data-color="red" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-rose-800 hover:bg-rose-50 font-medium whitespace-nowrap">🛒 סופרים למעברים</button>
-                        <button onclick="setListCategory('green')" data-color="green" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap">🌲 טבע ואטרקציות</button>
-                        <button onclick="setListCategory('orange')" data-color="orange" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap">🍽️ מסעדות</button>
-                        <button onclick="setListCategory('violet')" data-color="violet" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap">🛒 סופרים שוטפים</button>
-                        <button onclick="setListCategory('shopping')" data-color="shopping" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap">🛍️ שופינג</button>
+                        <button onclick="setListCategory('all')" data-color="all"
+                            class="cat-pill active px-3 py-1.5 rounded-full bg-teal-700 text-white font-medium whitespace-nowrap">הכל</button>
+                        <button onclick="setListCategory('airport')" data-color="airport"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-sky-800 hover:bg-sky-50 font-medium whitespace-nowrap">✈️
+                            שדה תעופה</button>
+                        <button onclick="setListCategory('blue')" data-color="blue"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-blue-800 hover:bg-blue-50 font-medium whitespace-nowrap">🏨
+                            דירות לינה</button>
+                        <button onclick="setListCategory('red')" data-color="red"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-rose-800 hover:bg-rose-50 font-medium whitespace-nowrap">🛒
+                            סופרים למעברים</button>
+                        <button onclick="setListCategory('green')" data-color="green"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap">🌲
+                            טבע ואטרקציות</button>
+                        <button onclick="setListCategory('orange')" data-color="orange"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap">🍽️
+                            מסעדות</button>
+                        <button onclick="setListCategory('violet')" data-color="violet"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap">🛒
+                            סופרים שוטפים</button>
+                        <button onclick="setListCategory('shopping')" data-color="shopping"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap">🛍️
+                            שופינג</button>
                     </div>
                 </div>
 
@@ -332,16 +549,35 @@
             </div>
         </section>
 
-        <!-- TAB 4: Waiter Dietary & Allergy Cards (Fullscreen optimized for mobile) -->
-        <section id="panel-waiter" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-3 sm:p-6 overflow-y-auto">
+        <!-- TAB 4: Daily Itinerary -->
+        <section id="panel-itinerary" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-hidden">
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2 shrink-0 border-b border-slate-200">
+                <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-4 py-2 rounded-xl font-bold bg-teal-700 text-white shadow-sm shrink-0 leading-tight">יום 1<br><span class="text-[10px] font-normal">הגעה</span></button>
+                <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 2<br><span class="text-[10px] font-normal">דרום היער</span></button>
+                <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 3<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
+                <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 4<br><span class="text-[10px] font-normal">אלזס ושופינג</span></button>
+                <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 5<br><span class="text-[10px] font-normal">דרום היער</span></button>
+                <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 6<br><span class="text-[10px] font-normal">פרייבורג</span></button>
+                <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 7<br><span class="text-[10px] font-normal">חזרה</span></button>
+            </div>
+            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-4 space-y-4 pb-10">
+                <!-- Day content injected here via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 5: Waiter Dietary & Allergy Cards (Fullscreen optimized for mobile) -->
+        <section id="panel-waiter"
+            class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-3 sm:p-6 overflow-y-auto">
             <div class="max-w-xl mx-auto w-full space-y-4">
                 <div class="text-center">
                     <h2 class="text-lg sm:text-xl font-bold text-slate-800">כרטיסי מסעדה למלצר 🍽️</h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-1">הראו את המסך למלצר או לחצו על הרמקול להשמעה קולית</p>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">הראו את המסך למלצר או לחצו על הרמקול להשמעה קולית
+                    </p>
                 </div>
 
                 <!-- Dedicated Bilingual Translator Card -->
-                <div class="bg-gradient-to-r from-teal-700 via-teal-800 to-slate-800 text-white p-3.5 sm:p-4 rounded-2xl shadow-md border border-teal-600 flex items-center justify-between gap-3">
+                <div
+                    class="bg-gradient-to-r from-teal-700 via-teal-800 to-slate-800 text-white p-3.5 sm:p-4 rounded-2xl shadow-md border border-teal-600 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">
                             <i class="fa-solid fa-language text-sky-200"></i>
@@ -351,7 +587,8 @@
                             <p class="text-xs text-teal-100">תרגום חופשי לגרמנית וצרפתית (לתפריטים, שלטים ושיחה)</p>
                         </div>
                     </div>
-                    <button onclick="openTranslatorModal()" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition-all shrink-0 flex items-center gap-1.5">
+                    <button onclick="openTranslatorModal()"
+                        class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition-all shrink-0 flex items-center gap-1.5">
                         <span>פתח מתרגם</span>
                         <i class="fa-solid fa-arrow-left text-[10px]"></i>
                     </button>
@@ -359,23 +596,31 @@
 
                 <!-- German / Switzerland Card -->
                 <div class="bg-white rounded-2xl shadow-md border-2 border-amber-300 overflow-hidden">
-                    <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-3.5 flex items-center justify-between">
+                    <div
+                        class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-3.5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="text-xl">🇩🇪 🇨🇭</span>
                             <h3 class="font-bold text-sm sm:text-base">הודעה למלצר בגרמניה / שווייץ</h3>
                         </div>
-                        <button onclick="speakText('de')" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
+                        <button onclick="speakText('de')"
+                            class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
                             <i class="fa-solid fa-volume-high"></i> השמע
                         </button>
                     </div>
-                    <div id="text-de" class="p-4 bg-amber-50/50 text-slate-800 text-base sm:text-lg font-medium leading-relaxed" dir="ltr">
-                        Wir haben eine Vegetarierin bei uns. Es ist in Ordnung, wenn ihre Speisen im selben Topf oder mit derselben Soße wie Fleisch gekocht werden, solange kein Fleisch auf dem Teller ist.
-                        <div class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
-                            ⚠️ WICHTIG: Bitte fügen Sie den Gerichten für uns absolut keinen Koriander hinzu (andere Kräuter sind in Ordnung).
+                    <div id="text-de"
+                        class="p-4 bg-amber-50/50 text-slate-800 text-base sm:text-lg font-medium leading-relaxed"
+                        dir="ltr">
+                        Wir haben eine Vegetarierin bei uns. Es ist in Ordnung, wenn ihre Speisen im selben Topf oder
+                        mit derselben Soße wie Fleisch gekocht werden, solange kein Fleisch auf dem Teller ist.
+                        <div
+                            class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
+                            ⚠️ WICHTIG: Bitte fügen Sie den Gerichten für uns absolut keinen Koriander hinzu (andere
+                            Kräuter sind in Ordnung).
                         </div>
                     </div>
                     <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex justify-end">
-                        <button onclick="copyWaiterText('de')" class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
+                        <button onclick="copyWaiterText('de')"
+                            class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
                             <i class="fa-solid fa-copy"></i> העתק טקסט
                         </button>
                     </div>
@@ -383,23 +628,32 @@
 
                 <!-- French / Alsace Card -->
                 <div class="bg-white rounded-2xl shadow-md border-2 border-blue-300 overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between">
+                    <div
+                        class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="text-xl">🇫🇷</span>
                             <h3 class="font-bold text-sm sm:text-base">הודעה למלצר באלזס / צרפת</h3>
                         </div>
-                        <button onclick="speakText('fr')" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
+                        <button onclick="speakText('fr')"
+                            class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 transition-transform active:scale-95">
                             <i class="fa-solid fa-volume-high"></i> השמע
                         </button>
                     </div>
-                    <div id="text-fr" class="p-4 bg-blue-50/40 text-slate-800 text-base sm:text-lg font-medium leading-relaxed" dir="ltr">
-                        Nous avons une végétarienne avec nous. C'est d'accord si l'accompagnement est cuit dans la même marmite ou avec la même sauce que la viande, à condition qu'il n'y ait pas de viande dans l'assiette.
-                        <div class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
-                            ⚠️ IMPORTANT: S'il vous plaît, n'ajoutez absolument pas de coriandre à nos plats (les autres herbes sont acceptables).
+                    <div id="text-fr"
+                        class="p-4 bg-blue-50/40 text-slate-800 text-base sm:text-lg font-medium leading-relaxed"
+                        dir="ltr">
+                        Nous avons une végétarienne avec nous. C'est d'accord si l'accompagnement est cuit dans la même
+                        marmite ou avec la même sauce que la viande, à condition qu'il n'y ait pas de viande dans
+                        l'assiette.
+                        <div
+                            class="mt-3 p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-bold text-base rounded">
+                            ⚠️ IMPORTANT: S'il vous plaît, n'ajoutez absolument pas de coriandre à nos plats (les autres
+                            herbes sont acceptables).
                         </div>
                     </div>
                     <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex justify-end">
-                        <button onclick="copyWaiterText('fr')" class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
+                        <button onclick="copyWaiterText('fr')"
+                            class="text-xs text-slate-600 hover:text-teal-700 font-medium flex items-center gap-1">
                             <i class="fa-solid fa-copy"></i> העתק טקסט
                         </button>
                     </div>
@@ -410,37 +664,54 @@
     </main>
 
     <!-- Bottom Navigation Bar for Mobile -->
-    <nav class="lg:hidden bg-white border-t border-slate-200 grid grid-cols-4 shrink-0 shadow-lg z-30 pb-safe">
-        <button onclick="setTab('map')" id="mobTab-map" class="tab-btn active py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+    <nav class="lg:hidden bg-white border-t border-slate-200 grid grid-cols-5 shrink-0 shadow-lg z-30 pb-safe">
+        <button onclick="setTab('map')" id="mobTab-map"
+            class="tab-btn active py-2.5 flex flex-col items-center justify-center text-[10px] font-medium text-slate-500 transition-colors">
             <i class="fa-solid fa-map text-base mb-1"></i>
             <span>מפה</span>
         </button>
-        <button onclick="setTab('chat')" id="mobTab-chat" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+        <button onclick="setTab('chat')" id="mobTab-chat"
+            class="tab-btn py-2.5 flex flex-col items-center justify-center text-[10px] font-medium text-slate-500 transition-colors">
             <i class="fa-solid fa-robot text-base mb-1"></i>
             <span>יועץ AI</span>
         </button>
-        <button onclick="setTab('places')" id="mobTab-places" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+        <button onclick="setTab('itinerary')" id="mobTab-itinerary"
+            class="tab-btn py-2.5 flex flex-col items-center justify-center text-[10px] font-medium text-slate-500 transition-colors">
+            <i class="fa-solid fa-calendar-days text-base mb-1"></i>
+            <span>לו"ז</span>
+        </button>
+        <button onclick="setTab('places')" id="mobTab-places"
+            class="tab-btn py-2.5 flex flex-col items-center justify-center text-[10px] font-medium text-slate-500 transition-colors">
             <i class="fa-solid fa-list-check text-base mb-1"></i>
             <span>יעדים</span>
         </button>
-        <button onclick="setTab('waiter')" id="mobTab-waiter" class="tab-btn py-2.5 flex flex-col items-center justify-center text-xs text-slate-500 transition-colors">
+        <button onclick="setTab('waiter')" id="mobTab-waiter"
+            class="tab-btn py-2.5 flex flex-col items-center justify-center text-[10px] font-medium text-slate-500 transition-colors">
             <i class="fa-solid fa-utensils text-base mb-1"></i>
-            <span>למלצר</span>
+            <span>מלצר</span>
         </button>
     </nav>
 
     <!-- Translation Modal (For quick popup from top bar) -->
-    <div id="translationModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-4 backdrop-blur-sm transition-opacity">
+    <div id="translationModal"
+        class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-4 backdrop-blur-sm transition-opacity">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl relative border border-slate-100">
-            <button onclick="closeModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm"><i class="fa-solid fa-xmark"></i></button>
+            <button onclick="closeModal()"
+                class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm"><i
+                    class="fa-solid fa-xmark"></i></button>
             <h2 id="modalTitle" class="text-lg font-bold mb-2 text-center text-teal-800"></h2>
-            <p class="text-xs text-slate-400 mb-3 text-center font-medium"><i class="fa-solid fa-mobile-screen"></i> הראו את המסך למלצר:</p>
-            <div id="modalText" class="p-4 bg-amber-50 text-base font-medium border border-amber-200 rounded-2xl text-left shadow-inner leading-relaxed text-slate-800" dir="ltr"></div>
+            <p class="text-xs text-slate-400 mb-3 text-center font-medium"><i class="fa-solid fa-mobile-screen"></i>
+                הראו את המסך למלצר:</p>
+            <div id="modalText"
+                class="p-4 bg-amber-50 text-base font-medium border border-amber-200 rounded-2xl text-left shadow-inner leading-relaxed text-slate-800"
+                dir="ltr"></div>
             <div class="mt-4 flex gap-2">
-                <button id="modalSpeakBtn" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 shadow">
+                <button id="modalSpeakBtn"
+                    class="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 shadow">
                     <i class="fa-solid fa-volume-high"></i> השמע למלצר
                 </button>
-                <button onclick="closeModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold">סגור</button>
+                <button onclick="closeModal()"
+                    class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold">סגור</button>
             </div>
         </div>
     </div>
@@ -448,23 +719,28 @@
     <!-- ========================================== -->
     <!-- WEATHER MODAL (7-Day Forecast & Custom Search) -->
     <!-- ========================================== -->
-    <div id="weatherModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-xl w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
+    <div id="weatherModal"
+        class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div
+            class="bg-white rounded-3xl p-4 sm:p-6 max-w-xl w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
             <!-- Modal Header -->
             <div class="flex items-center justify-between border-b pb-3 mb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-cloud-sun"></i>
                     </div>
                     <div>
                         <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לשבוע הקרוב (°C)</h2>
-                        <p id="weatherPlaceSubtitle" class="text-xs text-teal-700 font-semibold flex items-center gap-1">
+                        <p id="weatherPlaceSubtitle"
+                            class="text-xs text-teal-700 font-semibold flex items-center gap-1">
                             <i class="fa-solid fa-location-dot text-rose-500"></i>
                             <span id="weatherCurrentLocationName">טוען יעד...</span>
                         </p>
                     </div>
                 </div>
-                <button onclick="closeWeatherModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                <button onclick="closeWeatherModal()"
+                    class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -474,9 +750,13 @@
                 <div class="flex gap-2">
                     <div class="relative flex-1">
                         <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-400"></i>
-                        <input type="text" id="weatherSearchInput" placeholder="חפש עיר/יעד (למשל: Colmar, Freiburg, Rust, Titisee)..." class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-amber-500" onkeypress="if(event.key === 'Enter') searchCustomWeather()">
+                        <input type="text" id="weatherSearchInput"
+                            placeholder="חפש עיר/יעד (למשל: Colmar, Freiburg, Rust, Titisee)..."
+                            class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+                            onkeypress="if(event.key === 'Enter') searchCustomWeather()">
                     </div>
-                    <button onclick="searchCustomWeather()" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow transition-all flex items-center gap-1 shrink-0">
+                    <button onclick="searchCustomWeather()"
+                        class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow transition-all flex items-center gap-1 shrink-0">
                         <span>בדוק</span>
                         <i class="fa-solid fa-arrow-left text-[10px]"></i>
                     </button>
@@ -485,13 +765,27 @@
                 <!-- Quick Presets -->
                 <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-[11px] py-0.5">
                     <span class="text-slate-400 font-medium whitespace-nowrap">יעדי מפתח:</span>
-                    <button onclick="quickWeatherPreset('דירת דרום (פאלקאו)', 47.8596, 8.1181)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🌲 פאלקאו (דרום)</button>
-                    <button onclick="quickWeatherPreset('דירת צפון (שוואנאו)', 48.3601, 7.7656)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🥨 שוואנאו (צפון)</button>
-                    <button onclick="quickWeatherPreset('פארק אירופה (Rust)', 48.2660, 7.7220)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🎢 פארק אירופה</button>
-                    <button onclick="quickWeatherPreset('פלדברג (Feldberg)', 47.8600, 8.0360)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">⛰️ פלדברג</button>
-                    <button onclick="quickWeatherPreset('שטרסבורג (Strasbourg)', 48.5734, 7.7521)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🛍️ שטרסבורג</button>
-                    <button onclick="quickWeatherPreset('קולמר (Colmar)', 48.0794, 7.3585)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🍷 קולמר</button>
-                    <button onclick="quickWeatherPreset('שדה תעופה ציריך', 47.4582, 8.5555)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">✈️ ציריך</button>
+                    <button onclick="quickWeatherPreset('דירת דרום (פאלקאו)', 47.8596, 8.1181)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🌲
+                        פאלקאו (דרום)</button>
+                    <button onclick="quickWeatherPreset('דירת צפון (שוואנאו)', 48.3601, 7.7656)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🥨
+                        שוואנאו (צפון)</button>
+                    <button onclick="quickWeatherPreset('פארק אירופה (Rust)', 48.2660, 7.7220)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🎢
+                        פארק אירופה</button>
+                    <button onclick="quickWeatherPreset('פלדברג (Feldberg)', 47.8600, 8.0360)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">⛰️
+                        פלדברג</button>
+                    <button onclick="quickWeatherPreset('שטרסבורג (Strasbourg)', 48.5734, 7.7521)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🛍️
+                        שטרסבורג</button>
+                    <button onclick="quickWeatherPreset('קולמר (Colmar)', 48.0794, 7.3585)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🍷
+                        קולמר</button>
+                    <button onclick="quickWeatherPreset('שדה תעופה ציריך', 47.4582, 8.5555)"
+                        class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">✈️
+                        ציריך</button>
                 </div>
             </div>
 
@@ -504,7 +798,8 @@
                 </div>
 
                 <!-- Error State -->
-                <div id="weatherError" class="hidden p-4 bg-red-50 border border-red-200 rounded-2xl text-center text-red-700 text-xs font-semibold">
+                <div id="weatherError"
+                    class="hidden p-4 bg-red-50 border border-red-200 rounded-2xl text-center text-red-700 text-xs font-semibold">
                     לא הצלחנו להוריד את התחזית למקום המבוקש. אנא נסו שם עיר נוסף באנגלית.
                 </div>
 
@@ -513,7 +808,8 @@
             </div>
 
             <!-- Weather Advice Footer -->
-            <div id="weatherAdviceBanner" class="hidden mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-slate-700 text-xs font-medium flex items-center justify-between gap-2">
+            <div id="weatherAdviceBanner"
+                class="hidden mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-slate-700 text-xs font-medium flex items-center justify-between gap-2">
                 <span id="weatherAdviceText"></span>
                 <span class="text-[10px] text-slate-400 font-normal">מקור: Open-Meteo (°C)</span>
             </div>
@@ -523,12 +819,15 @@
     <!-- ========================================== -->
     <!-- SMART TRANSLATOR MODAL (DE/FR <-> HE/EN) -->
     <!-- ========================================== -->
-    <div id="smartTranslatorModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
+    <div id="smartTranslatorModal"
+        class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div
+            class="bg-white rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
             <!-- Modal Header -->
             <div class="flex items-center justify-between border-b pb-3 mb-3">
                 <div class="flex items-center gap-2">
-                    <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-language"></i>
                     </div>
                     <div>
@@ -536,17 +835,20 @@
                         <p class="text-xs text-slate-500">גרמנית 🇩🇪 / צרפתית 🇫🇷 ⇄ עברית 🇮🇱 / אנגלית 🇬🇧</p>
                     </div>
                 </div>
-                <button onclick="closeTranslatorModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                <button onclick="closeTranslatorModal()"
+                    class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <div class="flex-1 overflow-y-auto space-y-3">
                 <!-- Language Selector with Swap Button -->
-                <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
+                <div
+                    class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
                     <div class="flex-1">
                         <label class="block text-[10px] text-slate-400 font-bold mb-1">משפה:</label>
-                        <select id="translateFromLang" onchange="onTranslateLangChange()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <select id="translateFromLang" onchange="onTranslateLangChange()"
+                            class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
                             <option value="de">🇩🇪 גרמנית</option>
                             <option value="fr">🇫🇷 צרפתית</option>
                             <option value="he" selected>🇮🇱 עברית</option>
@@ -555,13 +857,16 @@
                     </div>
 
                     <!-- Swap button -->
-                    <button onclick="swapTranslateLanguages()" class="mt-4 w-9 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shadow-xs transition-transform active:scale-90 border border-indigo-200 shrink-0" title="החלף כיוון שפות">
+                    <button onclick="swapTranslateLanguages()"
+                        class="mt-4 w-9 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shadow-xs transition-transform active:scale-90 border border-indigo-200 shrink-0"
+                        title="החלף כיוון שפות">
                         <i class="fa-solid fa-right-left"></i>
                     </button>
 
                     <div class="flex-1">
                         <label class="block text-[10px] text-slate-400 font-bold mb-1">לשפה:</label>
-                        <select id="translateToLang" onchange="onTranslateLangChange()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <select id="translateToLang" onchange="onTranslateLangChange()"
+                            class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
                             <option value="de" selected>🇩🇪 גרמנית</option>
                             <option value="fr">🇫🇷 צרפתית</option>
                             <option value="he">🇮🇱 עברית</option>
@@ -572,8 +877,12 @@
 
                 <!-- Input Textarea -->
                 <div class="relative">
-                    <textarea id="translatorInputText" rows="3" class="w-full border border-slate-300 rounded-2xl p-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white leading-relaxed" placeholder="הקלידו או הדביקו טקסט (למשל: תפריט במסעדה, שלט, או בקשה)..." onkeydown="if(event.ctrlKey && event.key === 'Enter') executeTranslation()"></textarea>
-                    <button onclick="clearTranslatorInput()" class="absolute left-3 bottom-3 text-xs text-slate-400 hover:text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
+                    <textarea id="translatorInputText" rows="3"
+                        class="w-full border border-slate-300 rounded-2xl p-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white leading-relaxed"
+                        placeholder="הקלידו או הדביקו טקסט (למשל: תפריט במסעדה, שלט, או בקשה)..."
+                        onkeydown="if(event.ctrlKey && event.key === 'Enter') executeTranslation()"></textarea>
+                    <button onclick="clearTranslatorInput()"
+                        class="absolute left-3 bottom-3 text-xs text-slate-400 hover:text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
                         ניקוי
                     </button>
                 </div>
@@ -582,37 +891,55 @@
                 <div>
                     <span class="text-[11px] text-slate-400 font-bold block mb-1">משפטים נפוצים בלחיצה:</span>
                     <div class="flex flex-wrap gap-1.5 text-xs">
-                        <button onclick="insertTranslatePhrase('האם יש מנה צמחונית ללא בשר?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🥗 מנה צמחונית</button>
-                        <button onclick="insertTranslatePhrase('בבקשה ללא כוסברה!')" class="bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-800 px-2.5 py-1 rounded-lg border border-slate-200">🌿 ללא כוסברה</button>
-                        <button onclick="insertTranslatePhrase('אפשר לקבל את החשבון בבקשה?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🧾 חשבון בבקשה</button>
-                        <button onclick="insertTranslatePhrase('איפה נמצאים השירותים?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🚻 איפה השירותים</button>
-                        <button onclick="insertTranslatePhrase('כרטיס משפחתי ל-5 נפשות (2 מבוגרים ו-3 ילדים)')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🎟️ כרטיס משפחתי</button>
+                        <button onclick="insertTranslatePhrase('האם יש מנה צמחונית ללא בשר?')"
+                            class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🥗
+                            מנה צמחונית</button>
+                        <button onclick="insertTranslatePhrase('בבקשה ללא כוסברה!')"
+                            class="bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-800 px-2.5 py-1 rounded-lg border border-slate-200">🌿
+                            ללא כוסברה</button>
+                        <button onclick="insertTranslatePhrase('אפשר לקבל את החשבון בבקשה?')"
+                            class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🧾
+                            חשבון בבקשה</button>
+                        <button onclick="insertTranslatePhrase('איפה נמצאים השירותים?')"
+                            class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🚻
+                            איפה השירותים</button>
+                        <button onclick="insertTranslatePhrase('כרטיס משפחתי ל-5 נפשות (2 מבוגרים ו-3 ילדים)')"
+                            class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🎟️
+                            כרטיס משפחתי</button>
                     </div>
                 </div>
 
                 <!-- Translate Action Button -->
-                <button onclick="executeTranslation()" id="translateActionBtn" class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                <button onclick="executeTranslation()" id="translateActionBtn"
+                    class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>תרגם עכשיו</span>
                 </button>
 
                 <!-- Translation Result Card -->
-                <div id="translatorResultContainer" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+                <div id="translatorResultContainer"
+                    class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-indigo-900 flex items-center gap-1">
                             <i class="fa-solid fa-check text-emerald-600"></i>
                             <span>תוצאת התרגום:</span>
                         </span>
                         <div class="flex items-center gap-1.5">
-                            <button onclick="speakTranslatedText()" class="text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs" title="השמעה קולית">
+                            <button onclick="speakTranslatedText()"
+                                class="text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs"
+                                title="השמעה קולית">
                                 <i class="fa-solid fa-volume-high"></i> השמע
                             </button>
-                            <button onclick="copyTranslatedText()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs" title="העתק טקסט">
+                            <button onclick="copyTranslatedText()"
+                                class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs"
+                                title="העתק טקסט">
                                 <i class="fa-solid fa-copy"></i> העתק
                             </button>
                         </div>
                     </div>
-                    <div id="translatorResultText" class="p-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-base font-semibold leading-relaxed select-text"></div>
+                    <div id="translatorResultText"
+                        class="p-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-base font-semibold leading-relaxed select-text">
+                    </div>
                 </div>
             </div>
         </div>
@@ -623,15 +950,17 @@
     <!-- ========================================== -->
     <div id="cameraModal" class="hidden fixed inset-0 bg-black z-[2000] flex-col justify-between">
         <!-- Header -->
-        <div class="p-4 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10 text-white" style="padding-top: max(1rem, env(safe-area-inset-top));">
+        <div class="p-4 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent absolute top-0 w-full z-10 text-white"
+            style="padding-top: max(1rem, env(safe-area-inset-top));">
             <div class="text-sm font-bold flex items-center gap-2">
                 <i class="fa-solid fa-camera"></i> צילום לאפליקציה
             </div>
-            <button onclick="closeCamera()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-colors">
+            <button onclick="closeCamera()"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-colors">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
-        
+
         <!-- Video Stream -->
         <div class="flex-1 relative bg-black flex items-center justify-center overflow-hidden">
             <video id="cameraVideo" autoplay playsinline class="w-full h-full object-cover"></video>
@@ -639,8 +968,10 @@
         </div>
 
         <!-- Controls -->
-        <div class="p-6 flex justify-center items-center bg-black h-32 shrink-0 relative" style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom));">
-            <button onclick="takePhoto()" class="w-16 h-16 rounded-full border-4 border-white bg-white/30 flex items-center justify-center transition-transform active:scale-90">
+        <div class="p-6 flex justify-center items-center bg-black h-32 shrink-0 relative"
+            style="padding-bottom: max(1.5rem, env(safe-area-inset-bottom));">
+            <button onclick="takePhoto()"
+                class="w-16 h-16 rounded-full border-4 border-white bg-white/30 flex items-center justify-center transition-transform active:scale-90">
                 <div class="w-12 h-12 bg-white rounded-full shadow-lg"></div>
             </button>
         </div>
@@ -650,8 +981,8 @@
         // ==========================================
         // 1. הגדרות API ומשתנים
         // ==========================================
-        const API_KEY = localStorage.getItem('GEMINI_API_KEY') || atob("QVEuQWI4Uk42TEZKMGMwMzM1UVNkOGlFbjVrWmhSNHJRT3FNbmJfNlgyM203b0xCdnV1WXc="); 
-        
+        const API_KEY = localStorage.getItem('GEMINI_API_KEY') || atob("QVEuQWI4Uk42TEZKMGMwMzM1UVNkOGlFbjVrWmhSNHJRT3FNbmJfNlgyM203b0xCdnV1WXc=");
+
         // מערכת העלאת תמונות ל-AI ומצלמת רשת (WebRTC)
         let pendingImages = { desktop: [], mobile: [] };
         let currentCameraStream = null;
@@ -661,14 +992,14 @@
             currentCameraSource = source;
             const modal = document.getElementById('cameraModal');
             const video = document.getElementById('cameraVideo');
-            
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
 
             try {
                 // Request camera permission explicitly
-                currentCameraStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment' } 
+                currentCameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
                 });
                 video.srcObject = currentCameraStream;
             } catch (err) {
@@ -682,7 +1013,7 @@
             const modal = document.getElementById('cameraModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            
+
             if (currentCameraStream) {
                 currentCameraStream.getTracks().forEach(track => track.stop());
                 currentCameraStream = null;
@@ -692,23 +1023,23 @@
         function takePhoto() {
             const video = document.getElementById('cameraVideo');
             const canvas = document.getElementById('cameraCanvas');
-            
+
             if (!currentCameraStream) return;
-            
+
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            
+
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
+
             const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
             const base64Data = dataUrl.split(',')[1];
-            
+
             pendingImages[currentCameraSource].push({
                 mimeType: 'image/jpeg',
                 data: base64Data
             });
-            
+
             renderImagePreviews(currentCameraSource);
             closeCamera();
         }
@@ -741,13 +1072,13 @@
         function renderImagePreviews(source) {
             const container = document.getElementById(`imagePreviewContainer-${source}`);
             if (!container) return;
-            
+
             if (pendingImages[source].length === 0) {
                 container.classList.add('hidden');
                 container.innerHTML = '';
                 return;
             }
-            
+
             container.classList.remove('hidden');
             let html = '';
             pendingImages[source].forEach((img, idx) => {
@@ -795,29 +1126,29 @@
             { id: 3, name: "דירת צפון: Holidayhouse4You", region: "north", category: "blue", catName: "דירת לינה", lat: 48.3601, lng: 7.7656, desc: "שוואנאו - מיקום אסטרטגי מושלם לאלזס ופארק אירופה (5 לילות שניים)" },
 
             // סופרים גדולים למעברים (אדום - red)
-            { 
-                id: 4, 
-                name: "סופרמרקט Kaufland Waldshut", 
-                region: "south", 
-                category: "red", 
-                catName: "סופרים גדולים למעברים", 
-                lat: 47.6338, 
-                lng: 8.2790, 
-                address: "Klettgaustraße 16, 79761 Waldshut-Tiengen, Germany", 
-                website: "https://www.kaufland.de/", 
-                desc: "עצירת הצטיידות אסטרטגית מיד אחרי חציית הגבול. סופר ענק המיועד לקניות גדולות לפני ההגעה לדירה בדרום." 
+            {
+                id: 4,
+                name: "סופרמרקט Kaufland Waldshut",
+                region: "south",
+                category: "red",
+                catName: "סופרים גדולים למעברים",
+                lat: 47.6338,
+                lng: 8.2790,
+                address: "Klettgaustraße 16, 79761 Waldshut-Tiengen, Germany",
+                website: "https://www.kaufland.de/",
+                desc: "עצירת הצטיידות אסטרטגית מיד אחרי חציית הגבול. סופר ענק המיועד לקניות גדולות לפני ההגעה לדירה בדרום."
             },
-            { 
-                id: 5, 
-                name: "סופרמרקט Kaufland Lahr", 
-                region: "north", 
-                category: "red", 
-                catName: "סופרים גדולים למעברים", 
-                lat: 48.3450, 
-                lng: 7.8412, 
-                address: "Kohlmattstraße 2, 77933 Lahr/Schwarzwald, Germany", 
-                website: "https://www.kaufland.de/", 
-                desc: "סופר ענק. לעצירת הצטיידות מסיבית ביום המעבר צפונה לפני ההגעה לדירה השנייה. פתוח עד 22:00 (סגור בראשון)." 
+            {
+                id: 5,
+                name: "סופרמרקט Kaufland Lahr",
+                region: "north",
+                category: "red",
+                catName: "סופרים גדולים למעברים",
+                lat: 48.3450,
+                lng: 7.8412,
+                address: "Kohlmattstraße 2, 77933 Lahr/Schwarzwald, Germany",
+                website: "https://www.kaufland.de/",
+                desc: "סופר ענק. לעצירת הצטיידות מסיבית ביום המעבר צפונה לפני ההגעה לדירה השנייה. פתוח עד 22:00 (סגור בראשון)."
             },
 
             // סופרמרקטים שוטפים (סגול - violet)
@@ -864,7 +1195,7 @@
             { id: 40, name: "פארק הזאבים והדובים (Alternativer Wolf- und Bärenpark)", region: "north", category: "green", catName: "טבע וחיות", lat: 48.3842, lng: 8.3090, desc: "פארק אלטרנטיבי ופראי המאפשר צפייה בדובים וזאבים שחולצו בסביבה טבעית פתוחה" },
             { id: 41, name: "אגם מומלזה (Mummelsee) וכביש 500", region: "north", category: "green", catName: "אגם", lat: 48.5973, lng: 8.2007, desc: "אגם קרחוני פסטורלי ושטוח על דרך הפנורמה של היער השחור עם מאפייה מקומית מצוינת" },
             { id: 42, name: "אגיסהיים (Eguisheim)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.0420, lng: 7.3060, desc: "עיירת יין ציורית באלזס הבנויה במעגלים. מארחת פסטיבל יין חגיגי" },
-            
+
             // שופינג (shopping - ורוד/מיוחד)
             { id: 43, name: "ספורה שטרסבורג (Sephora)", region: "north", category: "shopping", catName: "שופינג", lat: 48.5830, lng: 7.7455, desc: "סניף ספורה גדול במרכז שטרסבורג, חובה ליעל!" },
             { id: 44, name: "פריימרק שטרסבורג (Primark)", region: "north", category: "shopping", catName: "שופינג", lat: 48.5840, lng: 7.7450, desc: "חנות הדגל של פריימרק במרכז שטרסבורג (בניין ענק)" },
@@ -873,18 +1204,77 @@
         ];
 
         // ==========================================
-        // 3. אתחול מפה (Leaflet)
+        // 3. אתחול מפה (Leaflet) + GPS מיקום משתמש
         // ==========================================
         let map;
         let markersGroup;
+        let userLocation = null;
+        let userMarker = null;
+
+        function getDistanceKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function locateUser() {
+            if (!navigator.geolocation) {
+                alert("GPS לא נתמך בדפדפן שלך");
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    if (userMarker) {
+                        userMarker.setLatLng([userLocation.lat, userLocation.lng]);
+                    } else {
+                        userMarker = L.marker([userLocation.lat, userLocation.lng], {
+                            icon: L.divIcon({
+                                className: 'user-location-marker',
+                                html: `<div style="width: 16px; height: 16px; background-color: #3b82f6; border: 3px solid white; border-radius: 50%; box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);"></div>`,
+                                iconSize: [16, 16],
+                                iconAnchor: [8, 8]
+                            })
+                        }).addTo(map);
+                    }
+                    map.flyTo([userLocation.lat, userLocation.lng], 12);
+                    renderMapMarkers();
+                    if (typeof renderPlacesList === 'function') renderPlacesList();
+                },
+                (error) => {
+                    alert("לא הצלחנו לקבל את המיקום שלך. בדוק הרשאות מיקום (GPS).");
+                },
+                { enableHighAccuracy: true }
+            );
+        }
 
         function initMap() {
-            map = L.map('map', { zoomControl: true }).setView([48.1, 7.9], 9);
-            
+            map = L.map('map', { zoomControl: false }).setView([48.1, 7.9], 9);
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
             L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
                 maxZoom: 20,
                 attribution: 'Map data &copy; Google'
             }).addTo(map);
+
+            const LocateControl = L.Control.extend({
+                options: { position: 'topright' },
+                onAdd: function () {
+                    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control bg-white');
+                    container.innerHTML = `<a href="#" title="המיקום שלי" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: #0d9488; text-decoration: none; font-size: 16px; border-radius: 4px;"><i class="fa-solid fa-location-crosshairs"></i></a>`;
+                    container.onclick = (e) => {
+                        e.preventDefault();
+                        locateUser();
+                    };
+                    return container;
+                }
+            });
+            map.addControl(new LocateControl());
 
             markersGroup = L.layerGroup().addTo(map);
             renderMapMarkers();
@@ -983,7 +1373,7 @@
             const listRegion = document.getElementById('listRegionSelector');
             if (mapRegion) mapRegion.value = region;
             if (listRegion) listRegion.value = region;
-            
+
             renderMapMarkers();
             renderPlacesList();
 
@@ -1008,7 +1398,7 @@
             filtered.forEach(p => {
                 const wazeUrl = `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
                 const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
-                
+
                 const addressRow = p.address ? `
                     <div class="text-[11px] text-slate-600 mb-1.5 flex items-start gap-1 bg-slate-50 p-1 rounded border border-slate-100">
                         <i class="fa-solid fa-location-dot mt-0.5 text-rose-500 shrink-0"></i>
@@ -1029,9 +1419,12 @@
 
                 const popupContent = `
                     <div class="text-right p-1" style="min-width: 220px;">
-                        <div class="flex items-center justify-between border-b pb-1 mb-1">
+                        <div class="flex items-center justify-between border-b pb-1 mb-1 gap-2">
                             <strong class="text-sm font-bold text-teal-800">${p.name}</strong>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded ${badgeClass}">${p.catName}</span>
+                            <div class="flex items-center gap-1 shrink-0">
+                                ${userLocation ? `<span class="bg-indigo-100 text-indigo-800 text-[10px] px-1.5 py-0.5 rounded font-bold" title="מרחק אווירי"><i class="fa-solid fa-route"></i> ${(getDistanceKm(userLocation.lat, userLocation.lng, p.lat, p.lng)).toFixed(1)} ק"מ</span>` : ''}
+                                <span class="text-[10px] px-1.5 py-0.5 rounded ${badgeClass}">${p.catName}</span>
+                            </div>
                         </div>
                         <p class="text-xs text-slate-600 mb-1 leading-relaxed">${p.desc}</p>
                         ${addressRow}
@@ -1057,8 +1450,8 @@
                     </div>
                 `;
                 L.marker([p.lat, p.lng], { icon: getCustomIcon(p.category, p.id) })
-                 .addTo(markersGroup)
-                 .bindPopup(popupContent);
+                    .addTo(markersGroup)
+                    .bindPopup(popupContent);
             });
         }
 
@@ -1073,7 +1466,7 @@
                     b.classList.add('bg-slate-100');
                 }
             });
-            
+
             // Sync places list category filter
             document.querySelectorAll('.cat-pill').forEach(b => {
                 if (b.dataset.color === color) {
@@ -1107,7 +1500,7 @@
             grid.innerHTML = filtered.map(p => {
                 const wazeUrl = `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
                 const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
-                
+
                 let badgeClass = "bg-emerald-100 text-emerald-800";
                 if (p.category === 'orange') badgeClass = "bg-amber-100 text-amber-800";
                 if (p.category === 'violet') badgeClass = "bg-purple-100 text-purple-800";
@@ -1115,9 +1508,9 @@
                 if (p.category === 'airport') badgeClass = "bg-sky-100 text-sky-800 border border-sky-300 font-bold";
                 if (p.category === 'red') badgeClass = "bg-rose-100 text-rose-800 border border-rose-300 font-bold";
 
-                let borderStyle = p.category === 'red' ? "border-rose-300 ring-1 ring-rose-200 bg-rose-50/20" : 
-                                  p.category === 'airport' ? "border-sky-300 ring-1 ring-sky-200 bg-sky-50/20" : 
-                                  p.category === 'blue' ? "border-blue-200 bg-blue-50/15" : "border-slate-200";
+                let borderStyle = p.category === 'red' ? "border-rose-300 ring-1 ring-rose-200 bg-rose-50/20" :
+                    p.category === 'airport' ? "border-sky-300 ring-1 ring-sky-200 bg-sky-50/20" :
+                        p.category === 'blue' ? "border-blue-200 bg-blue-50/15" : "border-slate-200";
 
                 let regionIcon = "🇨🇭";
                 if (p.category === 'airport') regionIcon = "✈️";
@@ -1141,11 +1534,14 @@
                 return `
                     <div class="bg-white rounded-xl p-3.5 shadow-sm border ${borderStyle} hover:border-teal-400 transition-all flex flex-col justify-between">
                         <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-                                    <span title="אזור">${regionIcon}</span> ${p.name}
+                            <div class="flex items-center justify-between mb-1.5 gap-2">
+                                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5 leading-tight">
+                                    <span title="אזור" class="shrink-0">${regionIcon}</span> <span>${p.name}</span>
                                 </h3>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${p.catName}</span>
+                                <div class="flex flex-col items-end gap-1 shrink-0">
+                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${p.catName}</span>
+                                    ${userLocation ? `<span class="bg-indigo-100 text-indigo-800 text-[9px] px-1.5 py-0.5 rounded font-bold whitespace-nowrap"><i class="fa-solid fa-route"></i> ${(getDistanceKm(userLocation.lat, userLocation.lng, p.lat, p.lng)).toFixed(1)} ק"מ ממיקומך</span>` : ''}
+                                </div>
                             </div>
                             <p class="text-xs text-slate-600 leading-relaxed mb-2">${p.desc}</p>
                             ${addressRow}
@@ -1175,6 +1571,95 @@
             }).join('');
         }
 
+        const itineraryData = {
+            1: [
+                { time: "09:00", title: "נחיתה בציריך", desc: "איסוף רכב, התארגנות", icon: "fa-plane-arrival", color: "sky" },
+                { time: "11:30", title: "מפלי הריין (Rheinfall)", desc: "תצפית על המפלים, שייט קצר, קפה בדרך ליער השחור", icon: "fa-water", color: "blue" },
+                { time: "15:00", title: "קניות שוטפות ב-Kaufland", desc: "הצטיידות במצרכים לדירה הראשונה (Waldshut-Tiengen)", icon: "fa-cart-shopping", color: "purple" },
+                { time: "17:00", title: "צ'ק-אין בדירה", desc: "הגעה לדירה בדרום היער, התארגנות בחדרים וארוחת ערב", icon: "fa-key", color: "slate" }
+            ],
+            2: [
+                { time: "09:30", title: "פארק מים בדרום", desc: "BadeParadies (Bad Dürkheim / Titisee) - יום בריכות גלים, מגלשות", icon: "fa-swimming-pool", color: "teal" },
+                { time: "13:30", title: "ארוחת צהריים במסעדה מקומית", desc: "הזדמנות להשתמש בכרטיס מלצר הצמחוני (שפצל בלי כוסברה)", icon: "fa-utensils", color: "orange" },
+                { time: "15:30", title: "שביל צמרות העצים / מגלשות הרים", desc: "אטרקציה בטבע הקרוב (Hasenhorn Coaster)", icon: "fa-tree", color: "emerald" },
+                { time: "18:00", title: "חזרה לדירה", desc: "זמן מנוחה וארוחת ערב", icon: "fa-house", color: "slate" }
+            ],
+            3: [
+                { time: "09:00", title: "נסיעה צפונה והגעה לפארק אירופה", desc: "יום מרוכז בפארק אירופה (Europa-Park) - כל היום", icon: "fa-ticket", color: "rose" },
+                { time: "13:00", title: "צהריים בפארק", desc: "אכילה בתוך הפארק", icon: "fa-burger", color: "orange" },
+                { time: "20:00", title: "נסיעה לדירה / חזרה", desc: "התארגנות ולילה ארוך", icon: "fa-bed", color: "slate" }
+            ],
+            4: [
+                { time: "10:00", title: "בוקר רגוע בקולמר (Colmar)", desc: "נסיעה לאלזס, שיטוט בעיירה, קפה של בוקר", icon: "fa-camera", color: "pink" },
+                { time: "13:00", title: "ארוחת צהריים אלזסית", desc: "השתמשו בכרטיס המלצר לאלזס. טארט פלמבה צמחוני", icon: "fa-wine-glass", color: "orange" },
+                { time: "15:00", title: "Primark ושופינג", desc: "שופינג בשטרסבורג (Strasbourg) - Primark, Sephora ועוד", icon: "fa-bag-shopping", color: "fuchsia" },
+                { time: "19:00", title: "חזרה לגרמניה", desc: "ארוחת ערב סמוך לדירה", icon: "fa-car", color: "slate" }
+            ],
+            5: [
+                { time: "09:30", title: "טריברג (Triberg)", desc: "השעון קוקיה הגדול, מסלול מפלי טריברג", icon: "fa-clock", color: "amber" },
+                { time: "12:30", title: "המשך לאגם טיטיזה", desc: "טיילת, בתי קפה, אולי שייט בסירה", icon: "fa-water", color: "blue" },
+                { time: "16:00", title: "קניות השלמה", desc: "Lidl או Kaufland קרוב לדירה", icon: "fa-basket-shopping", color: "purple" }
+            ],
+            6: [
+                { time: "10:00", title: "פרייבורג (Freiburg)", desc: "העיר העתיקה, הקתדרלה, שופינג בעיר", icon: "fa-city", color: "indigo" },
+                { time: "13:30", title: "צהריים בפרייבורג", desc: "מסעדה מומלצת במרכז", icon: "fa-utensils", color: "orange" },
+                { time: "16:00", title: "פארק חבלים / אטרקציה קרובה", desc: "פעילות אחרונה ביער לאקסטרים", icon: "fa-mountain", color: "emerald" }
+            ],
+            7: [
+                { time: "08:00", title: "אריזות וצ'ק אאוט", desc: "פינוי הדירה, העמסת הרכב", icon: "fa-suitcase", color: "slate" },
+                { time: "10:00", title: "נסיעה לציריך", desc: "נסיעה חזרה לשוויץ, עצירה לקפה", icon: "fa-car", color: "slate" },
+                { time: "12:30", title: "החזרת רכב בשדה", desc: "סגירת עניינים בנמל התעופה בציריך", icon: "fa-plane-departure", color: "sky" },
+                { time: "15:00", title: "טיסה חזרה לישראל", desc: "טיסה נעימה הביתה!", icon: "fa-plane", color: "teal" }
+            ]
+        };
+
+        function renderItinerary(dayNumber) {
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('bg-teal-700', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-600');
+            });
+            const activeBtn = document.getElementById(`dayBtn-${dayNumber}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-white', 'text-slate-600');
+                activeBtn.classList.add('bg-teal-700', 'text-white');
+            }
+
+            const dayData = itineraryData[dayNumber] || [];
+            const container = document.getElementById('itineraryContent');
+            if (!container) return;
+            
+            if (dayData.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-500 py-10">אין תוכנית מוגדרת ליום זה.</div>`;
+                return;
+            }
+
+            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-6">';
+            dayData.forEach((item, index) => {
+                const colorCode = item.color || 'teal';
+                html += `
+                    <div class="relative">
+                        <!-- Timeline node -->
+                        <div class="absolute -right-[23px] top-1 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
+                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up" style="animation-delay: ${index * 0.1}s">
+                            <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5">
+                                <i class="fa-solid ${item.icon} text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-[10px] font-bold text-teal-600 mb-0.5"><i class="fa-regular fa-clock"></i> ${item.time}</div>
+                                <h4 class="font-bold text-sm text-slate-800 mb-1">${item.title}</h4>
+                                <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
+                            </div>
+                            <button onclick="sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-slate-50 p-2 rounded-lg self-center shrink-0 border border-slate-100" title="שאל את ה-AI">
+                                <i class="fa-solid fa-robot"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
         function setListCategory(cat) {
             currentListFilter = cat;
             document.querySelectorAll('.cat-pill').forEach(b => {
@@ -1186,7 +1671,7 @@
                     b.classList.add('bg-slate-100');
                 }
             });
-            
+
             // Sync map category filter
             document.querySelectorAll('.map-filter-btn').forEach(b => {
                 if (b.dataset.color === cat) {
@@ -1197,7 +1682,7 @@
                     b.classList.add('bg-slate-100');
                 }
             });
-            
+
             renderPlacesList();
             renderMapMarkers();
         }
@@ -1239,6 +1724,11 @@
             } else if (tabName === 'places') {
                 document.getElementById('panel-places').classList.remove('hidden');
                 renderPlacesList();
+            } else if (tabName === 'itinerary') {
+                document.getElementById('panel-itinerary').classList.remove('hidden');
+                if (!document.querySelector('#itineraryContent').innerHTML.trim()) {
+                    renderItinerary(1);
+                }
             } else if (tabName === 'waiter') {
                 document.getElementById('panel-waiter').classList.remove('hidden');
             }
@@ -1302,7 +1792,7 @@
 
         function askAboutPlace(placeName) {
             const text = `אפשר לקבל מידע, טיפים ו-Pros & Cons על ${placeName}? איך המקום הזה מתאים להרכב של משפחת אשכנזי?`;
-            
+
             if (window.innerWidth < 1024) {
                 setTab('chat');
             }
@@ -1322,13 +1812,57 @@
             await executeGeminiRequest(userText);
         }
 
+        function startSpeechRecognition(source) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("הדפדפן שלך אינו תומך בהכתבה קולית. אנא נסה בדפדפן כרום.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'he-IL';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            const inputField = document.getElementById(`userInput-${source}`);
+            const originalPlaceholder = inputField.placeholder;
+            inputField.placeholder = "מאזין... (דברו עכשיו)";
+            inputField.classList.add('bg-indigo-50', 'border-indigo-400');
+
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[0][0].transcript;
+                inputField.value += (inputField.value ? ' ' : '') + speechResult;
+            };
+
+            recognition.onspeechend = () => {
+                recognition.stop();
+            };
+
+            recognition.onend = () => {
+                inputField.placeholder = originalPlaceholder;
+                inputField.classList.remove('bg-indigo-50', 'border-indigo-400');
+                inputField.focus();
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error", event.error);
+                inputField.placeholder = originalPlaceholder;
+                inputField.classList.remove('bg-indigo-50', 'border-indigo-400');
+                if (event.error !== 'no-speech') {
+                    alert("שגיאה בזיהוי קולי: " + event.error);
+                }
+            };
+        }
+
         async function sendMessage(source) {
             const inputField = document.getElementById(`userInput-${source}`);
             const userText = inputField.value.trim();
             const images = pendingImages[source] || [];
 
             if (!userText && images.length === 0) return;
-            
+
             inputField.value = '';
             pendingImages[source] = [];
             renderImagePreviews(source);
@@ -1358,7 +1892,7 @@
 
             const loadingId = "loading-" + Date.now();
             const loadingHtml = `<div id="${loadingId}" class="ai-msg text-xs sm:text-sm text-slate-500"><i class="fa-solid fa-spinner fa-spin text-teal-600"></i> הסוכן חושב ומנתח...</div>`;
-            
+
             if (deskBox) {
                 deskBox.innerHTML += loadingHtml;
                 deskBox.scrollTop = deskBox.scrollHeight;
@@ -1409,7 +1943,7 @@
                     if (data.error) throw new Error(data.error.message);
 
                     const rawAiText = data.candidates[0].content.parts[0].text;
-                    
+
                     chatHistory.push({
                         role: 'model',
                         parts: [{ text: rawAiText }]
@@ -1928,4 +2462,5 @@ Text to translate:
         });
     </script>
 </body>
+
 </html>
