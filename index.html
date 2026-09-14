@@ -222,6 +222,14 @@
                 <span class="hidden sm:inline">מתרגם</span>
             </button>
 
+            <!-- Quick Currency Button -->
+            <button onclick="openCurrencyModal()"
+                class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20"
+                title="המרת מטבע (ש״ח, אירו, פרנק שוויצרי)">
+                <i class="fa-solid fa-coins text-emerald-300 text-sm"></i>
+                <span class="hidden sm:inline">המרת מטבע</span>
+            </button>
+
             <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
             <button id="pwaInstallBtn"
                 class="hidden bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-all flex items-center gap-1.5">
@@ -821,6 +829,61 @@
                 class="hidden mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-slate-700 text-xs font-medium flex items-center justify-between gap-2">
                 <span id="weatherAdviceText"></span>
                 <span class="text-[10px] text-slate-400 font-normal">מקור: Open-Meteo (°C)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CURRENCY CONVERTER MODAL (Offline) -->
+    <!-- ========================================== -->
+    <div id="currencyModal"
+        class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col relative animate-fade-in-up border border-slate-100" style="direction: rtl;">
+            <!-- Header -->
+            <div class="bg-emerald-600 px-4 py-4 flex items-center justify-between shadow-sm z-10">
+                <div class="flex items-center gap-3 text-white">
+                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
+                        <i class="fa-solid fa-coins text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-white">המרת מטבע (אופליין)</h2>
+                        <p class="text-xs text-emerald-100 font-medium">חישוב ישיר בין ש"ח, אירו ופרנק</p>
+                    </div>
+                </div>
+                <button onclick="closeCurrencyModal()"
+                    class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="p-5 flex flex-col gap-4 bg-slate-50">
+                <!-- ILS -->
+                <div class="relative">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">שקל חדש (₪)</label>
+                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
+                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">ILS</span>
+                        <input type="number" id="currIls" oninput="convertCurrency('ILS')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+                    </div>
+                </div>
+                <!-- EUR -->
+                <div class="relative">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">אירו אירופאי (€)</label>
+                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
+                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">EUR</span>
+                        <input type="number" id="currEur" oninput="convertCurrency('EUR')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+                    </div>
+                </div>
+                <!-- CHF -->
+                <div class="relative">
+                    <label class="block text-xs font-bold text-slate-500 mb-1">פרנק שוויצרי (CHF)</label>
+                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
+                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">CHF</span>
+                        <input type="number" id="currChf" oninput="convertCurrency('CHF')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+                    </div>
+                </div>
+                <div class="text-[10px] text-slate-400 text-center mt-2" dir="rtl">
+                    <i class="fa-solid fa-info-circle"></i> שערי חליפין משוערים לעבודה באופליין: 1€≈4.20₪ | 1CHF≈4.45₪
+                </div>
             </div>
         </div>
     </div>
@@ -2582,6 +2645,57 @@ Text to translate:
         }
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
+
+        // ==========================================
+        // CURRENCY CONVERTER LOGIC (Offline)
+        // ==========================================
+        const RATES = {
+            EUR_TO_ILS: 4.20,
+            CHF_TO_ILS: 4.45
+        };
+
+        function openCurrencyModal() {
+            const m = document.getElementById('currencyModal');
+            if(m) m.classList.remove('hidden');
+            document.getElementById('currIls').value = '';
+            document.getElementById('currEur').value = '';
+            document.getElementById('currChf').value = '';
+            document.getElementById('currEur').focus();
+        }
+
+        function closeCurrencyModal() {
+            const m = document.getElementById('currencyModal');
+            if(m) m.classList.add('hidden');
+        }
+
+        function convertCurrency(source) {
+            const ilsIn = document.getElementById('currIls');
+            const eurIn = document.getElementById('currEur');
+            const chfIn = document.getElementById('currChf');
+
+            let val = 0;
+            if (source === 'ILS') val = parseFloat(ilsIn.value) || 0;
+            if (source === 'EUR') val = parseFloat(eurIn.value) || 0;
+            if (source === 'CHF') val = parseFloat(chfIn.value) || 0;
+
+            if (val === 0 && !document.getElementById('curr' + source).value) {
+                if (source !== 'ILS') ilsIn.value = '';
+                if (source !== 'EUR') eurIn.value = '';
+                if (source !== 'CHF') chfIn.value = '';
+                return;
+            }
+
+            if (source === 'ILS') {
+                eurIn.value = (val / RATES.EUR_TO_ILS).toFixed(2);
+                chfIn.value = (val / RATES.CHF_TO_ILS).toFixed(2);
+            } else if (source === 'EUR') {
+                ilsIn.value = (val * RATES.EUR_TO_ILS).toFixed(2);
+                chfIn.value = (val * RATES.EUR_TO_ILS / RATES.CHF_TO_ILS).toFixed(2);
+            } else if (source === 'CHF') {
+                ilsIn.value = (val * RATES.CHF_TO_ILS).toFixed(2);
+                eurIn.value = (val * RATES.CHF_TO_ILS / RATES.EUR_TO_ILS).toFixed(2);
+            }
+        }
 
         // ==========================================
         // 9. הפעלה ראשונית
