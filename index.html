@@ -228,8 +228,12 @@
                 <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
                     <div id="imagePreviewContainer-desktop" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
                     <div class="flex gap-2 w-full">
-                        <label for="imageUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה">
+                        <label for="cameraUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="צילום ישירות מהמצלמה">
                             <i class="fa-solid fa-camera"></i>
+                            <input type="file" id="cameraUpload-desktop" class="hidden" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'desktop')">
+                        </label>
+                        <label for="imageUpload-desktop" class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה מהגלריה">
+                            <i class="fa-solid fa-image"></i>
                             <input type="file" id="imageUpload-desktop" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'desktop')">
                         </label>
                         <input type="text" id="userInput-desktop" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה (למשל: 'איך לנסוע משדה התעופה לדירה?')" onkeypress="if(event.key === 'Enter') sendMessage('desktop')">
@@ -276,8 +280,12 @@
             <div class="p-2.5 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0 pb-safe">
                 <div id="imagePreviewContainer-mobile" class="hidden flex gap-2 overflow-x-auto pb-1"></div>
                 <div class="flex gap-2 w-full">
-                    <label for="imageUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm">
+                    <label for="cameraUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="צילום ישירות מהמצלמה">
                         <i class="fa-solid fa-camera"></i>
+                        <input type="file" id="cameraUpload-mobile" class="hidden" accept="image/*" capture="environment" onchange="handleImageUpload(event, 'mobile')">
+                    </label>
+                    <label for="imageUpload-mobile" class="cursor-pointer bg-slate-100 active:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl flex items-center justify-center transition-colors border border-slate-200 shadow-sm" title="העלאת תמונה מהגלריה">
+                        <i class="fa-solid fa-image"></i>
                         <input type="file" id="imageUpload-mobile" class="hidden" accept="image/*" multiple onchange="handleImageUpload(event, 'mobile')">
                     </label>
                     <input type="text" id="userInput-mobile" class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500" placeholder="שאלו כל שאלה על היעדים והמסלול..." onkeypress="if(event.key === 'Enter') sendMessage('mobile')">
