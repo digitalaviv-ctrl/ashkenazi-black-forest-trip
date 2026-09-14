@@ -63,15 +63,27 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+            <!-- Quick Weather Forecast Button -->
+            <button onclick="openWeatherModal()" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
+                <i class="fa-solid fa-cloud-sun text-amber-300 text-sm"></i>
+                <span class="hidden sm:inline">מזג אוויר</span>
+            </button>
+
+            <!-- Quick Translator Button -->
+            <button onclick="openTranslatorModal()" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20" title="מתרגם גרמנית/צרפתית ⇄ עברית/אנגלית">
+                <i class="fa-solid fa-language text-sky-300 text-sm"></i>
+                <span class="hidden sm:inline">מתרגם</span>
+            </button>
+
             <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
             <button id="pwaInstallBtn" class="hidden bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow transition-all flex items-center gap-1.5">
                 <i class="fa-solid fa-download"></i>
-                <span>התקן אפליקציה</span>
+                <span>התקן</span>
             </button>
 
             <!-- Quick Waiter Buttons on Desktop -->
-            <div class="hidden sm:flex gap-1.5">
+            <div class="hidden md:flex gap-1.5">
                 <button onclick="showTranslation('DE')" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow transition-transform active:scale-95">
                     <i class="fa-solid fa-utensils"></i> מלצר גרמניה
                 </button>
@@ -93,6 +105,12 @@
             </button>
             <button onclick="setTab('waiter')" id="deskTab-waiter" class="desktop-tab-btn px-4 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-slate-600 hover:bg-slate-100">
                 <i class="fa-solid fa-utensils"></i> כרטיס מלצר
+            </button>
+            <button onclick="openWeatherModal()" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
+                <i class="fa-solid fa-cloud-sun text-amber-500"></i> תחזית מזג אוויר
+            </button>
+            <button onclick="openTranslatorModal()" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5 text-slate-600 hover:bg-slate-100 hover:text-teal-700">
+                <i class="fa-solid fa-language text-indigo-600"></i> מתרגם דו-כיווני
             </button>
         </div>
         
@@ -253,6 +271,23 @@
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">הראו את המסך למלצר או לחצו על הרמקול להשמעה קולית</p>
                 </div>
 
+                <!-- Dedicated Bilingual Translator Card -->
+                <div class="bg-gradient-to-r from-teal-700 via-teal-800 to-slate-800 text-white p-3.5 sm:p-4 rounded-2xl shadow-md border border-teal-600 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-language text-sky-200"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm sm:text-base text-white">מתרגם חכם דו-כיווני 🌐</h3>
+                            <p class="text-xs text-teal-100">תרגום חופשי לגרמנית וצרפתית (לתפריטים, שלטים ושיחה)</p>
+                        </div>
+                    </div>
+                    <button onclick="openTranslatorModal()" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition-all shrink-0 flex items-center gap-1.5">
+                        <span>פתח מתרגם</span>
+                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                    </button>
+                </div>
+
                 <!-- German / Switzerland Card -->
                 <div class="bg-white rounded-2xl shadow-md border-2 border-amber-300 overflow-hidden">
                     <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-3.5 flex items-center justify-between">
@@ -337,6 +372,179 @@
                     <i class="fa-solid fa-volume-high"></i> השמע למלצר
                 </button>
                 <button onclick="closeModal()" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold">סגור</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- WEATHER MODAL (7-Day Forecast & Custom Search) -->
+    <!-- ========================================== -->
+    <div id="weatherModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-xl w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לשבוע הקרוב (°C)</h2>
+                        <p id="weatherPlaceSubtitle" class="text-xs text-teal-700 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-rose-500"></i>
+                            <span id="weatherCurrentLocationName">טוען יעד...</span>
+                        </p>
+                    </div>
+                </div>
+                <button onclick="closeWeatherModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Search Custom Location Bar -->
+            <div class="mb-3 flex flex-col gap-2">
+                <div class="flex gap-2">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-400"></i>
+                        <input type="text" id="weatherSearchInput" placeholder="חפש עיר/יעד (למשל: Colmar, Freiburg, Rust, Titisee)..." class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-amber-500" onkeypress="if(event.key === 'Enter') searchCustomWeather()">
+                    </div>
+                    <button onclick="searchCustomWeather()" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow transition-all flex items-center gap-1 shrink-0">
+                        <span>בדוק</span>
+                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Presets -->
+                <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar text-[11px] py-0.5">
+                    <span class="text-slate-400 font-medium whitespace-nowrap">יעדי מפתח:</span>
+                    <button onclick="quickWeatherPreset('דירת דרום (פאלקאו)', 47.8596, 8.1181)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🌲 פאלקאו (דרום)</button>
+                    <button onclick="quickWeatherPreset('דירת צפון (שוואנאו)', 48.3601, 7.7656)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🥨 שוואנאו (צפון)</button>
+                    <button onclick="quickWeatherPreset('פארק אירופה (Rust)', 48.2660, 7.7220)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🎢 פארק אירופה</button>
+                    <button onclick="quickWeatherPreset('פלדברג (Feldberg)', 47.8600, 8.0360)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">⛰️ פלדברג</button>
+                    <button onclick="quickWeatherPreset('שטרסבורג (Strasbourg)', 48.5734, 7.7521)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🛍️ שטרסבורג</button>
+                    <button onclick="quickWeatherPreset('קולמר (Colmar)', 48.0794, 7.3585)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">🍷 קולמר</button>
+                    <button onclick="quickWeatherPreset('שדה תעופה ציריך', 47.4582, 8.5555)" class="bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 px-2 py-0.5 rounded-full whitespace-nowrap border border-slate-200">✈️ ציריך</button>
+                </div>
+            </div>
+
+            <!-- Weather Content Area -->
+            <div class="flex-1 overflow-y-auto pr-0.5">
+                <!-- Loading State -->
+                <div id="weatherLoading" class="p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-500 mb-2"></i>
+                    <p class="text-xs font-semibold">מוריד נתוני מזג אוויר בזמן אמת...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="weatherError" class="hidden p-4 bg-red-50 border border-red-200 rounded-2xl text-center text-red-700 text-xs font-semibold">
+                    לא הצלחנו להוריד את התחזית למקום המבוקש. אנא נסו שם עיר נוסף באנגלית.
+                </div>
+
+                <!-- 7-Day Forecast Grid -->
+                <div id="weatherDailyGrid" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+            </div>
+
+            <!-- Weather Advice Footer -->
+            <div id="weatherAdviceBanner" class="hidden mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-slate-700 text-xs font-medium flex items-center justify-between gap-2">
+                <span id="weatherAdviceText"></span>
+                <span class="text-[10px] text-slate-400 font-normal">מקור: Open-Meteo (°C)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SMART TRANSLATOR MODAL (DE/FR <-> HE/EN) -->
+    <!-- ========================================== -->
+    <div id="smartTranslatorModal" class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800">מתרגם דו-כיווני חכם 🌐</h2>
+                        <p class="text-xs text-slate-500">גרמנית 🇩🇪 / צרפתית 🇫🇷 ⇄ עברית 🇮🇱 / אנגלית 🇬🇧</p>
+                    </div>
+                </div>
+                <button onclick="closeTranslatorModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto space-y-3">
+                <!-- Language Selector with Swap Button -->
+                <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
+                    <div class="flex-1">
+                        <label class="block text-[10px] text-slate-400 font-bold mb-1">משפה:</label>
+                        <select id="translateFromLang" onchange="onTranslateLangChange()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                            <option value="de">🇩🇪 גרמנית</option>
+                            <option value="fr">🇫🇷 צרפתית</option>
+                            <option value="he" selected>🇮🇱 עברית</option>
+                            <option value="en">🇬🇧 אנגלית</option>
+                        </select>
+                    </div>
+
+                    <!-- Swap button -->
+                    <button onclick="swapTranslateLanguages()" class="mt-4 w-9 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shadow-xs transition-transform active:scale-90 border border-indigo-200 shrink-0" title="החלף כיוון שפות">
+                        <i class="fa-solid fa-right-left"></i>
+                    </button>
+
+                    <div class="flex-1">
+                        <label class="block text-[10px] text-slate-400 font-bold mb-1">לשפה:</label>
+                        <select id="translateToLang" onchange="onTranslateLangChange()" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                            <option value="de" selected>🇩🇪 גרמנית</option>
+                            <option value="fr">🇫🇷 צרפתית</option>
+                            <option value="he">🇮🇱 עברית</option>
+                            <option value="en">🇬🇧 אנגלית</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Input Textarea -->
+                <div class="relative">
+                    <textarea id="translatorInputText" rows="3" class="w-full border border-slate-300 rounded-2xl p-3 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white leading-relaxed" placeholder="הקלידו או הדביקו טקסט (למשל: תפריט במסעדה, שלט, או בקשה)..." onkeydown="if(event.ctrlKey && event.key === 'Enter') executeTranslation()"></textarea>
+                    <button onclick="clearTranslatorInput()" class="absolute left-3 bottom-3 text-xs text-slate-400 hover:text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
+                        ניקוי
+                    </button>
+                </div>
+
+                <!-- Quick Travel Phrases -->
+                <div>
+                    <span class="text-[11px] text-slate-400 font-bold block mb-1">משפטים נפוצים בלחיצה:</span>
+                    <div class="flex flex-wrap gap-1.5 text-xs">
+                        <button onclick="insertTranslatePhrase('האם יש מנה צמחונית ללא בשר?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🥗 מנה צמחונית</button>
+                        <button onclick="insertTranslatePhrase('בבקשה ללא כוסברה!')" class="bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-800 px-2.5 py-1 rounded-lg border border-slate-200">🌿 ללא כוסברה</button>
+                        <button onclick="insertTranslatePhrase('אפשר לקבל את החשבון בבקשה?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🧾 חשבון בבקשה</button>
+                        <button onclick="insertTranslatePhrase('איפה נמצאים השירותים?')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🚻 איפה השירותים</button>
+                        <button onclick="insertTranslatePhrase('כרטיס משפחתי ל-5 נפשות (2 מבוגרים ו-3 ילדים)')" class="bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-800 px-2.5 py-1 rounded-lg border border-slate-200">🎟️ כרטיס משפחתי</button>
+                    </div>
+                </div>
+
+                <!-- Translate Action Button -->
+                <button onclick="executeTranslation()" id="translateActionBtn" class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>תרגם עכשיו</span>
+                </button>
+
+                <!-- Translation Result Card -->
+                <div id="translatorResultContainer" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-indigo-900 flex items-center gap-1">
+                            <i class="fa-solid fa-check text-emerald-600"></i>
+                            <span>תוצאת התרגום:</span>
+                        </span>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="speakTranslatedText()" class="text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs" title="השמעה קולית">
+                                <i class="fa-solid fa-volume-high"></i> השמע
+                            </button>
+                            <button onclick="copyTranslatedText()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-2xs" title="העתק טקסט">
+                                <i class="fa-solid fa-copy"></i> העתק
+                            </button>
+                        </div>
+                    </div>
+                    <div id="translatorResultText" class="p-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-base font-semibold leading-relaxed select-text"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -534,7 +742,7 @@
                         <p class="text-xs text-slate-600 mb-1 leading-relaxed">${p.desc}</p>
                         ${addressRow}
                         ${websiteRow}
-                        <div class="grid grid-cols-2 gap-1 mb-2">
+                        <div class="grid grid-cols-2 gap-1 mb-1.5">
                             <a href="${wazeUrl}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                                 <i class="fa-brands fa-waze"></i> Waze
                             </a>
@@ -542,9 +750,14 @@
                                 <i class="fa-solid fa-location-arrow"></i> Maps
                             </a>
                         </div>
-                        <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-2 rounded-lg text-xs transition-colors shadow flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-robot"></i> שאל את ה-AI
-                        </button>
+                        <div class="grid grid-cols-2 gap-1 mb-2">
+                            <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm transition-all" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
+                                <i class="fa-solid fa-cloud-sun"></i> מזג אוויר
+                            </button>
+                            <button onclick="askAboutPlace('${p.name.replace(/'/g, "\\'")}')" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1 px-2 rounded-lg text-xs transition-colors shadow flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-robot"></i> שאל יועץ AI
+                            </button>
+                        </div>
                     </div>
                 `;
                 L.marker([p.lat, p.lng], { icon: getCustomIcon(p.category) })
@@ -644,6 +857,9 @@
                             <a href="${gmapsUrl}" target="_blank" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 py-1.5 px-2 rounded-lg font-semibold text-center flex items-center justify-center gap-1 border border-blue-200">
                                 <i class="fa-solid fa-diamond-turn-right"></i> Maps
                             </a>
+                            <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-700 rounded-lg border border-amber-200" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
+                                <i class="fa-solid fa-cloud-sun"></i>
+                            </button>
                             <button onclick="zoomToPlace(${p.lat}, ${p.lng})" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg" title="הצג במפה">
                                 <i class="fa-solid fa-map-pin"></i>
                             </button>
@@ -929,6 +1145,370 @@
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(item.rawText).then(() => {
                     alert('הטקסט הועתק בהצלחה ללוח!');
+                });
+            }
+        }
+
+        // ==========================================
+        // 7.1 מערכת תחזית מזג אוויר שבועית (°C)
+        // ==========================================
+        function getWeatherInfo(code) {
+            if (code === 0) return { text: 'בהיר ושמשי', icon: '☀️', color: 'text-amber-500' };
+            if (code === 1 || code === 2) return { text: 'מעונן חלקית', icon: '🌤️', color: 'text-amber-400' };
+            if (code === 3) return { text: 'מעונן', icon: '☁️', color: 'text-slate-400' };
+            if (code === 45 || code === 48) return { text: 'ערפילי', icon: '🌫️', color: 'text-slate-400' };
+            if (code >= 51 && code <= 57) return { text: 'טפטוף קל', icon: '🌦️', color: 'text-sky-400' };
+            if (code >= 61 && code <= 67) return { text: 'גשום', icon: '🌧️', color: 'text-blue-500' };
+            if (code >= 71 && code <= 77) return { text: 'שלג', icon: '❄️', color: 'text-cyan-400' };
+            if (code >= 80 && code <= 82) return { text: 'ממטרים מקומיים', icon: '🌦️', color: 'text-blue-500' };
+            if (code >= 95) return { text: 'סופת רעמים', icon: '⛈️', color: 'text-indigo-600' };
+            return { text: 'נאה', icon: '⛅', color: 'text-teal-500' };
+        }
+
+        const hebrewDayNames = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום שישי', 'שבת'];
+
+        function openWeatherModal(placeName, lat, lng) {
+            const modal = document.getElementById('weatherModal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+
+            const defaultName = placeName || "דירת דרום: פאלקאו";
+            const defaultLat = (lat !== undefined && lat !== null) ? lat : 47.8596;
+            const defaultLng = (lng !== undefined && lng !== null) ? lng : 8.1181;
+
+            const searchInput = document.getElementById('weatherSearchInput');
+            if (searchInput) searchInput.value = '';
+
+            fetchWeatherForecast(defaultLat, defaultLng, defaultName);
+        }
+
+        function closeWeatherModal() {
+            const modal = document.getElementById('weatherModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function quickWeatherPreset(name, lat, lng) {
+            const searchInput = document.getElementById('weatherSearchInput');
+            if (searchInput) searchInput.value = name;
+            fetchWeatherForecast(lat, lng, name);
+        }
+
+        async function searchCustomWeather() {
+            const input = document.getElementById('weatherSearchInput');
+            const query = (input?.value || '').trim();
+            if (!query) return;
+
+            // First check if query matches any known place in our places array
+            const matchedPlace = places.find(p => p.name.toLowerCase().includes(query.toLowerCase()) || p.desc.toLowerCase().includes(query.toLowerCase()));
+            if (matchedPlace) {
+                fetchWeatherForecast(matchedPlace.lat, matchedPlace.lng, matchedPlace.name);
+                return;
+            }
+
+            const loadingEl = document.getElementById('weatherLoading');
+            const gridEl = document.getElementById('weatherDailyGrid');
+            const errorEl = document.getElementById('weatherError');
+            const bannerEl = document.getElementById('weatherAdviceBanner');
+
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (gridEl) gridEl.classList.add('hidden');
+            if (errorEl) errorEl.classList.add('hidden');
+            if (bannerEl) bannerEl.classList.add('hidden');
+
+            try {
+                // Open-Meteo Geocoding API
+                const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`;
+                const res = await fetch(geoUrl);
+                const data = await res.json();
+
+                if (data.results && data.results.length > 0) {
+                    const result = data.results[0];
+                    const displayName = `${result.name}${result.country ? ' (' + result.country + ')' : ''}`;
+                    fetchWeatherForecast(result.latitude, result.longitude, displayName);
+                } else {
+                    throw new Error('המקום לא נמצא');
+                }
+            } catch (err) {
+                if (loadingEl) loadingEl.classList.add('hidden');
+                if (errorEl) {
+                    errorEl.classList.remove('hidden');
+                    errorEl.innerText = `לא נמצאו תוצאות עבור "${query}". נסו להקליד שם עיר באנגלית (למשל: Colmar, Freiburg, Rust, Titisee, Strasbourg).`;
+                }
+            }
+        }
+
+        async function fetchWeatherForecast(lat, lng, displayName) {
+            const loadingEl = document.getElementById('weatherLoading');
+            const gridEl = document.getElementById('weatherDailyGrid');
+            const errorEl = document.getElementById('weatherError');
+            const bannerEl = document.getElementById('weatherAdviceBanner');
+            const bannerText = document.getElementById('weatherAdviceText');
+            const locationNameEl = document.getElementById('weatherCurrentLocationName');
+
+            if (locationNameEl) locationNameEl.innerText = displayName;
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (gridEl) gridEl.classList.add('hidden');
+            if (errorEl) errorEl.classList.add('hidden');
+            if (bannerEl) bannerEl.classList.add('hidden');
+
+            try {
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+                const res = await fetch(weatherUrl);
+                const data = await res.json();
+
+                if (!data.daily || !data.daily.time) {
+                    throw new Error('לא התקבלו נתוני תחזית');
+                }
+
+                const todayStr = new Date().toISOString().split('T')[0];
+                let rainyDaysCount = 0;
+
+                const cardsHtml = data.daily.time.map((dateStr, i) => {
+                    const dateObj = new Date(dateStr);
+                    const dayOfWeek = hebrewDayNames[dateObj.getDay()];
+                    const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}`;
+                    const isToday = dateStr === todayStr;
+
+                    const code = data.daily.weather_code[i];
+                    const info = getWeatherInfo(code);
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const minTemp = Math.round(data.daily.temperature_2m_min[i]);
+                    const rainProb = data.daily.precipitation_probability_max ? data.daily.precipitation_probability_max[i] : 0;
+
+                    if (rainProb > 45 || code >= 61) rainyDaysCount++;
+
+                    let rainBadge = '';
+                    if (rainProb > 20) {
+                        rainBadge = `<span class="text-[11px] font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-droplet text-sky-500"></i> ${rainProb}% גשם</span>`;
+                    } else {
+                        rainBadge = `<span class="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">ללא גשם</span>`;
+                    }
+
+                    return `
+                        <div class="bg-slate-50 hover:bg-amber-50/40 p-3 rounded-2xl border ${isToday ? 'border-amber-400 ring-1 ring-amber-300 bg-amber-50/30' : 'border-slate-200'} transition-all flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-2xl">${info.icon}</span>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <h4 class="font-bold text-xs sm:text-sm text-slate-800">${isToday ? 'היום (' + dayOfWeek + ')' : dayOfWeek}</h4>
+                                        <span class="text-[11px] text-slate-400">${formattedDate}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-medium">${info.text}</p>
+                                </div>
+                            </div>
+                            <div class="text-left flex flex-col items-end gap-1">
+                                <div class="text-sm font-bold">
+                                    <span class="text-rose-600" title="טמפרטורת מקסימום">${maxTemp}°</span>
+                                    <span class="text-slate-400 font-normal">/</span>
+                                    <span class="text-sky-600" title="טמפרטורת מינימום">${minTemp}°C</span>
+                                </div>
+                                ${rainBadge}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                if (gridEl) {
+                    gridEl.innerHTML = cardsHtml;
+                    gridEl.classList.remove('hidden');
+                }
+
+                if (bannerEl && bannerText) {
+                    if (rainyDaysCount >= 3) {
+                        bannerText.innerHTML = `🌧️ <strong>טיפ משפחתי:</strong> צפויים ימי גשם במהלך השבוע. מומלץ להכין אופציות מקורות כגון באדפרדייס או מפעל הזכוכית בוולפאך.`;
+                    } else {
+                        bannerText.innerHTML = `☀️ <strong>טיפ משפחתי:</strong> תנאי מזג אוויר מצוינים לשילוב מסלולי טבע, אגמים ואטרקציות פתוחות!`;
+                    }
+                    bannerEl.classList.remove('hidden');
+                }
+
+            } catch (err) {
+                if (errorEl) {
+                    errorEl.classList.remove('hidden');
+                    errorEl.innerText = 'שגיאה בהורדת נתוני מזג האוויר. ודאו שיש חיבור אינטרנט תקין.';
+                }
+            } finally {
+                if (loadingEl) loadingEl.classList.add('hidden');
+            }
+        }
+
+        // ==========================================
+        // 7.2 מערכת מתרגם דו-כיווני חכם (Bilingual Smart Translator)
+        // ==========================================
+        let lastTranslatedText = '';
+
+        const langNameMapping = {
+            'de': 'גרמנית (Deutsch)',
+            'fr': 'צרפתית (Français)',
+            'he': 'עברית (Hebrew)',
+            'en': 'אנגלית (English)'
+        };
+
+        const speechLangMapping = {
+            'de': 'de-DE',
+            'fr': 'fr-FR',
+            'he': 'he-IL',
+            'en': 'en-US'
+        };
+
+        function openTranslatorModal(initialText, fromLang, toLang) {
+            const modal = document.getElementById('smartTranslatorModal');
+            if (!modal) return;
+
+            if (fromLang) document.getElementById('translateFromLang').value = fromLang;
+            if (toLang) document.getElementById('translateToLang').value = toLang;
+
+            const inputEl = document.getElementById('translatorInputText');
+            if (initialText && inputEl) {
+                inputEl.value = initialText;
+                executeTranslation();
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeTranslatorModal() {
+            const modal = document.getElementById('smartTranslatorModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function swapTranslateLanguages() {
+            const fromSelect = document.getElementById('translateFromLang');
+            const toSelect = document.getElementById('translateToLang');
+            const inputEl = document.getElementById('translatorInputText');
+            const resultBox = document.getElementById('translatorResultContainer');
+
+            const prevFrom = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = prevFrom;
+
+            if (lastTranslatedText) {
+                inputEl.value = lastTranslatedText;
+                if (resultBox) resultBox.classList.add('hidden');
+                executeTranslation();
+            }
+        }
+
+        function onTranslateLangChange() {
+            const fromSelect = document.getElementById('translateFromLang');
+            const toSelect = document.getElementById('translateToLang');
+            if (fromSelect.value === toSelect.value) {
+                if (fromSelect.value === 'he') toSelect.value = 'de';
+                else if (fromSelect.value === 'de') toSelect.value = 'he';
+                else if (fromSelect.value === 'fr') toSelect.value = 'he';
+                else toSelect.value = 'he';
+            }
+        }
+
+        function insertTranslatePhrase(phrase) {
+            const inputEl = document.getElementById('translatorInputText');
+            const fromSelect = document.getElementById('translateFromLang');
+            const toSelect = document.getElementById('translateToLang');
+
+            if (inputEl) inputEl.value = phrase;
+            if (fromSelect) fromSelect.value = 'he';
+            if (toSelect && toSelect.value === 'he') toSelect.value = 'de';
+
+            executeTranslation();
+        }
+
+        function clearTranslatorInput() {
+            const inputEl = document.getElementById('translatorInputText');
+            const resultContainer = document.getElementById('translatorResultContainer');
+            if (inputEl) inputEl.value = '';
+            if (resultContainer) resultContainer.classList.add('hidden');
+            lastTranslatedText = '';
+        }
+
+        async function executeTranslation() {
+            const inputEl = document.getElementById('translatorInputText');
+            const text = (inputEl?.value || '').trim();
+            if (!text) return;
+
+            const fromLang = document.getElementById('translateFromLang')?.value || 'he';
+            const toLang = document.getElementById('translateToLang')?.value || 'de';
+
+            const actionBtn = document.getElementById('translateActionBtn');
+            const resultContainer = document.getElementById('translatorResultContainer');
+            const resultTextEl = document.getElementById('translatorResultText');
+
+            const originalBtnHtml = actionBtn.innerHTML;
+            actionBtn.disabled = true;
+            actionBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> מתרגם...`;
+
+            const srcName = langNameMapping[fromLang] || fromLang;
+            const targetName = langNameMapping[toLang] || toLang;
+
+            const prompt = `You are a professional, highly accurate translator for tourists in Germany, France, and Switzerland.
+Translate the following travel text directly from ${srcName} to ${targetName}.
+Focus on natural, respectful, and clear phrasing suitable for restaurants, road signs, hotel receptions, and travel conversations.
+If it's food or dietary (e.g., vegetarian, no coriander), ensure absolute culinary accuracy.
+Provide only the direct translation text in your reply, with no extra chit-chat or notes.
+
+Text to translate:
+"${text}"`;
+
+            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-3.6-flash';
+            const candidateModels = [primaryModel, 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+
+            let translatedOutput = '';
+
+            for (const model of candidateModels) {
+                try {
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEY}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message);
+
+                    translatedOutput = data.candidates[0].content.parts[0].text.trim();
+                    if (translatedOutput) break;
+                } catch (e) {
+                    console.warn(`Translation attempt with ${model} failed, trying next...`, e);
+                }
+            }
+
+            actionBtn.disabled = false;
+            actionBtn.innerHTML = originalBtnHtml;
+
+            if (translatedOutput) {
+                lastTranslatedText = translatedOutput;
+                if (resultTextEl) {
+                    resultTextEl.innerText = translatedOutput;
+                    resultTextEl.dir = (toLang === 'he') ? 'rtl' : 'ltr';
+                }
+                if (resultContainer) resultContainer.classList.remove('hidden');
+            } else {
+                alert('שגיאה בתרגום. ודאו שיש חיבור אינטרנט ונסו שוב.');
+            }
+        }
+
+        function speakTranslatedText() {
+            if (!lastTranslatedText || !('speechSynthesis' in window)) {
+                alert('השמעה קולית אינה נתמכת בדפדפן זה');
+                return;
+            }
+            const toLang = document.getElementById('translateToLang')?.value || 'de';
+            const langCode = speechLangMapping[toLang] || 'de-DE';
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(lastTranslatedText);
+            utterance.lang = langCode;
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function copyTranslatedText() {
+            if (!lastTranslatedText) return;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(lastTranslatedText).then(() => {
+                    alert('טקסט התרגום הועתק בהצלחה ללוח!');
                 });
             }
         }
