@@ -890,7 +890,32 @@
             renderMapMarkers();
         }
 
-        const getCustomIcon = (color) => {
+        const getCustomIcon = (color, id) => {
+            if (id === 47) {
+                return L.divIcon({
+                    className: 'custom-checkin-marker-wrapper',
+                    html: `<div style="
+                        background: linear-gradient(135deg, #1e3a8a, #172554);
+                        width: 34px;
+                        height: 34px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #ffffff;
+                        border: 2px solid #ffffff;
+                        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.45), 0 2px 5px rgba(0,0,0,0.25);
+                        font-size: 14px;
+                        cursor: pointer;
+                        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    " onmouseover="this.style.transform='scale(1.18)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fa-solid fa-key" style="color: #ffffff !important;"></i>
+                    </div>`,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17],
+                    popupAnchor: [0, -17]
+                });
+            }
             if (color === 'airport') {
                 return L.divIcon({
                     className: 'custom-airport-marker-wrapper',
@@ -1031,7 +1056,7 @@
                         </div>
                     </div>
                 `;
-                L.marker([p.lat, p.lng], { icon: getCustomIcon(p.category) })
+                L.marker([p.lat, p.lng], { icon: getCustomIcon(p.category, p.id) })
                  .addTo(markersGroup)
                  .bindPopup(popupContent);
             });
