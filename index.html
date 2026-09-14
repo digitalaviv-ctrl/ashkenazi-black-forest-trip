@@ -551,16 +551,25 @@
 
         <!-- TAB 4: Daily Itinerary -->
         <section id="panel-itinerary" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-hidden">
-            <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2 shrink-0 border-b border-slate-200">
-                <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-4 py-2 rounded-xl font-bold bg-teal-700 text-white shadow-sm shrink-0 leading-tight">יום 1<br><span class="text-[10px] font-normal">הגעה</span></button>
-                <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 2<br><span class="text-[10px] font-normal">דרום היער</span></button>
-                <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 3<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
-                <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 4<br><span class="text-[10px] font-normal">אלזס ושופינג</span></button>
-                <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 5<br><span class="text-[10px] font-normal">דרום היער</span></button>
-                <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 6<br><span class="text-[10px] font-normal">פרייבורג</span></button>
-                <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">יום 7<br><span class="text-[10px] font-normal">חזרה</span></button>
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 shrink-0">
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar flex-1 pl-2">
+                    <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-4 py-2 rounded-xl font-bold bg-teal-700 text-white shadow-sm shrink-0 leading-tight">19/9<br><span class="text-[10px] font-normal">נחיתה והתאקלמות</span></button>
+                    <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">20/9<br><span class="text-[10px] font-normal">טבע גועש</span></button>
+                    <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">21/9<br><span class="text-[10px] font-normal">פסגות ואגם</span></button>
+                    <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">22/9<br><span class="text-[10px] font-normal">חיות ואגדות</span></button>
+                    <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">23/9<br><span class="text-[10px] font-normal">צמרות ופרייבורג</span></button>
+                    <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">24/9<br><span class="text-[10px] font-normal">מעבר לאלזס</span></button>
+                    <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">25/9<br><span class="text-[10px] font-normal">שופינג וקסם</span></button>
+                    <button onclick="renderItinerary(8)" id="dayBtn-8" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">26/9<br><span class="text-[10px] font-normal">אבירים ויין</span></button>
+                    <button onclick="renderItinerary(9)" id="dayBtn-9" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">27/9<br><span class="text-[10px] font-normal">היסטוריה</span></button>
+                    <button onclick="renderItinerary(10)" id="dayBtn-10" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">28/9<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
+                    <button onclick="renderItinerary(11)" id="dayBtn-11" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">29/9<br><span class="text-[10px] font-normal">מפלי הריין וסיום</span></button>
+                </div>
+                <button onclick="toggleItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
+                    <i class="fa-solid fa-pen-to-square"></i> עריכה
+                </button>
             </div>
-            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-4 space-y-4 pb-10">
+            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-2 space-y-4 pb-10">
                 <!-- Day content injected here via JS -->
             </div>
         </section>
@@ -1571,49 +1580,150 @@
             }).join('');
         }
 
-        const itineraryData = {
+        const defaultItineraryData = {
             1: [
-                { time: "09:00", title: "נחיתה בציריך", desc: "איסוף רכב, התארגנות", icon: "fa-plane-arrival", color: "sky" },
-                { time: "11:30", title: "מפלי הריין (Rheinfall)", desc: "תצפית על המפלים, שייט קצר, קפה בדרך ליער השחור", icon: "fa-water", color: "blue" },
-                { time: "15:00", title: "קניות שוטפות ב-Kaufland", desc: "הצטיידות במצרכים לדירה הראשונה (Waldshut-Tiengen)", icon: "fa-cart-shopping", color: "purple" },
-                { time: "17:00", title: "צ'ק-אין בדירה", desc: "הגעה לדירה בדרום היער, התארגנות בחדרים וארוחת ערב", icon: "fa-key", color: "slate" }
+                { id: "1-1", time: "12:15", title: "נחיתה בציריך", desc: "נחיתה, ביקורת גבולות ואיסוף רכב שכור.", icon: "fa-plane-arrival", color: "sky" },
+                { id: "1-2", time: "14:00", title: "עצירת הצטיידות ב-Kaufland", desc: "נסיעה צפונה לחציית הגבול ועצירת קניות מאסיבית ב-Kaufland ואלדסהוט לקראת יום ראשון.", icon: "fa-cart-shopping", color: "purple" },
+                { id: "1-3", time: "16:30", title: "פריקת מזוודות בדירה", desc: "הגעה לדירה בפאלקאו (Falkau), התארגנות וטיול ערב קצר סביב האגם.", icon: "fa-suitcase", color: "slate" },
+                { id: "1-4", time: "19:00", title: "ארוחת ערב ב-Pizzeria Da Rocco", desc: "ארוחת ערב קלילה ומהירה. פיצות מעולות מתנור אבן.", icon: "fa-pizza-slice", color: "orange" }
             ],
             2: [
-                { time: "09:30", title: "פארק מים בדרום", desc: "BadeParadies (Bad Dürkheim / Titisee) - יום בריכות גלים, מגלשות", icon: "fa-swimming-pool", color: "teal" },
-                { time: "13:30", title: "ארוחת צהריים במסעדה מקומית", desc: "הזדמנות להשתמש בכרטיס מלצר הצמחוני (שפצל בלי כוסברה)", icon: "fa-utensils", color: "orange" },
-                { time: "15:30", title: "שביל צמרות העצים / מגלשות הרים", desc: "אטרקציה בטבע הקרוב (Hasenhorn Coaster)", icon: "fa-tree", color: "emerald" },
-                { time: "18:00", title: "חזרה לדירה", desc: "זמן מנוחה וארוחת ערב", icon: "fa-house", color: "slate" }
+                { id: "2-1", time: "10:00", title: "מגלשות הרים בטודנאו (Hasenhorn)", desc: "עלייה נופית ברכבל כיסאות וגלישה מהירה במסלול של 3 ק\"מ.", icon: "fa-mountain", color: "emerald" },
+                { id: "2-2", time: "13:00", title: "הפסקת צהריים", desc: "פיקניק ביער או נשנוש בדוכנים שלמרגלות המפלים.", icon: "fa-sandwich", color: "orange" },
+                { id: "2-3", time: "14:30", title: "מפלי טודנאו והגשר התלוי (Blackforestline)", desc: "מסלול הליכה נעים אל המפל הגועש, וחציית הגשר התלוי העצום מעל המפלים.", icon: "fa-water", color: "blue" },
+                { id: "2-4", time: "18:30", title: "ארוחת ערב ב-Restaurant Bierhäusle", desc: "ארוחה כפרית ואותנטית.", icon: "fa-utensils", color: "orange" }
             ],
             3: [
-                { time: "09:00", title: "נסיעה צפונה והגעה לפארק אירופה", desc: "יום מרוכז בפארק אירופה (Europa-Park) - כל היום", icon: "fa-ticket", color: "rose" },
-                { time: "13:00", title: "צהריים בפארק", desc: "אכילה בתוך הפארק", icon: "fa-burger", color: "orange" },
-                { time: "20:00", title: "נסיעה לדירה / חזרה", desc: "התארגנות ולילה ארוך", icon: "fa-bed", color: "slate" }
+                { id: "3-1", time: "10:00", title: "הגעה לפלדברג ופארק חבלים", desc: "הגעה למתחם חניון פלדברג. אלה ויעל יעלו לפארק החבלים (Kletterwald), נבו ייהנה במסע האינטראקטיבי.", icon: "fa-tree", color: "emerald" },
+                { id: "3-2", time: "12:00", title: "רכבל פלדברג", desc: "עלייה משותפת לתצפית נוף פנורמית.", icon: "fa-cable-car", color: "sky" },
+                { id: "3-3", time: "13:30", title: "ארוחת צהריים באגם טיטיזה", desc: "נסיעה לאגם וארוחה במדרחוב באחת המסעדות האיטלקיות.", icon: "fa-pizza-slice", color: "orange" },
+                { id: "3-4", time: "15:30", title: "שייט משפחתי באגם", desc: "השכרת סירת פדלים או מנוע באגם טיטיזה.", icon: "fa-ship", color: "blue" },
+                { id: "3-5", time: "18:30", title: "ארוחת ערב ב-Restaurant Peterle", desc: "ארוחת ערב שקטה.", icon: "fa-utensils", color: "orange" }
             ],
             4: [
-                { time: "10:00", title: "בוקר רגוע בקולמר (Colmar)", desc: "נסיעה לאלזס, שיטוט בעיירה, קפה של בוקר", icon: "fa-camera", color: "pink" },
-                { time: "13:00", title: "ארוחת צהריים אלזסית", desc: "השתמשו בכרטיס המלצר לאלזס. טארט פלמבה צמחוני", icon: "fa-wine-glass", color: "orange" },
-                { time: "15:00", title: "Primark ושופינג", desc: "שופינג בשטרסבורג (Strasbourg) - Primark, Sephora ועוד", icon: "fa-bag-shopping", color: "fuchsia" },
-                { time: "19:00", title: "חזרה לגרמניה", desc: "ארוחת ערב סמוך לדירה", icon: "fa-car", color: "slate" }
+                { id: "4-1", time: "10:00", title: "פארק השעשועים שטיינוואסן", desc: "אזור חיות מקסים, גשר חבלים ומגלשות הרים (Bobbahn).", icon: "fa-ticket", color: "rose" },
+                { id: "4-2", time: "13:30", title: "ארוחת צהריים", desc: "הפסקה מהירה במזנון של פארק שטיינוואסן.", icon: "fa-burger", color: "orange" },
+                { id: "4-3", time: "15:30", title: "קניון רוואנה (Ravennaschlucht)", desc: "הליכה קצרה בערוץ נחל תחת גשר רכבת אבן עתיק.", icon: "fa-person-hiking", color: "emerald" },
+                { id: "4-4", time: "19:00", title: "ארוחת ערב Pizzeria Bella Italia", desc: "פיצה מול אגם שלוכזה.", icon: "fa-pizza-slice", color: "orange" }
             ],
             5: [
-                { time: "09:30", title: "טריברג (Triberg)", desc: "השעון קוקיה הגדול, מסלול מפלי טריברג", icon: "fa-clock", color: "amber" },
-                { time: "12:30", title: "המשך לאגם טיטיזה", desc: "טיילת, בתי קפה, אולי שייט בסירה", icon: "fa-water", color: "blue" },
-                { time: "16:00", title: "קניות השלמה", desc: "Lidl או Kaufland קרוב לדירה", icon: "fa-basket-shopping", color: "purple" }
+                { id: "5-1", time: "10:00", title: "שביל החושים וולדקירך", desc: "Baumkronenweg Waldkirch - הליכה פסטורלית בצמרות העצים וירידה במגלשת צינור.", icon: "fa-leaf", color: "emerald" },
+                { id: "5-2", time: "13:30", title: "ארוחת צהריים בפרייבורג", desc: "חניה בחניון P+R, ארוחת צהריים עירונית במרכז פרייבורג.", icon: "fa-city", color: "indigo" },
+                { id: "5-3", time: "15:00", title: "תעלות המים (Bächle) ופארק מים", desc: "שוטטות בעיר, ואז נסיעה לפארק המים באדפרדייס (Badeparadies).", icon: "fa-swimming-pool", color: "teal" },
+                { id: "5-4", time: "19:30", title: "ארוחת ערב מהירה", desc: "אזור טיטיזה/דירה לאחר הבריכה.", icon: "fa-utensils", color: "orange" }
             ],
             6: [
-                { time: "10:00", title: "פרייבורג (Freiburg)", desc: "העיר העתיקה, הקתדרלה, שופינג בעיר", icon: "fa-city", color: "indigo" },
-                { time: "13:30", title: "צהריים בפרייבורג", desc: "מסעדה מומלצת במרכז", icon: "fa-utensils", color: "orange" },
-                { time: "16:00", title: "פארק חבלים / אטרקציה קרובה", desc: "פעילות אחרונה ביער לאקסטרים", icon: "fa-mountain", color: "emerald" }
+                { id: "6-1", time: "09:30", title: "אריזה ועזיבת פאלקאו", desc: "יום המעבר האסטרטגי. העמסת מזוודות לרכב.", icon: "fa-suitcase", color: "slate" },
+                { id: "6-2", time: "12:30", title: "גנגנבאך (Gengenbach)", desc: "סיור רגלי בין בתי קורות עץ צבעוניים וארוחת צהריים קלה באחת המאפיות.", icon: "fa-camera", color: "amber" },
+                { id: "6-3", time: "15:30", title: "סופרמרקט Kaufland Lahr", desc: "הצטיידות לקראת הסופ\"ש. לאחר מכן פריקה בדירה בשוואנאו.", icon: "fa-cart-shopping", color: "purple" },
+                { id: "6-4", time: "19:00", title: "ארוחת ערב ב-Gasthaus Schwanen", desc: "פונדק שקרוב מאוד לדירה.", icon: "fa-utensils", color: "orange" }
             ],
             7: [
-                { time: "08:00", title: "אריזות וצ'ק אאוט", desc: "פינוי הדירה, העמסת הרכב", icon: "fa-suitcase", color: "slate" },
-                { time: "10:00", title: "נסיעה לציריך", desc: "נסיעה חזרה לשוויץ, עצירה לקפה", icon: "fa-car", color: "slate" },
-                { time: "12:30", title: "החזרת רכב בשדה", desc: "סגירת עניינים בנמל התעופה בציריך", icon: "fa-plane-departure", color: "sky" },
-                { time: "15:00", title: "טיסה חזרה לישראל", desc: "טיסה נעימה הביתה!", icon: "fa-plane", color: "teal" }
+                { id: "7-1", time: "09:30", title: "חציית הגבול לשטרסבורג", desc: "חניה ב-P+R Baggersee ונסיעה בחשמלית לשטרסבורג (צרפת).", icon: "fa-train", color: "sky" },
+                { id: "7-2", time: "11:00", title: "שופינג ממוקד", desc: "יעל מקבלת את הבמה לשופינג ממוקד ב-PRIMARK וב-SEPHORA.", icon: "fa-bag-shopping", color: "fuchsia" },
+                { id: "7-3", time: "13:30", title: "צהריים ב'צרפת הקטנה'", desc: "קרפים, פסטות ואווירה ברובע Petite France.", icon: "fa-utensils", color: "orange" },
+                { id: "7-4", time: "15:30", title: "שייט בספינת זכוכית", desc: "סיור רגלי לאורך התעלות ושייט מרגיע ב-Batorama.", icon: "fa-ship", color: "blue" },
+                { id: "7-5", time: "19:00", title: "ארוחת ערב La Villetta", desc: "בעיר לאהר בדרך חזרה לדירה.", icon: "fa-pizza-slice", color: "orange" }
+            ],
+            8: [
+                { id: "8-1", time: "10:00", title: "טירת הוט-קניגסבורג", desc: "סיור מרשים בטירת אבירים החולשת על עמק הריין.", icon: "fa-chess-rook", color: "slate" },
+                { id: "8-2", time: "12:30", title: "פארק הקופים (Montagne des Singes)", desc: "הליכה ביער והאכלת קופי מקוק מכף היד.", icon: "fa-monkey", color: "amber" },
+                { id: "8-3", time: "14:30", title: "מופע העופות הדורסים", desc: "צפייה במופע במבצר קינצהיים. ארוחה קלה במזנונים.", icon: "fa-crow", color: "slate" },
+                { id: "8-4", time: "17:00", title: "פסטיבל היין באגיסהיים", desc: "שוטטות בין דוכני הפסטיבל בעיירה הציורית.", icon: "fa-wine-glass", color: "rose" },
+                { id: "8-5", time: "20:00", title: "ארוחת ערב ב-Au Cygne", desc: "ארוחת ערב אלזסית אותנטית.", icon: "fa-utensils", color: "orange" }
+            ],
+            9: [
+                { id: "9-1", time: "10:30", title: "המוזיאון הפתוח גוטאך", desc: "סיור אותנטי המציג את חיי הכפר של פעם.", icon: "fa-house-chimney", color: "amber" },
+                { id: "9-2", time: "13:30", title: "ארוחת צהריים", desc: "במסעדה המסורתית הצמודה למוזיאון.", icon: "fa-utensils", color: "orange" },
+                { id: "9-3", time: "15:30", title: "מגלשות ההרים בגוטאך", desc: "גלישה משפחתית מהנה.", icon: "fa-mountain", color: "emerald" },
+                { id: "9-4", time: "19:00", title: "ארוחת ערב Dammenmühle", desc: "בלאהר. חזרה לדירה וכביסה אחרונה לטיול.", icon: "fa-utensils", color: "orange" }
+            ],
+            10: [
+                { id: "10-1", time: "08:30", title: "פארק אירופה - הגעה מוקדמת", desc: "הגעה לפני פתיחת השערים. אלה ויעל על רכבות ההרים, נבו במתחמי הילדים.", icon: "fa-ticket", color: "rose" },
+                { id: "10-2", time: "13:30", title: "צהריים בפארק", desc: "במתחם היווני או האיטלקי (מגוון צמחוני עשיר).", icon: "fa-pizza-slice", color: "orange" },
+                { id: "10-3", time: "15:00", title: "המשך בילוי בפארק אירופה", desc: "עד הסגירה.", icon: "fa-star", color: "amber" },
+                { id: "10-4", time: "19:00", title: "חזרה וארוחת ערב זריזה", desc: "התחלת אריזה.", icon: "fa-house", color: "slate" }
+            ],
+            11: [
+                { id: "11-1", time: "09:30", title: "עזיבת שוואנאו", desc: "התארגנות אחרונה והעמסת מזוודות.", icon: "fa-suitcase", color: "slate" },
+                { id: "11-2", time: "12:30", title: "מפלי הריין ופארק חבלים", desc: "חציית הגבול לשווייץ ושייט במפלים, פריקת אנרגיות בפארק החבלים.", icon: "fa-water", color: "blue" },
+                { id: "11-3", time: "16:00", title: "ארוחת פרידה ב-Gasthof Hirschen", desc: "חגיגית על נהר הריין (Eglisau).", icon: "fa-utensils", color: "orange" },
+                { id: "11-4", time: "18:00", title: "החזרת רכב בשדה", desc: "נסיעה לציריך, החזרת רכב.", icon: "fa-car", color: "slate" },
+                { id: "11-5", time: "20:50", title: "טיסה הביתה", desc: "המראה מציריך.", icon: "fa-plane-departure", color: "teal" }
             ]
         };
 
+        let currentItineraryDay = 1;
+        let isItineraryEditMode = false;
+
+        function getItineraryData() {
+            const saved = localStorage.getItem('blackForestItinerary');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return JSON.parse(JSON.stringify(defaultItineraryData));
+        }
+
+        function saveItineraryData(data) {
+            localStorage.setItem('blackForestItinerary', JSON.stringify(data));
+        }
+
+        function resetItineraryData() {
+            if (confirm("האם אתה בטוח שברצונך לאפס את כל הלו\"ז לתוכנית המקורית?")) {
+                localStorage.removeItem('blackForestItinerary');
+                renderItinerary(currentItineraryDay);
+            }
+        }
+
+        function toggleItineraryEditMode() {
+            isItineraryEditMode = !isItineraryEditMode;
+            const btn = document.getElementById('editItineraryBtn');
+            if (isItineraryEditMode) {
+                btn.classList.replace('bg-amber-100', 'bg-amber-600');
+                btn.classList.replace('text-amber-700', 'text-white');
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> סיום עריכה';
+            } else {
+                btn.classList.replace('bg-amber-600', 'bg-amber-100');
+                btn.classList.replace('text-white', 'text-amber-700');
+                btn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> עריכה';
+            }
+            renderItinerary(currentItineraryDay);
+        }
+
+        function deleteItineraryItem(day, id) {
+            if (confirm("למחוק פעילות זו?")) {
+                const data = getItineraryData();
+                data[day] = data[day].filter(item => item.id !== id);
+                saveItineraryData(data);
+                renderItinerary(day);
+            }
+        }
+
+        function addItineraryItem(day) {
+            const time = prompt("שעה (למשל 10:00):", "12:00");
+            if (!time) return;
+            const title = prompt("כותרת היעד:", "יעד חדש");
+            if (!title) return;
+            const desc = prompt("תיאור קצר:", "");
+            
+            const data = getItineraryData();
+            if (!data[day]) data[day] = [];
+            data[day].push({
+                id: Date.now().toString(),
+                time: time,
+                title: title,
+                desc: desc || "",
+                icon: "fa-star",
+                color: "teal"
+            });
+            // מיון לפי שעה
+            data[day].sort((a, b) => a.time.localeCompare(b.time));
+            saveItineraryData(data);
+            renderItinerary(day);
+        }
+
         function renderItinerary(dayNumber) {
+            currentItineraryDay = dayNumber;
             document.querySelectorAll('.day-btn').forEach(btn => {
                 btn.classList.remove('bg-teal-700', 'text-white');
                 btn.classList.add('bg-white', 'text-slate-600');
@@ -1622,41 +1732,64 @@
             if (activeBtn) {
                 activeBtn.classList.remove('bg-white', 'text-slate-600');
                 activeBtn.classList.add('bg-teal-700', 'text-white');
+                // Scroll button into view
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
 
-            const dayData = itineraryData[dayNumber] || [];
+            const data = getItineraryData();
+            const dayData = data[dayNumber] || [];
             const container = document.getElementById('itineraryContent');
             if (!container) return;
             
-            if (dayData.length === 0) {
+            if (dayData.length === 0 && !isItineraryEditMode) {
                 container.innerHTML = `<div class="text-center text-slate-500 py-10">אין תוכנית מוגדרת ליום זה.</div>`;
                 return;
             }
 
-            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-6">';
+            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-6 pb-4">';
             dayData.forEach((item, index) => {
                 const colorCode = item.color || 'teal';
                 html += `
-                    <div class="relative">
+                    <div class="relative group">
                         <!-- Timeline node -->
                         <div class="absolute -right-[23px] top-1 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
-                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up" style="animation-delay: ${index * 0.1}s">
-                            <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5">
-                                <i class="fa-solid ${item.icon} text-lg"></i>
+                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up" style="animation-delay: ${index * 0.05}s">
+                            <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5 flex flex-col items-center">
+                                <i class="fa-solid ${item.icon} text-lg mb-1"></i>
+                                <span class="text-[10px] font-bold tracking-tighter">${item.time}</span>
                             </div>
-                            <div class="flex-1">
-                                <div class="text-[10px] font-bold text-teal-600 mb-0.5"><i class="fa-regular fa-clock"></i> ${item.time}</div>
-                                <h4 class="font-bold text-sm text-slate-800 mb-1">${item.title}</h4>
+                            <div class="flex-1 min-w-0 pt-1">
+                                <h4 class="font-bold text-sm text-slate-800 mb-0.5 truncate">${item.title}</h4>
                                 <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
                             </div>
-                            <button onclick="sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-slate-50 p-2 rounded-lg self-center shrink-0 border border-slate-100" title="שאל את ה-AI">
-                                <i class="fa-solid fa-robot"></i>
-                            </button>
+                            ${isItineraryEditMode ? `
+                                <button onclick="deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            ` : `
+                                <button onclick="sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 p-2 rounded-lg self-center shrink-0 border border-teal-100 transition-colors shadow-sm" title="שאל את ה-AI">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                            `}
                         </div>
                     </div>
                 `;
             });
             html += '</div>';
+
+            if (isItineraryEditMode) {
+                html += `
+                    <div class="flex flex-col gap-2 mt-4 px-2 pb-4">
+                        <button onclick="addItineraryItem(${dayNumber})" class="w-full bg-white hover:bg-slate-50 text-teal-600 font-bold text-sm py-3 rounded-xl border-2 border-dashed border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> הוסף פעילות חדשה
+                        </button>
+                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2 rounded-xl transition-colors mt-2 shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> איפוס לתוכנית המקורית מה-PDF
+                        </button>
+                    </div>
+                `;
+            }
+
             container.innerHTML = html;
         }
 
