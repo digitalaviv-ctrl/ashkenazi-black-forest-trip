@@ -286,12 +286,8 @@
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
             <select id="modelSelector"
                 class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)
-                </option>
-                <option value="gemini-3.8-flash">Gemini 3.8 Flash (סופר מהיר, טוב לשאלות קצרות)</option>
-                <option value="gemini-3.5-flash">Gemini 3.5 Flash (מהיר ויעיל)</option>
-                <option value="gemini-3.1-pro">Gemini 3.1 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)
-                </option>
+                <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)</option>
             </select>
         </div>
     </div>
@@ -434,10 +430,8 @@
                 <div class="flex items-center gap-2">
                     <select id="modelSelector-mobile"
                         class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
-                        <option value="gemini-3.6-flash">3.6 Flash (יציב)</option>
-                        <option value="gemini-3.8-flash">3.8 Flash (מהיר)</option>
-                        <option value="gemini-3.5-flash">3.5 Flash</option>
-                        <option value="gemini-3.1-pro">3.1 Pro (חכם לתמונות)</option>
+                        <option value="gemini-1.5-flash">1.5 Flash (מהיר)</option>
+                        <option value="gemini-1.5-pro">1.5 Pro (חכם)</option>
                     </select>
                     <button onclick="clearChat()" class="text-xs text-slate-300 px-2 py-1 rounded bg-slate-700">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -2116,8 +2110,8 @@
             });
 
             // מודל נבחר עם רשימת חלופות אוטומטית (Fallback) במקרה של עומס רגעי
-            const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-3.6-flash';
-            const candidateModels = [primaryModel, 'gemini-3.1-pro', 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+            const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-1.5-flash';
+            const candidateModels = [primaryModel, 'gemini-1.5-pro', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
 
             let success = false;
             let lastError = null;
@@ -2161,7 +2155,11 @@
             }
 
             if (!success) {
-                const errorHtml = `<strong>שגיאת תקשורת:</strong><br>${lastError ? lastError.message : 'לא התקבלה תשובה מהשרת'}`;
+                let msg = lastError ? lastError.message : 'לא התקבלה תשובה מהשרת';
+                if (msg.toLowerCase().includes('quota') || msg.toLowerCase().includes('too many') || msg.includes('429')) {
+                    msg = 'המכסה החינמית (Quota) למפתח הסתיימה או שיש עומס כבד. אנא המתינו מעט או שנו למפתח אישי בהגדרות.';
+                }
+                const errorHtml = `<strong>שגיאת תקשורת:</strong><br>${msg}`;
                 document.querySelectorAll(`[id="${loadingId}"]`).forEach(el => {
                     el.innerHTML = errorHtml;
                     el.classList.add("text-red-500");
@@ -2510,8 +2508,8 @@ Provide only the direct translation text in your reply, with no extra chit-chat 
 Text to translate:
 "${text}"`;
 
-            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-3.6-flash';
-            const candidateModels = [primaryModel, 'gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-1.5-flash';
+            const candidateModels = [primaryModel, 'gemini-1.5-pro', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
 
             let translatedOutput = '';
 
@@ -2547,7 +2545,7 @@ Text to translate:
                 }
                 if (resultContainer) resultContainer.classList.remove('hidden');
             } else {
-                alert('שגיאה בתרגום. ודאו שיש חיבור אינטרנט ונסו שוב.');
+                alert('שגיאה בתרגום. ייתכן והגענו למגבלת השימוש (Quota) או שאין אינטרנט.');
             }
         }
 
