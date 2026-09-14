@@ -185,6 +185,7 @@
                         <button onclick="filterMap('green')" data-color="green" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap"><i class="fa-solid fa-tree text-emerald-600"></i> טבע ואטרקציות</button>
                         <button onclick="filterMap('orange')" data-color="orange" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap"><i class="fa-solid fa-utensils text-amber-600"></i> מסעדות</button>
                         <button onclick="filterMap('violet')" data-color="violet" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap"><i class="fa-solid fa-basket-shopping text-purple-600"></i> סופרים שוטפים</button>
+                        <button onclick="filterMap('shopping')" data-color="shopping" class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap"><i class="fa-solid fa-bag-shopping text-pink-600"></i> שופינג</button>
                     </div>
                     
                     <select id="mapRegionSelector" onchange="setRegionFilter(this.value)" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs rounded-lg px-2 py-1.5 focus:ring-teal-500 font-medium ml-auto">
@@ -314,6 +315,7 @@
                         <button onclick="setListCategory('green')" data-color="green" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-emerald-800 hover:bg-emerald-50 font-medium whitespace-nowrap">🌲 טבע ואטרקציות</button>
                         <button onclick="setListCategory('orange')" data-color="orange" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-amber-800 hover:bg-amber-50 font-medium whitespace-nowrap">🍽️ מסעדות</button>
                         <button onclick="setListCategory('violet')" data-color="violet" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-purple-800 hover:bg-purple-50 font-medium whitespace-nowrap">🛒 סופרים שוטפים</button>
+                        <button onclick="setListCategory('shopping')" data-color="shopping" class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap">🛍️ שופינג</button>
                     </div>
                 </div>
 
@@ -766,7 +768,13 @@
             { id: 39, name: "מפעל הזכוכית בוולפאך (Dorotheenhütte Wolfach)", region: "north", category: "green", catName: "סגור לגשם", lat: 48.2868, lng: 8.2255, desc: "צפייה והתנסות בניפוח זכוכית מסורתי, וביקור בכפר חג המולד הסגור. מעולה לגשם" },
             { id: 40, name: "פארק הזאבים והדובים (Alternativer Wolf- und Bärenpark)", region: "north", category: "green", catName: "טבע וחיות", lat: 48.3842, lng: 8.3090, desc: "פארק אלטרנטיבי ופראי המאפשר צפייה בדובים וזאבים שחולצו בסביבה טבעית פתוחה" },
             { id: 41, name: "אגם מומלזה (Mummelsee) וכביש 500", region: "north", category: "green", catName: "אגם", lat: 48.5973, lng: 8.2007, desc: "אגם קרחוני פסטורלי ושטוח על דרך הפנורמה של היער השחור עם מאפייה מקומית מצוינת" },
-            { id: 42, name: "אגיסהיים (Eguisheim)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.0420, lng: 7.3060, desc: "עיירת יין ציורית באלזס הבנויה במעגלים. מארחת פסטיבל יין חגיגי" }
+            { id: 42, name: "אגיסהיים (Eguisheim)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.0420, lng: 7.3060, desc: "עיירת יין ציורית באלזס הבנויה במעגלים. מארחת פסטיבל יין חגיגי" },
+            
+            // שופינג (shopping - ורוד/מיוחד)
+            { id: 43, name: "ספורה שטרסבורג (Sephora)", region: "north", category: "shopping", catName: "שופינג", lat: 48.5830, lng: 7.7455, desc: "סניף ספורה גדול במרכז שטרסבורג, חובה ליעל!" },
+            { id: 44, name: "פריימרק שטרסבורג (Primark)", region: "north", category: "shopping", catName: "שופינג", lat: 48.5840, lng: 7.7450, desc: "חנות הדגל של פריימרק במרכז שטרסבורג (בניין ענק)" },
+            { id: 45, name: "אאוטלט רופנהיים (Roppenheim The Style Outlets)", region: "north", category: "shopping", catName: "אאוטלט", lat: 48.8475, lng: 8.0531, desc: "כפר קניות ענק ומרהיב בסגנון כפר אלזסי על גבול צרפת-גרמניה" },
+            { id: 46, name: "קניון LAGO קונסטנץ (LAGO Konstanz)", region: "south", category: "shopping", catName: "קניון", lat: 47.6586, lng: 9.1738, desc: "קניון ענק ומודרני בקונסטנץ קרוב לגבול השווייצרי בדרום" }
         ];
 
         // ==========================================
@@ -811,6 +819,31 @@
                     iconSize: [38, 38],
                     iconAnchor: [19, 19],
                     popupAnchor: [0, -20]
+                });
+            }
+            if (color === 'shopping') {
+                return L.divIcon({
+                    className: 'custom-shopping-marker-wrapper',
+                    html: `<div style="
+                        background: linear-gradient(135deg, #db2777, #be185d);
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #ffffff;
+                        border: 2px solid #ffffff;
+                        box-shadow: 0 4px 12px rgba(219, 39, 119, 0.45), 0 2px 5px rgba(0,0,0,0.25);
+                        font-size: 14px;
+                        cursor: pointer;
+                        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    " onmouseover="this.style.transform='scale(1.18)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fa-solid fa-bag-shopping" style="color: #ffffff !important;"></i>
+                    </div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16],
+                    popupAnchor: [0, -16]
                 });
             }
             return new L.Icon({
