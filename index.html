@@ -225,9 +225,10 @@
             <!-- Quick Currency Button -->
             <button onclick="openCurrencyModal()"
                 class="bg-white/15 hover:bg-white/25 active:scale-95 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all border border-white/20"
-                title="המרת מטבע (ש״ח, אירו, פרנק שוויצרי)">
+                title="המרת מטבע בזמן אמת (ש״ח, אירו, פרנק שוויצרי)">
                 <i class="fa-solid fa-coins text-emerald-300 text-sm"></i>
                 <span class="hidden sm:inline">המרת מטבע</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5 inline-block" title="שערים חיים ONLINE"></span>
             </button>
 
             <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
@@ -828,55 +829,125 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- CURRENCY CONVERTER MODAL (Offline) -->
+    <!-- CURRENCY CONVERTER MODAL (Online / Live) -->
     <!-- ========================================== -->
     <div id="currencyModal"
         class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
         <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col relative animate-fade-in-up border border-slate-100" style="direction: rtl;">
             <!-- Header -->
-            <div class="bg-emerald-600 px-4 py-4 flex items-center justify-between shadow-sm z-10">
-                <div class="flex items-center gap-3 text-white">
-                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3.5 flex items-center justify-between shadow-sm z-10">
+                <div class="flex items-center gap-2.5 text-white">
+                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
                         <i class="fa-solid fa-coins text-lg"></i>
                     </div>
                     <div>
-                        <h2 class="text-base font-bold text-white">המרת מטבע (אופליין)</h2>
-                        <p class="text-xs text-emerald-100 font-medium">חישוב ישיר בין ש"ח, אירו ופרנק</p>
+                        <div class="flex items-center gap-1.5">
+                            <h2 class="text-base font-bold text-white">המרת מטבע ONLINE</h2>
+                            <span class="bg-emerald-400 text-emerald-950 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-900 animate-ping"></span> LIVE
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-emerald-100 font-medium">שערי יציג חיים בזמן אמת</p>
                     </div>
                 </div>
-                <button onclick="closeCurrencyModal()"
-                    class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-colors">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="fetchLiveCurrencyRates(true)" id="refreshRatesBtn"
+                        class="bg-white/20 hover:bg-white/30 active:scale-95 text-white px-2 py-1 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all shadow-sm"
+                        title="רענן שערים עכשיו">
+                        <i class="fa-solid fa-arrows-rotate text-xs" id="refreshRatesIcon"></i>
+                        <span class="text-[11px]">רענן</span>
+                    </button>
+                    <button onclick="closeCurrencyModal()"
+                        class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
             </div>
+
             <!-- Body -->
-            <div class="p-5 flex flex-col gap-4 bg-slate-50">
-                <!-- ILS -->
-                <div class="relative">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">שקל חדש (₪)</label>
-                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
-                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">ILS</span>
-                        <input type="number" id="currIls" oninput="convertCurrency('ILS')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+            <div class="p-4 sm:p-5 flex flex-col gap-3.5 bg-slate-50">
+                <!-- Status & Live Rates Banner -->
+                <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col gap-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5 font-bold" id="currencyStatusIndicator">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span id="currencyStatusText" class="text-emerald-700">מעודכן מהרשת (ONLINE)</span>
+                        </div>
+                        <span id="currencyLastUpdate" class="text-[10px] text-slate-400 font-mono">--:--</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 text-center">
+                        <div class="bg-emerald-50/70 py-1.5 px-2 rounded-xl text-xs font-bold text-slate-700">
+                            1€ = <span id="rateEurIls" class="text-emerald-600 font-mono">--</span> ₪
+                        </div>
+                        <div class="bg-teal-50/70 py-1.5 px-2 rounded-xl text-xs font-bold text-slate-700">
+                            1 CHF = <span id="rateChfIls" class="text-teal-600 font-mono">--</span> ₪
+                        </div>
                     </div>
                 </div>
-                <!-- EUR -->
-                <div class="relative">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">אירו אירופאי (€)</label>
-                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
-                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">EUR</span>
-                        <input type="number" id="currEur" oninput="convertCurrency('EUR')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+
+                <!-- Inputs -->
+                <div class="flex flex-col gap-3">
+                    <!-- EUR -->
+                    <div class="relative">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                                <span>🇪🇺 אירו אירופאי (€)</span>
+                            </label>
+                            <span class="text-[10px] text-slate-400">גרמניה וצרפת</span>
+                        </div>
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
+                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">EUR €</span>
+                            <input type="number" id="currEur" oninput="convertCurrency('EUR')" placeholder="0.00" step="any"
+                                class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
+                        </div>
+                    </div>
+
+                    <!-- ILS -->
+                    <div class="relative">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                                <span>🇮🇱 שקל ישראלי (₪)</span>
+                            </label>
+                            <span class="text-[10px] text-slate-400">ישראל</span>
+                        </div>
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
+                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">ILS ₪</span>
+                            <input type="number" id="currIls" oninput="convertCurrency('ILS')" placeholder="0.00" step="any"
+                                class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
+                        </div>
+                    </div>
+
+                    <!-- CHF -->
+                    <div class="relative">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                                <span>🇨🇭 פרנק שוויצרי (CHF)</span>
+                            </label>
+                            <span class="text-[10px] text-slate-400">מפלי הריין וציריך</span>
+                        </div>
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
+                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">CHF</span>
+                            <input type="number" id="currChf" oninput="convertCurrency('CHF')" placeholder="0.00" step="any"
+                                class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
+                        </div>
                     </div>
                 </div>
-                <!-- CHF -->
-                <div class="relative">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">פרנק שוויצרי (CHF)</label>
-                    <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm" dir="ltr">
-                        <span class="bg-slate-100 px-3 py-3 text-slate-500 font-bold border-r border-slate-200 w-16 text-center">CHF</span>
-                        <input type="number" id="currChf" oninput="convertCurrency('CHF')" placeholder="0.00" class="flex-1 w-full p-3 font-bold text-slate-800 text-lg outline-none text-left">
+
+                <!-- Quick Presets for Fast Conversion -->
+                <div class="pt-1">
+                    <div class="text-[10px] font-bold text-slate-400 mb-1.5">הזנה מהירה (אירו):</div>
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <button onclick="setQuickEuro(5)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">5€</button>
+                        <button onclick="setQuickEuro(10)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">10€</button>
+                        <button onclick="setQuickEuro(20)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">20€</button>
+                        <button onclick="setQuickEuro(50)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">50€</button>
+                        <button onclick="setQuickEuro(100)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">100€</button>
                     </div>
                 </div>
-                <div class="text-[10px] text-slate-400 text-center mt-2" dir="rtl">
-                    <i class="fa-solid fa-info-circle"></i> שערי חליפין משוערים לעבודה באופליין: 1€≈4.20₪ | 1CHF≈4.45₪
+
+                <div class="text-[10px] text-slate-400 text-center mt-1" dir="rtl">
+                    <i class="fa-solid fa-shield-halved text-emerald-500 ml-1"></i>
+                    <span>עובד גם באופליין ללא קליטה (משתמש בשערים האחרונים שנסרקו)</span>
                 </div>
             </div>
         </div>
@@ -1869,6 +1940,166 @@
             return match || null;
         }
 
+        // ==========================================
+        // Itinerary: Drag & Drop and Reorder State
+        // ==========================================
+        let draggedItemIndex = null;
+        let draggedDay = null;
+        let touchDraggedIndex = null;
+        let touchDraggedDay = null;
+        let touchTargetIndex = null;
+
+        function handleItineraryDragStart(e, day, index) {
+            if (!isItineraryEditMode) return;
+            draggedItemIndex = index;
+            draggedDay = day;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', index);
+            setTimeout(() => {
+                const card = document.getElementById(`itinerary-card-${index}`);
+                if (card) {
+                    card.classList.add('opacity-40', 'scale-[0.98]', 'border-dashed', 'border-teal-500');
+                }
+            }, 0);
+        }
+
+        function handleItineraryDragOver(e, index) {
+            if (!isItineraryEditMode) return;
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const card = document.getElementById(`itinerary-card-${index}`);
+            if (card && draggedItemIndex !== null && draggedItemIndex !== index) {
+                card.classList.add('bg-teal-50/60', 'ring-2', 'ring-teal-400', 'border-teal-400');
+            }
+        }
+
+        function handleItineraryDragLeave(e, index) {
+            const card = document.getElementById(`itinerary-card-${index}`);
+            if (card) {
+                card.classList.remove('bg-teal-50/60', 'ring-2', 'ring-teal-400', 'border-teal-400');
+            }
+        }
+
+        function handleItineraryDrop(e, day, targetIndex) {
+            e.preventDefault();
+            if (!isItineraryEditMode) return;
+            const fromIndex = draggedItemIndex;
+            handleItineraryDragEnd();
+
+            if (fromIndex === null || draggedDay !== day || fromIndex === targetIndex) return;
+
+            const data = getItineraryData();
+            const dayData = data[day];
+            if (!dayData) return;
+
+            const [movedItem] = dayData.splice(fromIndex, 1);
+            dayData.splice(targetIndex, 0, movedItem);
+
+            saveItineraryData(data);
+            renderItinerary(day);
+        }
+
+        function handleItineraryDragEnd() {
+            draggedItemIndex = null;
+            draggedDay = null;
+            document.querySelectorAll('[id^="itinerary-card-"]').forEach(card => {
+                card.classList.remove('opacity-40', 'scale-[0.98]', 'border-dashed', 'border-teal-500', 'bg-teal-50/60', 'ring-2', 'ring-teal-400', 'border-teal-400');
+            });
+        }
+
+        // Touch Drag & Drop for Mobile Phones
+        function handleTouchStart(e, day, index) {
+            if (!isItineraryEditMode) return;
+            touchDraggedIndex = index;
+            touchDraggedDay = day;
+            touchTargetIndex = index;
+            const card = document.getElementById(`itinerary-card-${index}`);
+            if (card) {
+                card.classList.add('opacity-50', 'border-dashed', 'border-teal-500', 'scale-[0.98]', 'shadow-md');
+            }
+        }
+
+        function handleTouchMove(e) {
+            if (touchDraggedIndex === null) return;
+            if (e.cancelable) e.preventDefault();
+
+            const touch = e.touches[0];
+            const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+            let targetCard = null;
+            for (const el of elements) {
+                const card = el.closest('[id^="itinerary-card-"]');
+                if (card) {
+                    targetCard = card;
+                    break;
+                }
+            }
+
+            document.querySelectorAll('[id^="itinerary-card-"]').forEach(c => {
+                if (c.id !== `itinerary-card-${touchDraggedIndex}`) {
+                    c.classList.remove('bg-teal-50/70', 'ring-2', 'ring-teal-400');
+                }
+            });
+
+            if (targetCard && targetCard.id !== `itinerary-card-${touchDraggedIndex}`) {
+                targetCard.classList.add('bg-teal-50/70', 'ring-2', 'ring-teal-400');
+                touchTargetIndex = parseInt(targetCard.getAttribute('data-index'), 10);
+            }
+        }
+
+        function handleTouchEnd() {
+            if (touchDraggedIndex === null) return;
+            const from = touchDraggedIndex;
+            const to = touchTargetIndex;
+            const day = touchDraggedDay;
+
+            touchDraggedIndex = null;
+            touchDraggedDay = null;
+            touchTargetIndex = null;
+
+            document.querySelectorAll('[id^="itinerary-card-"]').forEach(c => {
+                c.classList.remove('opacity-50', 'border-dashed', 'border-teal-500', 'scale-[0.98]', 'shadow-md', 'bg-teal-50/70', 'ring-2', 'ring-teal-400');
+            });
+
+            if (to !== null && to !== undefined && !isNaN(to) && from !== to && day) {
+                const data = getItineraryData();
+                const dayData = data[day];
+                if (dayData) {
+                    const [item] = dayData.splice(from, 1);
+                    dayData.splice(to, 0, item);
+                    saveItineraryData(data);
+                    renderItinerary(day);
+                }
+            }
+        }
+
+        // Move Item Up or Down
+        function moveItineraryItem(day, index, direction) {
+            const data = getItineraryData();
+            const dayData = data[day];
+            if (!dayData) return;
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= dayData.length) return;
+
+            const [movedItem] = dayData.splice(index, 1);
+            dayData.splice(targetIndex, 0, movedItem);
+
+            saveItineraryData(data);
+            renderItinerary(day);
+        }
+
+        // Edit Activity Time
+        function editItineraryTime(day, index) {
+            const data = getItineraryData();
+            const item = data[day][index];
+            if (!item) return;
+            const newTime = prompt(`שנה שעה עבור "${item.title}":`, item.time);
+            if (newTime && newTime.trim()) {
+                item.time = newTime.trim();
+                saveItineraryData(data);
+                renderItinerary(day);
+            }
+        }
+
         function renderItinerary(dayNumber) {
             currentItineraryDay = dayNumber;
             document.querySelectorAll('.day-btn').forEach(btn => {
@@ -1887,7 +2118,21 @@
             const container = document.getElementById('itineraryContent');
             if (!container) return;
 
-            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-4 pb-2">';
+            let html = '';
+
+            // Edit Mode Helper Banner
+            if (isItineraryEditMode) {
+                html += `
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 text-amber-900 text-xs px-3.5 py-2.5 rounded-xl mb-4 flex items-center justify-between shadow-xs">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-up-down-left-right text-amber-600 text-sm"></i>
+                            <span><strong>מצב עריכה:</strong> גרור פעילויות לשינוי הסדר, או היעזר בחיצים להקדמה/איחור. לחץ על השעה לעריכה.</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-4 pb-2">';
 
             if (dayData.length === 0) {
                 html += `<div class="text-center text-slate-400 py-8 text-sm">אין תוכנית מוגדרת ליום זה. לחץ על הוסף אטרקציה!</div>`;
@@ -1912,27 +2157,78 @@
                 const safeName = item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                 html += `
-                    <div class="relative group">
+                    <div class="relative group"
+                         id="itinerary-card-${index}"
+                         data-index="${index}"
+                         ${isItineraryEditMode ? `
+                             draggable="true"
+                             ondragstart="handleItineraryDragStart(event, ${dayNumber}, ${index})"
+                             ondragover="handleItineraryDragOver(event, ${index})"
+                             ondragleave="handleItineraryDragLeave(event, ${index})"
+                             ondrop="handleItineraryDrop(event, ${dayNumber}, ${index})"
+                             ondragend="handleItineraryDragEnd(event)"
+                         ` : ''}>
                         <!-- Timeline dot -->
                         <div class="absolute -right-[23px] top-3 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
                         <!-- Card -->
-                        <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden animate-fade-in-up" style="animation-delay: ${index * 0.05}s">
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-150 animate-fade-in-up" style="animation-delay: ${index * 0.05}s">
                             <!-- Card body -->
-                            <div class="flex gap-3 items-start p-3 ${!isItineraryEditMode ? 'cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors' : ''}" ${!isItineraryEditMode ? `onclick="window.open('${gmapsUrl}', '_blank')"` : ''}>
-                                <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5 flex flex-col items-center min-w-[44px]">
+                            <div class="flex gap-2.5 items-center p-3 ${!isItineraryEditMode ? 'cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors' : 'bg-slate-50/40'}" ${!isItineraryEditMode ? `onclick="window.open('${gmapsUrl}', '_blank')"` : ''}>
+                                
+                                ${isItineraryEditMode ? `
+                                    <!-- Reorder Controls (Drag Handle + Up/Down Arrows) -->
+                                    <div class="flex items-center gap-1 shrink-0 select-none">
+                                        <!-- Drag Handle (Desktop & Mobile Touch) -->
+                                        <div class="drag-handle touch-none cursor-grab active:cursor-grabbing text-slate-400 hover:text-teal-700 active:text-teal-600 p-1.5 text-base flex items-center justify-center rounded-lg hover:bg-slate-200/60 transition-colors"
+                                             title="גרור להזזת הפעילות"
+                                             ontouchstart="handleTouchStart(event, ${dayNumber}, ${index})"
+                                             ontouchmove="handleTouchMove(event)"
+                                             ontouchend="handleTouchEnd(event)">
+                                            <i class="fa-solid fa-grip-vertical"></i>
+                                        </div>
+                                        <!-- Quick Up/Down Arrows -->
+                                        <div class="flex flex-col gap-0.5">
+                                            <button onclick="event.stopPropagation(); moveItineraryItem(${dayNumber}, ${index}, -1)"
+                                                    class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-teal-700 bg-white hover:bg-teal-100 rounded text-[11px] shadow-2xs border border-slate-200 transition-all ${index === 0 ? 'opacity-20 cursor-not-allowed' : 'active:scale-90'}"
+                                                    ${index === 0 ? 'disabled' : ''} title="הקדם פעילות בלו&quot;ז">
+                                                <i class="fa-solid fa-chevron-up"></i>
+                                            </button>
+                                            <button onclick="event.stopPropagation(); moveItineraryItem(${dayNumber}, ${index}, 1)"
+                                                    class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-teal-700 bg-white hover:bg-teal-100 rounded text-[11px] shadow-2xs border border-slate-200 transition-all ${index === dayData.length - 1 ? 'opacity-20 cursor-not-allowed' : 'active:scale-90'}"
+                                                    ${index === dayData.length - 1 ? 'disabled' : ''} title="הורד פעילות בלו&quot;ז">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ` : ''}
+
+                                <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 flex flex-col items-center min-w-[44px]">
                                     <i class="fa-solid ${item.icon} text-lg mb-1"></i>
-                                    <span class="text-[10px] font-bold tracking-tighter whitespace-nowrap">${item.time}</span>
+                                    ${isItineraryEditMode ? `
+                                        <button onclick="event.stopPropagation(); editItineraryTime(${dayNumber}, ${index})" 
+                                                class="text-[10px] font-bold tracking-tighter bg-white/80 hover:bg-white text-${colorCode}-700 px-1 py-0.5 rounded shadow-2xs border border-${colorCode}-200 transition-all active:scale-95" 
+                                                title="לחץ לשינוי שעה">
+                                            ${item.time} ✎
+                                        </button>
+                                    ` : `
+                                        <span class="text-[10px] font-bold tracking-tighter whitespace-nowrap">${item.time}</span>
+                                    `}
                                 </div>
+
                                 <div class="flex-1 min-w-0 pt-0.5">
                                     <h4 class="font-bold text-sm text-slate-800 mb-0.5 leading-tight">${item.title}</h4>
                                     <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
                                 </div>
+
                                 ${isItineraryEditMode ? `
-                                    <button onclick="event.stopPropagation(); deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm" title="מחק">
+                                    <button onclick="event.stopPropagation(); deleteItineraryItem(${dayNumber}, '${item.id}')"
+                                            class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-2 rounded-lg shrink-0 transition-colors shadow-2xs ml-1" 
+                                            title="מחק פעילות זו">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 ` : ''}
                             </div>
+
                             <!-- Navigation buttons row (non-edit mode only) -->
                             ${!isItineraryEditMode ? `
                             <div class="grid grid-cols-4 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
@@ -2035,16 +2331,25 @@
 
             const data = getItineraryData();
             if (!data[_addAttractionDay]) data[_addAttractionDay] = [];
-            data[_addAttractionDay].push({
+
+            const newItem = {
                 id: 'custom-' + Date.now().toString(),
                 time: time || '12:00',
                 title: title,
                 desc: desc || '',
                 icon: icon,
                 color: color
-            });
-            // Sort by time
-            data[_addAttractionDay].sort((a, b) => a.time.localeCompare(b.time));
+            };
+
+            // Insert while preserving custom order
+            const dayList = data[_addAttractionDay];
+            const insertIdx = dayList.findIndex(item => item.time > newItem.time);
+            if (insertIdx === -1) {
+                dayList.push(newItem);
+            } else {
+                dayList.splice(insertIdx, 0, newItem);
+            }
+
             saveItineraryData(data);
             closeAddAttractionModal();
             renderItinerary(_addAttractionDay);
@@ -2846,38 +3151,139 @@ Text to translate:
         window.addEventListener('offline', updateOnlineStatus);
 
         // ==========================================
-        // CURRENCY CONVERTER LOGIC (Offline)
+        // CURRENCY CONVERTER LOGIC (Online & Live)
         // ==========================================
-        const RATES = {
-            EUR_TO_ILS: 4.20,
-            CHF_TO_ILS: 4.45
+        let liveRates = {
+            EUR_TO_ILS: 4.15,
+            CHF_TO_ILS: 4.40,
+            EUR_TO_CHF: 0.94,
+            lastUpdated: null,
+            isLive: false
         };
+
+        let lastCurrencySource = 'EUR';
+
+        // Load cached rates from localStorage if available
+        try {
+            const cached = localStorage.getItem('cachedCurrencyRates');
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (parsed && parsed.EUR_TO_ILS) {
+                    liveRates = Object.assign(liveRates, parsed);
+                }
+            }
+        } catch (e) {
+            console.warn('Could not read cached currency rates', e);
+        }
+
+        async function fetchLiveCurrencyRates(forceManual = false) {
+            const refreshIcon = document.getElementById('refreshRatesIcon');
+            if (refreshIcon) refreshIcon.classList.add('fa-spin');
+
+            try {
+                // Fetch live exchange rates (EUR base)
+                const res = await fetch('https://open.er-api.com/v6/latest/EUR', { cache: 'no-store' });
+                if (!res.ok) throw new Error('API response not ok');
+                const data = await res.json();
+
+                if (data && data.rates && data.rates.ILS && data.rates.CHF) {
+                    liveRates.EUR_TO_ILS = parseFloat(data.rates.ILS);
+                    liveRates.EUR_TO_CHF = parseFloat(data.rates.CHF);
+                    liveRates.CHF_TO_ILS = parseFloat(data.rates.ILS) / parseFloat(data.rates.CHF);
+                    liveRates.lastUpdated = new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                    liveRates.isLive = true;
+
+                    // Save to local storage for offline use
+                    localStorage.setItem('cachedCurrencyRates', JSON.stringify(liveRates));
+                    updateCurrencyUI(true);
+
+                    // Re-calculate based on current active input
+                    if (lastCurrencySource) {
+                        convertCurrency(lastCurrencySource);
+                    }
+                }
+            } catch (err) {
+                console.warn('Currency live fetch failed, using cached rates:', err);
+                updateCurrencyUI(false);
+            } finally {
+                if (refreshIcon) {
+                    setTimeout(() => refreshIcon.classList.remove('fa-spin'), 400);
+                }
+            }
+        }
+
+        function updateCurrencyUI(isSuccess) {
+            const eurIlsEl = document.getElementById('rateEurIls');
+            const chfIlsEl = document.getElementById('rateChfIls');
+            const statusTextEl = document.getElementById('currencyStatusText');
+            const statusIndEl = document.getElementById('currencyStatusIndicator');
+            const lastUpdateEl = document.getElementById('currencyLastUpdate');
+
+            if (eurIlsEl) eurIlsEl.innerText = liveRates.EUR_TO_ILS.toFixed(2);
+            if (chfIlsEl) chfIlsEl.innerText = liveRates.CHF_TO_ILS.toFixed(2);
+
+            if (lastUpdateEl && liveRates.lastUpdated) {
+                lastUpdateEl.innerText = 'עודכן: ' + liveRates.lastUpdated;
+            }
+
+            if (statusTextEl && statusIndEl) {
+                if (isSuccess || (liveRates.isLive && navigator.onLine)) {
+                    statusTextEl.innerText = 'מחובר לרשת (שערים בזמן אמת)';
+                    statusTextEl.className = 'text-emerald-700';
+                    statusIndEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> <span id="currencyStatusText" class="text-emerald-700">מחובר לרשת (שערים בזמן אמת)</span>';
+                } else {
+                    statusTextEl.innerText = 'מצב שמור (אופליין)';
+                    statusTextEl.className = 'text-amber-700';
+                    statusIndEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span> <span id="currencyStatusText" class="text-amber-700">מצב שמור (אופליין)</span>';
+                }
+            }
+        }
 
         function openCurrencyModal() {
             const m = document.getElementById('currencyModal');
-            if(m) m.classList.remove('hidden');
-            document.getElementById('currIls').value = '';
-            document.getElementById('currEur').value = '';
-            document.getElementById('currChf').value = '';
-            document.getElementById('currEur').focus();
+            if (m) m.classList.remove('hidden');
+
+            updateCurrencyUI(liveRates.isLive && navigator.onLine);
+            // Fetch fresh live rates in background
+            fetchLiveCurrencyRates();
+
+            const eurIn = document.getElementById('currEur');
+            if (eurIn && !eurIn.value) {
+                eurIn.value = '10';
+                convertCurrency('EUR');
+                setTimeout(() => eurIn.focus(), 150);
+            }
         }
 
         function closeCurrencyModal() {
             const m = document.getElementById('currencyModal');
-            if(m) m.classList.add('hidden');
+            if (m) m.classList.add('hidden');
+        }
+
+        function setQuickEuro(val) {
+            const eurIn = document.getElementById('currEur');
+            if (eurIn) {
+                eurIn.value = val;
+                convertCurrency('EUR');
+                eurIn.focus();
+            }
         }
 
         function convertCurrency(source) {
+            lastCurrencySource = source;
             const ilsIn = document.getElementById('currIls');
             const eurIn = document.getElementById('currEur');
             const chfIn = document.getElementById('currChf');
+
+            if (!ilsIn || !eurIn || !chfIn) return;
 
             let val = 0;
             if (source === 'ILS') val = parseFloat(ilsIn.value) || 0;
             if (source === 'EUR') val = parseFloat(eurIn.value) || 0;
             if (source === 'CHF') val = parseFloat(chfIn.value) || 0;
 
-            if (val === 0 && !document.getElementById('curr' + source).value) {
+            const inputValStr = document.getElementById('curr' + source)?.value;
+            if (val === 0 && (!inputValStr || inputValStr.trim() === '')) {
                 if (source !== 'ILS') ilsIn.value = '';
                 if (source !== 'EUR') eurIn.value = '';
                 if (source !== 'CHF') chfIn.value = '';
@@ -2885,14 +3291,14 @@ Text to translate:
             }
 
             if (source === 'ILS') {
-                eurIn.value = (val / RATES.EUR_TO_ILS).toFixed(2);
-                chfIn.value = (val / RATES.CHF_TO_ILS).toFixed(2);
+                eurIn.value = (val / liveRates.EUR_TO_ILS).toFixed(2);
+                chfIn.value = (val / liveRates.CHF_TO_ILS).toFixed(2);
             } else if (source === 'EUR') {
-                ilsIn.value = (val * RATES.EUR_TO_ILS).toFixed(2);
-                chfIn.value = (val * RATES.EUR_TO_ILS / RATES.CHF_TO_ILS).toFixed(2);
+                ilsIn.value = (val * liveRates.EUR_TO_ILS).toFixed(2);
+                chfIn.value = (val * liveRates.EUR_TO_CHF).toFixed(2);
             } else if (source === 'CHF') {
-                ilsIn.value = (val * RATES.CHF_TO_ILS).toFixed(2);
-                eurIn.value = (val * RATES.CHF_TO_ILS / RATES.EUR_TO_ILS).toFixed(2);
+                ilsIn.value = (val * liveRates.CHF_TO_ILS).toFixed(2);
+                eurIn.value = (val / liveRates.EUR_TO_CHF).toFixed(2);
             }
         }
 
