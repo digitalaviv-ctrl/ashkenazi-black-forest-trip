@@ -1043,6 +1043,101 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- ADD ATTRACTION MODAL -->
+    <!-- ========================================== -->
+    <div id="addAttractionModal"
+        class="hidden fixed inset-0 bg-slate-900/60 z-[1000] justify-center items-end sm:items-center p-0 sm:p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 w-full sm:max-w-md shadow-2xl border border-slate-100 flex flex-col gap-4"
+             style="padding-bottom: max(1.25rem, env(safe-area-inset-bottom));">
+            <!-- Header -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-800">הוסף אטרקציה ללו&quot;ז</h2>
+                        <p class="text-xs text-slate-500">אטרקציה חדשה שאינה חלק מהתוכנית המקורית</p>
+                    </div>
+                </div>
+                <button onclick="closeAddAttractionModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Time & Title -->
+            <div class="grid gap-3" style="grid-template-columns: auto 1fr;">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">שעה</label>
+                    <input type="time" id="newAttrTime" value="12:00"
+                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white font-mono text-center">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">שם האטרקציה / יעד <span class="text-red-500">*</span></label>
+                    <input type="text" id="newAttrTitle" placeholder="למשל: מוזיאון הקוקייה, אגם..."
+                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white"
+                        onkeypress="if(event.key==='Enter') saveNewAttraction()">
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">תיאור קצר (אופציונלי)</label>
+                <textarea id="newAttrDesc" rows="2" placeholder="מה מיוחד במקום? שעות פתיחה? טיפ?"
+                    class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white leading-relaxed resize-none"></textarea>
+            </div>
+
+            <!-- Icon & Color -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">סוג אטרקציה</label>
+                    <select id="newAttrIcon" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="fa-star">⭐ כללי</option>
+                        <option value="fa-tree">🌲 טבע</option>
+                        <option value="fa-mountain">⛰️ הרים</option>
+                        <option value="fa-water">💧 מים / שייט</option>
+                        <option value="fa-utensils">🍽️ מסעדה / אוכל</option>
+                        <option value="fa-ticket">🎟️ פארק / אטרקציה</option>
+                        <option value="fa-bag-shopping">🛍️ שופינג</option>
+                        <option value="fa-chess-rook">🏰 טירה / היסטוריה</option>
+                        <option value="fa-camera">📷 תצפית / נוף</option>
+                        <option value="fa-person-hiking">🥾 הליכה / טיול</option>
+                        <option value="fa-cart-shopping">🛒 קניות / סופר</option>
+                        <option value="fa-wine-glass">🍷 יין / פסטיבל</option>
+                        <option value="fa-pizza-slice">🍕 פיצה / איטלקי</option>
+                        <option value="fa-ship">⛵ שייט / סירה</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">צבע בלו&quot;ז</label>
+                    <select id="newAttrColor" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="teal">🟢 ירוק-כחול</option>
+                        <option value="emerald">🌿 ירוק</option>
+                        <option value="amber">🟡 צהוב-כתום</option>
+                        <option value="orange">🟠 כתום</option>
+                        <option value="rose">🌹 ורוד-אדום</option>
+                        <option value="sky">🔵 תכלת</option>
+                        <option value="indigo">💜 כחול כהה</option>
+                        <option value="purple">🟣 סגול</option>
+                        <option value="slate">⚫ אפור</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeAddAttractionModal()" class="flex-none px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
+                    ביטול
+                </button>
+                <button onclick="saveNewAttraction()" class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus"></i>
+                    הוסף ללו&quot;ז
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // 1. הגדרות API ומשתנים
@@ -1756,26 +1851,22 @@
         }
 
         function addItineraryItem(day) {
-            const time = prompt("שעה (למשל 10:00):", "12:00");
-            if (!time) return;
-            const title = prompt("כותרת היעד:", "יעד חדש");
-            if (!title) return;
-            const desc = prompt("תיאור קצר:", "");
-            
-            const data = getItineraryData();
-            if (!data[day]) data[day] = [];
-            data[day].push({
-                id: Date.now().toString(),
-                time: time,
-                title: title,
-                desc: desc || "",
-                icon: "fa-star",
-                color: "teal"
+            openAddAttractionModal(day);
+        }
+
+        // ==========================================
+        // Itinerary: find matching place GPS coords
+        // ==========================================
+        function findPlaceCoords(title) {
+            if (!title || typeof places === 'undefined') return null;
+            const lowerTitle = title.toLowerCase();
+            // Try to find a place whose name overlaps with the item title
+            const match = places.find(p => {
+                const pName = p.name.toLowerCase();
+                return pName.includes(lowerTitle.substring(0, Math.min(8, lowerTitle.length))) ||
+                       lowerTitle.includes(pName.substring(0, Math.min(8, pName.length)));
             });
-            // מיון לפי שעה
-            data[day].sort((a, b) => a.time.localeCompare(b.time));
-            saveItineraryData(data);
-            renderItinerary(day);
+            return match || null;
         }
 
         function renderItinerary(dayNumber) {
@@ -1788,7 +1879,6 @@
             if (activeBtn) {
                 activeBtn.classList.remove('bg-white', 'text-slate-600');
                 activeBtn.classList.add('bg-teal-700', 'text-white');
-                // Scroll button into view
                 activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
 
@@ -1796,50 +1886,104 @@
             const dayData = data[dayNumber] || [];
             const container = document.getElementById('itineraryContent');
             if (!container) return;
-            
-            if (dayData.length === 0 && !isItineraryEditMode) {
-                container.innerHTML = `<div class="text-center text-slate-500 py-10">אין תוכנית מוגדרת ליום זה.</div>`;
-                return;
+
+            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-4 pb-2">';
+
+            if (dayData.length === 0) {
+                html += `<div class="text-center text-slate-400 py-8 text-sm">אין תוכנית מוגדרת ליום זה. לחץ על הוסף אטרקציה!</div>`;
             }
 
-            let html = '<div class="relative border-r-2 border-teal-200 mr-3 pr-4 space-y-6 pb-4">';
             dayData.forEach((item, index) => {
                 const colorCode = item.color || 'teal';
+
+                // Resolve GPS coords from places data for nav buttons
+                const matchedPlace = findPlaceCoords(item.title);
+                const lat = matchedPlace ? matchedPlace.lat : null;
+                const lng = matchedPlace ? matchedPlace.lng : null;
+
+                const wazeUrl = lat
+                    ? `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`
+                    : `https://waze.com/ul?q=${encodeURIComponent(item.title)}&navigate=yes`;
+                const gmapsUrl = lat
+                    ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.title)}`;
+                const weatherLat = lat || 48.1;
+                const weatherLng = lng || 7.9;
+                const safeName = item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
                 html += `
                     <div class="relative group">
-                        <!-- Timeline node -->
-                        <div class="absolute -right-[23px] top-1 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
-                        <div class="bg-white rounded-xl p-3 shadow-sm border border-slate-100 flex gap-3 items-start animate-fade-in-up ${!isItineraryEditMode ? 'cursor-pointer hover:bg-slate-50 transition-colors' : ''}" style="animation-delay: ${index * 0.05}s" ${!isItineraryEditMode ? `onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.title)}', '_blank')"` : ''}>
-                            <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5 flex flex-col items-center">
-                                <i class="fa-solid ${item.icon} text-lg mb-1"></i>
-                                <span class="text-[10px] font-bold tracking-tighter">${item.time}</span>
+                        <!-- Timeline dot -->
+                        <div class="absolute -right-[23px] top-3 w-4 h-4 rounded-full bg-${colorCode}-500 border-4 border-slate-50 shadow-sm"></div>
+                        <!-- Card -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden animate-fade-in-up" style="animation-delay: ${index * 0.05}s">
+                            <!-- Card body -->
+                            <div class="flex gap-3 items-start p-3 ${!isItineraryEditMode ? 'cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-colors' : ''}" ${!isItineraryEditMode ? `onclick="window.open('${gmapsUrl}', '_blank')"` : ''}>
+                                <div class="bg-${colorCode}-50 text-${colorCode}-600 p-2.5 rounded-lg shrink-0 mt-0.5 flex flex-col items-center min-w-[44px]">
+                                    <i class="fa-solid ${item.icon} text-lg mb-1"></i>
+                                    <span class="text-[10px] font-bold tracking-tighter whitespace-nowrap">${item.time}</span>
+                                </div>
+                                <div class="flex-1 min-w-0 pt-0.5">
+                                    <h4 class="font-bold text-sm text-slate-800 mb-0.5 leading-tight">${item.title}</h4>
+                                    <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
+                                </div>
+                                ${isItineraryEditMode ? `
+                                    <button onclick="event.stopPropagation(); deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm" title="מחק">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                ` : ''}
                             </div>
-                            <div class="flex-1 min-w-0 pt-1">
-                                <h4 class="font-bold text-sm text-slate-800 mb-0.5 truncate">${item.title}</h4>
-                                <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
+                            <!-- Navigation buttons row (non-edit mode only) -->
+                            ${!isItineraryEditMode ? `
+                            <div class="grid grid-cols-4 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
+                                <a href="${wazeUrl}" target="_blank"
+                                   onclick="event.stopPropagation()"
+                                   class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
+                                   style="background-color:#0284c7 !important; color:#fff !important; text-decoration:none !important;">
+                                    <i class="fa-brands fa-waze text-[11px]" style="color:#fff !important"></i>
+                                    <span style="color:#fff !important">Waze</span>
+                                </a>
+                                <a href="${gmapsUrl}" target="_blank"
+                                   onclick="event.stopPropagation()"
+                                   class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
+                                   style="background-color:#1d4ed8 !important; color:#fff !important; text-decoration:none !important;">
+                                    <i class="fa-solid fa-location-arrow text-[11px]" style="color:#fff !important"></i>
+                                    <span style="color:#fff !important">Maps</span>
+                                </a>
+                                <button onclick="event.stopPropagation(); openWeatherModal('${safeName}', ${weatherLat}, ${weatherLng})"
+                                    class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-sm transition-all active:scale-95"
+                                    title="תחזית מזג אוויר">
+                                    <i class="fa-solid fa-cloud-sun text-[11px]"></i>
+                                    <span>מזג</span>
+                                </button>
+                                <button onclick="event.stopPropagation(); askAboutPlace('${safeName}')"
+                                    class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-sm transition-all active:scale-95"
+                                    title="שאל יועץ AI">
+                                    <i class="fa-solid fa-robot text-[11px]"></i>
+                                    <span>AI</span>
+                                </button>
                             </div>
-                            ${isItineraryEditMode ? `
-                                <button onclick="event.stopPropagation(); deleteItineraryItem(${dayNumber}, '${item.id}')" class="text-red-400 hover:text-red-600 bg-red-50 p-2 rounded-lg shrink-0 transition-colors shadow-sm">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            ` : `
-                                <button onclick="event.stopPropagation(); sendQuickPrompt('תן לי טיפים על ${item.title} ליום ${dayNumber}')" class="text-teal-500 hover:text-teal-700 bg-teal-50 hover:bg-teal-100 p-2 rounded-lg self-center shrink-0 border border-teal-100 transition-colors shadow-sm" title="שאל את ה-AI">
-                                    <i class="fa-solid fa-robot"></i>
-                                </button>
-                            `}
+                            ` : ''}
                         </div>
                     </div>
                 `;
             });
             html += '</div>';
 
+            // "Add Attraction" button — always visible
+            html += `
+                <div class="mt-3 px-1 pb-6">
+                    <button onclick="openAddAttractionModal(${dayNumber})"
+                        class="w-full bg-white hover:bg-teal-50 active:bg-teal-100 text-teal-600 font-bold text-sm py-3 rounded-xl border-2 border-dashed border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-plus text-teal-500"></i> הוסף אטרקציה ליום זה
+                    </button>
+                </div>
+            `;
+
             if (isItineraryEditMode) {
                 html += `
-                    <div class="flex flex-col gap-2 mt-4 px-2 pb-4">
-                        <button onclick="addItineraryItem(${dayNumber})" class="w-full bg-white hover:bg-slate-50 text-teal-600 font-bold text-sm py-3 rounded-xl border-2 border-dashed border-teal-200 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fa-solid fa-plus"></i> הוסף פעילות חדשה
-                        </button>
-                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2 rounded-xl transition-colors mt-2 shadow-sm">
+                    <div class="px-1 pb-4">
+                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-rotate-left"></i> איפוס לתוכנית המקורית מה-PDF
                         </button>
                     </div>
@@ -1847,6 +1991,63 @@
             }
 
             container.innerHTML = html;
+        }
+
+        // ==========================================
+        // Add Attraction Modal Functions
+        // ==========================================
+        let _addAttractionDay = 1;
+
+        function openAddAttractionModal(day) {
+            _addAttractionDay = day;
+            const modal = document.getElementById('addAttractionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Reset fields
+            document.getElementById('newAttrTime').value = '12:00';
+            document.getElementById('newAttrTitle').value = '';
+            document.getElementById('newAttrDesc').value = '';
+            document.getElementById('newAttrIcon').value = 'fa-star';
+            document.getElementById('newAttrColor').value = 'teal';
+            // Focus title field after short delay
+            setTimeout(() => document.getElementById('newAttrTitle').focus(), 150);
+        }
+
+        function closeAddAttractionModal() {
+            const modal = document.getElementById('addAttractionModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveNewAttraction() {
+            const time = document.getElementById('newAttrTime').value.trim();
+            const title = document.getElementById('newAttrTitle').value.trim();
+            const desc = document.getElementById('newAttrDesc').value.trim();
+            const icon = document.getElementById('newAttrIcon').value;
+            const color = document.getElementById('newAttrColor').value;
+
+            if (!title) {
+                document.getElementById('newAttrTitle').focus();
+                document.getElementById('newAttrTitle').classList.add('border-red-400', 'ring-1', 'ring-red-300');
+                setTimeout(() => document.getElementById('newAttrTitle').classList.remove('border-red-400', 'ring-1', 'ring-red-300'), 1500);
+                return;
+            }
+
+            const data = getItineraryData();
+            if (!data[_addAttractionDay]) data[_addAttractionDay] = [];
+            data[_addAttractionDay].push({
+                id: 'custom-' + Date.now().toString(),
+                time: time || '12:00',
+                title: title,
+                desc: desc || '',
+                icon: icon,
+                color: color
+            });
+            // Sort by time
+            data[_addAttractionDay].sort((a, b) => a.time.localeCompare(b.time));
+            saveItineraryData(data);
+            closeAddAttractionModal();
+            renderItinerary(_addAttractionDay);
         }
 
         function setListCategory(cat) {
