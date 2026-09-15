@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ashkenazi-trip-v10';
+const CACHE_NAME = 'ashkenazi-trip-v11';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -36,8 +36,11 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Skip caching for Google Gemini API, Open-Meteo & Live Currency API (always network)
-  if (url.hostname.includes('generativelanguage.googleapis.com') || url.hostname.includes('open-meteo.com') || url.hostname.includes('open.er-api.com')) {
+  // Skip caching for Google Gemini API, Open-Meteo, Geocoding & Live Currency API (always network)
+  if (url.hostname.includes('generativelanguage.googleapis.com') ||
+      url.hostname.includes('open-meteo.com') ||
+      url.hostname.includes('open.er-api.com') ||
+      url.hostname.includes('nominatim.openstreetmap.org')) {
     event.respondWith(
       fetch(event.request).catch(() => {
         return new Response(

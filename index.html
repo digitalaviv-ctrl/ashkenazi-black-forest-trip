@@ -287,8 +287,9 @@
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
             <select id="modelSelector"
                 class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-1.5-flash" selected>Gemini 1.5 Flash (מומלץ: יציב ומעמיק, טוב לרוב השאלות)</option>
-                <option value="gemini-1.5-pro">Gemini 1.5 Pro (מתקדם: חכם במיוחד, מעולה לניתוח תמונות או שאלות מורכבות)</option>
+                <option value="gemini-2.0-flash" selected>Gemini 2.0 Flash (הכי חדיש: מהיר, מעולה לעברית ותמונות)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (מומלץ ויציב: מכסה גבוהה, טוב לרוב השאלות)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (מתקדם: חכם במיוחד, מעולה לשאלות מורכבות)</option>
             </select>
         </div>
     </div>
@@ -431,8 +432,9 @@
                 <div class="flex items-center gap-2">
                     <select id="modelSelector-mobile"
                         class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
-                        <option value="gemini-1.5-flash">1.5 Flash (מהיר)</option>
-                        <option value="gemini-1.5-pro">1.5 Pro (חכם)</option>
+                        <option value="gemini-2.0-flash" selected>2.0 Flash (חדיש ומהיר)</option>
+                        <option value="gemini-1.5-flash">1.5 Flash (יציב)</option>
+                        <option value="gemini-1.5-pro">1.5 Pro (מתקדם)</option>
                     </select>
                     <button onclick="clearChat()" class="text-xs text-slate-300 px-2 py-1 rounded bg-slate-700">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -567,14 +569,13 @@
                     <button onclick="renderItinerary(9)" id="dayBtn-9" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">27/9<br><span class="text-[10px] font-normal">היסטוריה</span></button>
                     <button onclick="renderItinerary(10)" id="dayBtn-10" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">28/9<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
                     <button onclick="renderItinerary(11)" id="dayBtn-11" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">29/9<br><span class="text-[10px] font-normal">מפלי הריין וסיום</span></button>
+                <div id="itineraryHeaderActions" class="shrink-0 flex items-center gap-1.5">
+                    <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
+                        <i class="fa-solid fa-pen-to-square"></i> עריכה
+                    </button>
                 </div>
-                <button onclick="toggleItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
-                    <i class="fa-solid fa-pen-to-square"></i> עריכה
-                </button>
             </div>
-            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-2 space-y-4 pb-10">
-                <!-- Day content injected here via JS -->
-            </div>
+            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-2 space-y-4 pb-10"></div>
         </section>
 
         <!-- TAB 5: Waiter Dietary & Allergy Cards (Fullscreen optimized for mobile) -->
@@ -743,7 +744,7 @@
                         <i class="fa-solid fa-cloud-sun"></i>
                     </div>
                     <div>
-                        <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לשבוע הקרוב (°C)</h2>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לטיול: 19/9 - 29/9/2026 (°C)</h2>
                         <p id="weatherPlaceSubtitle"
                             class="text-xs text-teal-700 font-semibold flex items-center gap-1">
                             <i class="fa-solid fa-location-dot text-rose-500"></i>
@@ -1010,6 +1011,44 @@
                             <option value="en">🇬🇧 אנגלית</option>
                         </select>
                     </div>
+                <!-- Photo Menu & Sign Translation Feature (Vision) -->
+                <div class="bg-gradient-to-r from-amber-50/80 to-indigo-50/80 border border-indigo-200/70 rounded-2xl p-3 flex flex-col gap-2 shadow-2xs">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
+                            <i class="fa-solid fa-camera text-indigo-600"></i>
+                            <span>תרגום תפריט או שלט מצילום 📷</span>
+                        </span>
+                        <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-sparkles text-amber-500"></i> Vision OCR
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label for="menuPhotoCameraInput"
+                            class="cursor-pointer bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>צלם במצלמה</span>
+                            <input type="file" id="menuPhotoCameraInput" class="hidden" accept="image/*" capture="environment" onchange="handleMenuPhotoUpload(event)">
+                        </label>
+                        <label for="menuPhotoGalleryInput"
+                            class="cursor-pointer bg-white hover:bg-indigo-50 active:scale-95 text-indigo-700 border border-indigo-200 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                            <i class="fa-solid fa-image"></i>
+                            <span>בחר מהגלריה</span>
+                            <input type="file" id="menuPhotoGalleryInput" class="hidden" accept="image/*" onchange="handleMenuPhotoUpload(event)">
+                        </label>
+                    </div>
+                    <!-- Photo preview if uploaded -->
+                    <div id="menuPhotoPreview" class="hidden items-center justify-between bg-white p-2 rounded-xl border border-indigo-100 mt-1 shadow-2xs">
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <img id="menuPhotoThumb" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0" src="" alt="תמונת תפריט">
+                            <div class="text-xs text-slate-700 truncate">
+                                <span class="font-bold block text-slate-900 truncate" id="menuPhotoFileName">תמונת תפריט נטענה</span>
+                                <span class="text-[10px] text-emerald-600 font-semibold">✓ מוכנה לתרגום מלא בלחיצה</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="clearMenuPhoto()" class="text-red-400 hover:text-red-600 p-1.5 text-sm" title="הסר תמונה">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Input Textarea -->
@@ -1115,21 +1154,21 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ADD ATTRACTION MODAL -->
+    <!-- ADD ATTRACTION & PLACE MODAL (Unified Sync) -->
     <!-- ========================================== -->
     <div id="addAttractionModal"
         class="hidden fixed inset-0 bg-slate-900/60 z-[1000] justify-center items-end sm:items-center p-0 sm:p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 w-full sm:max-w-md shadow-2xl border border-slate-100 flex flex-col gap-4"
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 w-full sm:max-w-lg shadow-2xl border border-slate-100 flex flex-col gap-3.5 max-h-[92vh] overflow-y-auto"
              style="padding-bottom: max(1.25rem, env(safe-area-inset-bottom));">
             <!-- Header -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
+            <div class="flex items-center justify-between border-b pb-2.5">
+                <div class="flex items-center gap-2.5">
                     <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-calendar-plus"></i>
+                        <i class="fa-solid fa-map-location-dot"></i>
                     </div>
                     <div>
-                        <h2 class="text-base font-bold text-slate-800">הוסף אטרקציה ללו&quot;ז</h2>
-                        <p class="text-xs text-slate-500">אטרקציה חדשה שאינה חלק מהתוכנית המקורית</p>
+                        <h2 class="text-base font-bold text-slate-800">הוספת אטרקציה ויעד חדש ✨</h2>
+                        <p class="text-[11px] text-slate-500">מתעדכן אוטומטית בלו&quot;ז, במפה וברשימת היעדים</p>
                     </div>
                 </div>
                 <button onclick="closeAddAttractionModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
@@ -1137,52 +1176,122 @@
                 </button>
             </div>
 
-            <!-- Time & Title -->
-            <div class="grid gap-3" style="grid-template-columns: auto 1fr;">
+            <!-- Day & Time Row -->
+            <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">שעה</label>
-                    <input type="time" id="newAttrTime" value="12:00"
-                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white font-mono text-center">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">יום בלו&quot;ז</label>
+                    <select id="newAttrDaySelect" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="1">יום 1: 19/9 (נחיתה והתאקלמות)</option>
+                        <option value="2">יום 2: 20/9 (טבע גועש)</option>
+                        <option value="3">יום 3: 21/9 (פסגות ואגם)</option>
+                        <option value="4">יום 4: 22/9 (חיות ואגדות)</option>
+                        <option value="5">יום 5: 23/9 (צמרות ופרייבורג)</option>
+                        <option value="6">יום 6: 24/9 (מעבר לאלזס)</option>
+                        <option value="7">יום 7: 25/9 (שופינג וקסם)</option>
+                        <option value="8">יום 8: 26/9 (אבירים ויין)</option>
+                        <option value="9">יום 9: 27/9 (היסטוריה)</option>
+                        <option value="10">יום 10: 28/9 (פארק אירופה)</option>
+                        <option value="11">יום 11: 29/9 (מפלי הריין וסיום)</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">שם האטרקציה / יעד <span class="text-red-500">*</span></label>
-                    <input type="text" id="newAttrTitle" placeholder="למשל: מוזיאון הקוקייה, אגם..."
-                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white"
-                        onkeypress="if(event.key==='Enter') saveNewAttraction()">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">שעה בלו&quot;ז</label>
+                    <input type="time" id="newAttrTime" value="12:00"
+                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono font-bold text-center focus:outline-none focus:border-teal-500 bg-white">
+                </div>
+            </div>
+
+            <!-- Title & Name -->
+            <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">שם האטרקציה / יעד <span class="text-red-500">*</span></label>
+                <input type="text" id="newAttrTitle" placeholder="למשל: מגלשות הרים, פארק חבלים, מסעדה..."
+                    class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white">
+            </div>
+
+            <!-- Automatic Address Search & Geocoding -->
+            <div class="relative bg-teal-50/50 p-2.5 rounded-2xl border border-teal-200/80">
+                <label class="block text-xs font-bold text-teal-900 mb-1 flex items-center justify-between">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-500"></i> איתור כתובת ומיקום GPS במפה (אוטומטי)</span>
+                    <span class="text-[10px] text-teal-600 font-normal">לחיפוש: שם מקום או כתובת</span>
+                </label>
+                <div class="flex gap-1.5">
+                    <input type="text" id="newAttrAddressSearch" placeholder="הקלד כתובת או עיר (למשל: Titisee, Europa-Park, Freiburg)..."
+                        class="flex-1 border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500 bg-white"
+                        onkeypress="if(event.key==='Enter') { event.preventDefault(); searchAddressForNewAttr(); }">
+                    <button type="button" onclick="searchAddressForNewAttr()" id="newAttrSearchBtn"
+                        class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all flex items-center gap-1 shadow-2xs">
+                        <i class="fa-solid fa-magnifying-glass" id="newAttrSearchIcon"></i>
+                        <span>חפש</span>
+                    </button>
+                </div>
+                <!-- Autocomplete results dropdown -->
+                <div id="newAttrSearchResults" class="hidden absolute left-2 right-2 z-50 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 max-h-40 overflow-y-auto divide-y divide-slate-100 text-xs"></div>
+
+                <!-- Found location badge -->
+                <div id="newAttrFoundLocation" class="hidden mt-2 bg-white border border-teal-300 p-2 rounded-xl text-xs text-teal-900 flex items-center justify-between shadow-2xs">
+                    <div class="flex items-center gap-1.5 truncate">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                        <span id="newAttrFoundText" class="truncate font-semibold text-slate-800"></span>
+                    </div>
+                    <button type="button" onclick="clearNewAttrFoundLocation()" class="text-slate-400 hover:text-red-500 text-xs px-1 font-bold">✕</button>
+                </div>
+                <input type="hidden" id="newAttrLat" value="">
+                <input type="hidden" id="newAttrLng" value="">
+                <input type="hidden" id="newAttrAddress" value="">
+            </div>
+
+            <!-- Category & Region -->
+            <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">קטגוריה</label>
+                    <select id="newAttrCategory" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="green">🌲 טבע ואטרקציות</option>
+                        <option value="orange">🍽️ מסעדות ואוכל</option>
+                        <option value="red">🛒 סופרים גדולים למעברים</option>
+                        <option value="violet">🛍️ סופרים שוטפים / קניות</option>
+                        <option value="blue">🏨 דירות לינה ומלונות</option>
+                        <option value="shopping">🛍️ שופינג וקניונים</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">אזור גיאוגרפי</label>
+                    <select id="newAttrRegion" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="south">🌲 דרום (עוגן פאלקאו)</option>
+                        <option value="north">🥨 צפון ואלזס (עוגן שוואנאו)</option>
+                        <option value="swiss">🇨🇭 שווייץ בדרך</option>
+                    </select>
                 </div>
             </div>
 
             <!-- Description -->
             <div>
-                <label class="block text-xs font-bold text-slate-500 mb-1">תיאור קצר (אופציונלי)</label>
-                <textarea id="newAttrDesc" rows="2" placeholder="מה מיוחד במקום? שעות פתיחה? טיפ?"
-                    class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white leading-relaxed resize-none"></textarea>
+                <label class="block text-xs font-bold text-slate-600 mb-1">תיאור קצר או טיפים (אופציונלי)</label>
+                <textarea id="newAttrDesc" rows="2" placeholder="מה מיוחד במקום? טיפים? שעות פעילות?"
+                    class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white leading-relaxed resize-none"></textarea>
             </div>
 
             <!-- Icon & Color -->
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">סוג אטרקציה</label>
-                    <select id="newAttrIcon" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 bg-white">
-                        <option value="fa-star">⭐ כללי</option>
-                        <option value="fa-tree">🌲 טבע</option>
-                        <option value="fa-mountain">⛰️ הרים</option>
-                        <option value="fa-water">💧 מים / שייט</option>
-                        <option value="fa-utensils">🍽️ מסעדה / אוכל</option>
-                        <option value="fa-ticket">🎟️ פארק / אטרקציה</option>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">אייקון תצוגה</label>
+                    <select id="newAttrIcon" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="fa-star">⭐ כוכב (כללי)</option>
+                        <option value="fa-tree">🌲 יער וטבע</option>
+                        <option value="fa-mountain">⛰️ הרים ותצפית</option>
+                        <option value="fa-water">💧 מים ומפלים</option>
+                        <option value="fa-utensils">🍽️ מסעדה ואוכל</option>
+                        <option value="fa-ticket">🎟️ פארק שעשועים</option>
                         <option value="fa-bag-shopping">🛍️ שופינג</option>
-                        <option value="fa-chess-rook">🏰 טירה / היסטוריה</option>
-                        <option value="fa-camera">📷 תצפית / נוף</option>
-                        <option value="fa-person-hiking">🥾 הליכה / טיול</option>
-                        <option value="fa-cart-shopping">🛒 קניות / סופר</option>
-                        <option value="fa-wine-glass">🍷 יין / פסטיבל</option>
-                        <option value="fa-pizza-slice">🍕 פיצה / איטלקי</option>
-                        <option value="fa-ship">⛵ שייט / סירה</option>
+                        <option value="fa-chess-rook">🏰 טירה עתיקה</option>
+                        <option value="fa-person-hiking">🥾 מסלול הליכה</option>
+                        <option value="fa-cart-shopping">🛒 סופרמרקט</option>
+                        <option value="fa-ship">⛵ שייט בסירה</option>
+                        <option value="fa-camera">📷 אתר צילום</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">צבע בלו&quot;ז</label>
-                    <select id="newAttrColor" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 bg-white">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">צבע בלו&quot;ז</label>
+                    <select id="newAttrColor" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
                         <option value="teal">🟢 ירוק-כחול</option>
                         <option value="emerald">🌿 ירוק</option>
                         <option value="amber">🟡 צהוב-כתום</option>
@@ -1196,14 +1305,20 @@
                 </div>
             </div>
 
+            <!-- Sync Checkbox -->
+            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 cursor-pointer select-none">
+                <input type="checkbox" id="newAttrSyncAll" checked class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4">
+                <span>סנכרן והוסף אוטומטית גם למפה ולרשימת היעדים והניווט 📍</span>
+            </label>
+
             <!-- Action Buttons -->
             <div class="flex gap-2 pt-1">
-                <button onclick="closeAddAttractionModal()" class="flex-none px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-200 transition-colors">
+                <button type="button" onclick="closeAddAttractionModal()" class="flex-none px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors">
                     ביטול
                 </button>
-                <button onclick="saveNewAttraction()" class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-plus"></i>
-                    הוסף ללו&quot;ז
+                <button type="button" onclick="saveNewAttraction()" class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs">
+                    <i class="fa-solid fa-check"></i>
+                    <span>הוסף ללו&quot;ז, למפה וליעדים ✨</span>
                 </button>
             </div>
         </div>
@@ -1348,7 +1463,7 @@
         // ==========================================
         // 2. נתוני המקומות (Places Data) - 42 Locations with Regions
         // ==========================================
-        const places = [
+        let places = [
             // שדה תעופה וטיסות בשווייץ (תכלת/מטוס - airport)
             { id: 1, name: "שדה תעופה ציריך (ZRH)", region: "swiss", category: "airport", catName: "שדה תעופה וטיסות", lat: 47.4582, lng: 8.5555, desc: "שער הכניסה והיציאה של הטיול! איסוף והחזרת רכב קודיאק (נחיתה 19/9 12:15, המראה 29/9 20:50)" },
 
@@ -1433,6 +1548,35 @@
             { id: 45, name: "אאוטלט רופנהיים (Roppenheim The Style Outlets)", region: "north", category: "shopping", catName: "אאוטלט", lat: 48.8475, lng: 8.0531, desc: "כפר קניות ענק ומרהיב בסגנון כפר אלזסי על גבול צרפת-גרמניה" },
             { id: 46, name: "קניון LAGO קונסטנץ (LAGO Konstanz)", region: "south", category: "shopping", catName: "קניון", lat: 47.6586, lng: 9.1738, desc: "קניון ענק ומודרני בקונסטנץ קרוב לגבול השווייצרי בדרום" }
         ];
+
+        function loadCustomPlaces() {
+            try {
+                const saved = localStorage.getItem('blackForestCustomPlaces');
+                if (saved) {
+                    const custom = JSON.parse(saved);
+                    if (Array.isArray(custom)) {
+                        custom.forEach(cp => {
+                            if (!places.some(p => p.id === cp.id || (p.name === cp.name && Math.abs(p.lat - cp.lat) < 0.001))) {
+                                places.push(cp);
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to load custom places', e);
+            }
+        }
+
+        function saveCustomPlace(place) {
+            places.push(place);
+            try {
+                let saved = JSON.parse(localStorage.getItem('blackForestCustomPlaces') || '[]');
+                saved.push(place);
+                localStorage.setItem('blackForestCustomPlaces', JSON.stringify(saved));
+            } catch (e) {
+                console.warn('Failed to save custom place', e);
+            }
+        }
 
         // ==========================================
         // 3. אתחול מפה (Leaflet) + GPS מיקום משתמש
@@ -1877,8 +2021,13 @@
 
         let currentItineraryDay = 1;
         let isItineraryEditMode = false;
+        let stagedItineraryData = null;
+        let backupItineraryData = null;
 
         function getItineraryData() {
+            if (isItineraryEditMode && stagedItineraryData) {
+                return stagedItineraryData;
+            }
             const saved = localStorage.getItem('blackForestItinerary');
             if (saved) {
                 return JSON.parse(saved);
@@ -1887,29 +2036,78 @@
         }
 
         function saveItineraryData(data) {
+            if (isItineraryEditMode) {
+                stagedItineraryData = data;
+                return;
+            }
             localStorage.setItem('blackForestItinerary', JSON.stringify(data));
         }
 
         function resetItineraryData() {
-            if (confirm("האם אתה בטוח שברצונך לאפס את כל הלו\"ז לתוכנית המקורית?")) {
+            if (confirm("האם אתה בטוח שברצונך לאפס את כל הלו\"ז לתוכנית המקורית מה-PDF?")) {
                 localStorage.removeItem('blackForestItinerary');
+                stagedItineraryData = null;
+                backupItineraryData = null;
+                isItineraryEditMode = false;
+                updateItineraryEditHeader();
                 renderItinerary(currentItineraryDay);
             }
         }
 
-        function toggleItineraryEditMode() {
-            isItineraryEditMode = !isItineraryEditMode;
-            const btn = document.getElementById('editItineraryBtn');
-            if (isItineraryEditMode) {
-                btn.classList.replace('bg-amber-100', 'bg-amber-600');
-                btn.classList.replace('text-amber-700', 'text-white');
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> סיום עריכה';
-            } else {
-                btn.classList.replace('bg-amber-600', 'bg-amber-100');
-                btn.classList.replace('text-white', 'text-amber-700');
-                btn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> עריכה';
-            }
+        function startItineraryEditMode() {
+            isItineraryEditMode = true;
+            backupItineraryData = JSON.parse(JSON.stringify(getItineraryData()));
+            stagedItineraryData = JSON.parse(JSON.stringify(backupItineraryData));
+            updateItineraryEditHeader();
             renderItinerary(currentItineraryDay);
+        }
+
+        function saveItineraryEdit() {
+            if (stagedItineraryData) {
+                localStorage.setItem('blackForestItinerary', JSON.stringify(stagedItineraryData));
+            }
+            isItineraryEditMode = false;
+            stagedItineraryData = null;
+            backupItineraryData = null;
+            updateItineraryEditHeader();
+            renderItinerary(currentItineraryDay);
+        }
+
+        function cancelItineraryEdit() {
+            isItineraryEditMode = false;
+            stagedItineraryData = null;
+            backupItineraryData = null;
+            updateItineraryEditHeader();
+            renderItinerary(currentItineraryDay);
+        }
+
+        function updateItineraryEditHeader() {
+            const container = document.getElementById('itineraryHeaderActions');
+            if (!container) return;
+            if (isItineraryEditMode) {
+                container.innerHTML = `
+                    <button onclick="saveItineraryEdit()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1 active:scale-95" title="שמור את כל השינויים בלו&quot;ז">
+                        <i class="fa-solid fa-check"></i> שמור שינויים
+                    </button>
+                    <button onclick="cancelItineraryEdit()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1 active:scale-95" title="בטל את כל השינויים שביצעת בעריכה זו">
+                        <i class="fa-solid fa-xmark"></i> ביטול
+                    </button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
+                        <i class="fa-solid fa-pen-to-square"></i> עריכה
+                    </button>
+                `;
+            }
+        }
+
+        function toggleItineraryEditMode() {
+            if (isItineraryEditMode) {
+                saveItineraryEdit();
+            } else {
+                startItineraryEditMode();
+            }
         }
 
         function deleteItineraryItem(day, id) {
@@ -2290,22 +2488,31 @@
         }
 
         // ==========================================
-        // Add Attraction Modal Functions
+        // Add Attraction Modal & Address Geocoding Functions
         // ==========================================
         let _addAttractionDay = 1;
 
         function openAddAttractionModal(day) {
-            _addAttractionDay = day;
+            _addAttractionDay = day || currentItineraryDay || 1;
             const modal = document.getElementById('addAttractionModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            // Reset fields
+
+            const daySelect = document.getElementById('newAttrDaySelect');
+            if (daySelect) daySelect.value = _addAttractionDay.toString();
             document.getElementById('newAttrTime').value = '12:00';
             document.getElementById('newAttrTitle').value = '';
             document.getElementById('newAttrDesc').value = '';
             document.getElementById('newAttrIcon').value = 'fa-star';
             document.getElementById('newAttrColor').value = 'teal';
-            // Focus title field after short delay
+            document.getElementById('newAttrCategory').value = 'green';
+            document.getElementById('newAttrRegion').value = 'south';
+            document.getElementById('newAttrAddressSearch').value = '';
+            document.getElementById('newAttrLat').value = '';
+            document.getElementById('newAttrLng').value = '';
+            document.getElementById('newAttrAddress').value = '';
+            clearNewAttrFoundLocation();
+
             setTimeout(() => document.getElementById('newAttrTitle').focus(), 150);
         }
 
@@ -2313,14 +2520,127 @@
             const modal = document.getElementById('addAttractionModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            const resDiv = document.getElementById('newAttrSearchResults');
+            if (resDiv) resDiv.classList.add('hidden');
+        }
+
+        function clearNewAttrFoundLocation() {
+            const box = document.getElementById('newAttrFoundLocation');
+            if (box) box.classList.add('hidden');
+            document.getElementById('newAttrLat').value = '';
+            document.getElementById('newAttrLng').value = '';
+            document.getElementById('newAttrAddress').value = '';
+        }
+
+        async function searchAddressForNewAttr() {
+            const input = document.getElementById('newAttrAddressSearch');
+            const query = (input?.value || '').trim();
+            if (!query) {
+                input?.focus();
+                return;
+            }
+
+            const icon = document.getElementById('newAttrSearchIcon');
+            if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
+
+            const resultsDiv = document.getElementById('newAttrSearchResults');
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.innerHTML = '<div class="p-3 text-center text-slate-400 font-medium">מחפש מיקום...</div>';
+
+            try {
+                // 1. Try Open-Meteo Geocoding
+                const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=en&format=json`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data && data.results && data.results.length > 0) {
+                    resultsDiv.innerHTML = data.results.map(r => {
+                        const sub = [r.admin1, r.country].filter(Boolean).join(', ');
+                        const safeName = r.name.replace(/'/g, "\\'");
+                        const safeSub = sub.replace(/'/g, "\\'");
+                        return `
+                            <div class="p-2.5 hover:bg-teal-50 cursor-pointer transition-colors text-right"
+                                 onclick="selectNewAttrLocation('${safeName}', ${r.latitude}, ${r.longitude}, '${safeSub}')">
+                                <strong class="block text-slate-800">${r.name}</strong>
+                                <span class="text-[10px] text-slate-500">${sub} (${r.latitude.toFixed(3)}, ${r.longitude.toFixed(3)})</span>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    // 2. Fallback to OpenStreetMap Nominatim
+                    const nomUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=4`;
+                    const nomRes = await fetch(nomUrl, { headers: { 'Accept-Language': 'de,en,he' } });
+                    const nomData = await nomRes.json();
+                    if (nomData && nomData.length > 0) {
+                        resultsDiv.innerHTML = nomData.map(r => {
+                            const shortName = r.display_name.split(',')[0];
+                            const safeShort = shortName.replace(/'/g, "\\'");
+                            const safeFull = r.display_name.replace(/'/g, "\\'");
+                            return `
+                                <div class="p-2.5 hover:bg-teal-50 cursor-pointer transition-colors text-right"
+                                     onclick="selectNewAttrLocation('${safeShort}', ${r.lat}, ${r.lon}, '${safeFull}')">
+                                    <strong class="block text-slate-800 truncate">${shortName}</strong>
+                                    <span class="text-[10px] text-slate-500 truncate block">${r.display_name}</span>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        resultsDiv.innerHTML = '<div class="p-3 text-center text-slate-500 text-xs">לא נמצאו תוצאות. נסו שם עיר או יעד באנגלית (למשל: Titisee, Europa-Park).</div>';
+                    }
+                }
+            } catch (e) {
+                console.warn('Geocoding error', e);
+                resultsDiv.innerHTML = '<div class="p-3 text-center text-red-500 text-xs">שגיאה באיתור הכתובת. אנא נסו שוב.</div>';
+            } finally {
+                if (icon) icon.className = 'fa-solid fa-magnifying-glass';
+            }
+        }
+
+        function selectNewAttrLocation(name, lat, lng, fullAddress) {
+            document.getElementById('newAttrSearchResults').classList.add('hidden');
+            document.getElementById('newAttrLat').value = lat;
+            document.getElementById('newAttrLng').value = lng;
+            document.getElementById('newAttrAddress').value = fullAddress || name;
+
+            const titleIn = document.getElementById('newAttrTitle');
+            if (!titleIn.value.trim()) {
+                titleIn.value = name;
+            }
+
+            const foundBox = document.getElementById('newAttrFoundLocation');
+            const foundText = document.getElementById('newAttrFoundText');
+            if (foundBox && foundText) {
+                foundText.innerText = `${name} (${parseFloat(lat).toFixed(3)}, ${parseFloat(lng).toFixed(3)})`;
+                foundBox.classList.remove('hidden');
+            }
+
+            // Auto infer region
+            const regionSelect = document.getElementById('newAttrRegion');
+            if (regionSelect) {
+                const fLat = parseFloat(lat);
+                if (fLat < 47.7 || (fullAddress && fullAddress.includes('Switzerland'))) {
+                    regionSelect.value = 'swiss';
+                } else if (fLat < 48.05) {
+                    regionSelect.value = 'south';
+                } else {
+                    regionSelect.value = 'north';
+                }
+            }
         }
 
         function saveNewAttraction() {
+            const day = parseInt(document.getElementById('newAttrDaySelect')?.value || _addAttractionDay || '1', 10);
             const time = document.getElementById('newAttrTime').value.trim();
             const title = document.getElementById('newAttrTitle').value.trim();
             const desc = document.getElementById('newAttrDesc').value.trim();
             const icon = document.getElementById('newAttrIcon').value;
             const color = document.getElementById('newAttrColor').value;
+            const category = document.getElementById('newAttrCategory')?.value || 'green';
+            const region = document.getElementById('newAttrRegion')?.value || 'south';
+            const latStr = document.getElementById('newAttrLat')?.value;
+            const lngStr = document.getElementById('newAttrLng')?.value;
+            const address = document.getElementById('newAttrAddress')?.value || '';
+            const syncAll = document.getElementById('newAttrSyncAll')?.checked;
 
             if (!title) {
                 document.getElementById('newAttrTitle').focus();
@@ -2329,8 +2649,12 @@
                 return;
             }
 
+            const lat = latStr ? parseFloat(latStr) : null;
+            const lng = lngStr ? parseFloat(lngStr) : null;
+
+            // 1. Add to Itinerary
             const data = getItineraryData();
-            if (!data[_addAttractionDay]) data[_addAttractionDay] = [];
+            if (!data[day]) data[day] = [];
 
             const newItem = {
                 id: 'custom-' + Date.now().toString(),
@@ -2338,11 +2662,13 @@
                 title: title,
                 desc: desc || '',
                 icon: icon,
-                color: color
+                color: color,
+                lat: lat,
+                lng: lng,
+                address: address
             };
 
-            // Insert while preserving custom order
-            const dayList = data[_addAttractionDay];
+            const dayList = data[day];
             const insertIdx = dayList.findIndex(item => item.time > newItem.time);
             if (insertIdx === -1) {
                 dayList.push(newItem);
@@ -2351,8 +2677,38 @@
             }
 
             saveItineraryData(data);
+
+            // 2. Sync to Map and Places List if requested
+            if (syncAll) {
+                const categoryNames = {
+                    green: 'טבע ואטרקציות',
+                    orange: 'מסעדה ואוכל',
+                    red: 'סופרים גדולים למעברים',
+                    violet: 'סופרמרקט וקניות',
+                    blue: 'דירות לינה ומלונות',
+                    shopping: 'שופינג'
+                };
+
+                const newPlace = {
+                    id: 'custom-p-' + Date.now(),
+                    name: title,
+                    region: region,
+                    category: category,
+                    catName: categoryNames[category] || 'אטרקציה מותאמת אישית',
+                    lat: lat !== null ? lat : 47.95,
+                    lng: lng !== null ? lng : 8.10,
+                    address: address || '',
+                    desc: desc || 'נוסף ידנית לתוכנית הטיול של משפחת אשכנזי',
+                    isCustom: true
+                };
+
+                saveCustomPlace(newPlace);
+                renderMapMarkers();
+                renderPlacesList();
+            }
+
             closeAddAttractionModal();
-            renderItinerary(_addAttractionDay);
+            renderItinerary(day);
         }
 
         function setListCategory(cat) {
@@ -2421,9 +2777,7 @@
                 renderPlacesList();
             } else if (tabName === 'itinerary') {
                 document.getElementById('panel-itinerary').classList.remove('hidden');
-                if (!document.querySelector('#itineraryContent').innerHTML.trim()) {
-                    renderItinerary(1);
-                }
+                renderItinerary(currentItineraryDay || 1);
             } else if (tabName === 'waiter') {
                 document.getElementById('panel-waiter').classList.remove('hidden');
             }
@@ -2829,7 +3183,31 @@
                 const todayStr = new Date().toISOString().split('T')[0];
                 let rainyDaysCount = 0;
 
-                const cardsHtml = data.daily.time.map((dateStr, i) => {
+                const tripStart = '2026-09-19';
+                const tripEnd = '2026-09-29';
+
+                // Effective start date is tripStart unless current date is already within or past tripStart
+                const effectiveStart = (todayStr > tripStart) ? todayStr : tripStart;
+
+                // Find matching forecast indices for the trip
+                let activeIndices = [];
+                data.daily.time.forEach((dateStr, i) => {
+                    if (dateStr >= effectiveStart && dateStr <= tripEnd) {
+                        activeIndices.push(i);
+                    }
+                });
+
+                // Fallback if current system date is outside trip forecast window (e.g. testing)
+                if (activeIndices.length === 0) {
+                    data.daily.time.forEach((dateStr, i) => {
+                        if (dateStr >= todayStr && activeIndices.length < 11) {
+                            activeIndices.push(i);
+                        }
+                    });
+                }
+
+                const cardsHtml = activeIndices.map(i => {
+                    const dateStr = data.daily.time[i];
                     const dateObj = new Date(dateStr);
                     const dayOfWeek = hebrewDayNames[dateObj.getDay()];
                     const formattedDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}`;
@@ -2978,21 +3356,76 @@
             executeTranslation();
         }
 
+        let currentMenuPhoto = null;
+
+        function handleMenuPhotoUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const fullDataUrl = e.target.result;
+                const base64Clean = fullDataUrl.split(',')[1];
+                const mimeType = file.type || 'image/jpeg';
+
+                currentMenuPhoto = {
+                    data: base64Clean,
+                    mimeType: mimeType,
+                    name: file.name
+                };
+
+                const previewEl = document.getElementById('menuPhotoPreview');
+                const thumbEl = document.getElementById('menuPhotoThumb');
+                const nameEl = document.getElementById('menuPhotoFileName');
+
+                if (thumbEl) thumbEl.src = fullDataUrl;
+                if (nameEl) nameEl.innerText = file.name || 'תמונת תפריט נטענה';
+                if (previewEl) previewEl.classList.remove('hidden');
+
+                const inputEl = document.getElementById('translatorInputText');
+                if (inputEl && !inputEl.value.trim()) {
+                    inputEl.placeholder = 'תמונה נטענה! לחצו על "תרגם עכשיו" או הוסיפו שאלה ספציפית כאן...';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearMenuPhoto() {
+            currentMenuPhoto = null;
+            const camInput = document.getElementById('menuPhotoCameraInput');
+            const galInput = document.getElementById('menuPhotoGalleryInput');
+            const previewEl = document.getElementById('menuPhotoPreview');
+            const thumbEl = document.getElementById('menuPhotoThumb');
+            const inputEl = document.getElementById('translatorInputText');
+
+            if (camInput) camInput.value = '';
+            if (galInput) galInput.value = '';
+            if (previewEl) previewEl.classList.add('hidden');
+            if (thumbEl) thumbEl.src = '';
+            if (inputEl) inputEl.placeholder = 'הקלידו או הדביקו טקסט (למשל: תפריט במסעדה, שלט, או בקשה)...';
+        }
+
         function clearTranslatorInput() {
             const inputEl = document.getElementById('translatorInputText');
             const resultContainer = document.getElementById('translatorResultContainer');
             if (inputEl) inputEl.value = '';
             if (resultContainer) resultContainer.classList.add('hidden');
+            clearMenuPhoto();
             lastTranslatedText = '';
         }
 
         async function executeTranslation() {
             const inputEl = document.getElementById('translatorInputText');
             const text = (inputEl?.value || '').trim();
-            if (!text) return;
 
-            const fromLang = document.getElementById('translateFromLang')?.value || 'he';
-            const toLang = document.getElementById('translateToLang')?.value || 'de';
+            if (!text && !currentMenuPhoto) {
+                alert('אנא הזינו טקסט או צלמו/העלו תמונה של תפריט או שלט לתרגום.');
+                if (inputEl) inputEl.focus();
+                return;
+            }
+
+            const fromLang = document.getElementById('translateFromLang')?.value || 'de';
+            const toLang = document.getElementById('translateToLang')?.value || 'he';
 
             const actionBtn = document.getElementById('translateActionBtn');
             const resultContainer = document.getElementById('translatorResultContainer');
@@ -3000,12 +3433,37 @@
 
             const originalBtnHtml = actionBtn.innerHTML;
             actionBtn.disabled = true;
-            actionBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> מתרגם...`;
+            actionBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentMenuPhoto ? 'מפענח ומנתח תמונה...' : 'מתרגם...'}`;
 
             const srcName = langNameMapping[fromLang] || fromLang;
             const targetName = langNameMapping[toLang] || toLang;
 
-            const prompt = `You are a professional, highly accurate translator for tourists in Germany, France, and Switzerland.
+            let prompt = '';
+            let contentsParts = [];
+
+            if (currentMenuPhoto) {
+                prompt = `You are a culinary and travel expert translator for an Israeli family vacationing in the Black Forest (Germany), Alsace (France), and Switzerland.
+Analyze this photo (restaurant menu, food label, or street sign) carefully.
+Extract and translate all food items, dish descriptions, ingredients, and prices into ${targetName} (${toLang === 'he' ? 'עברית ברורה וידידותית' : 'English'}).
+
+Special family instructions:
+1. Clearly mark vegetarian options with a 🌱 emoji (the 14-year-old daughter is vegetarian).
+2. Flag any dishes containing pork (חזיר), beef, or coriander/cilantro (the mother strongly hates cilantro!).
+3. Keep the original German/French dish name in parentheses alongside the translation so the family can point to it when ordering.
+4. If there are prices, note them in € or CHF.
+5. If the user provided additional notes or questions, answer them: "${text}"
+
+Format your response cleanly with clear section headings, dish names in bold, descriptions, and bullet points.`;
+
+                contentsParts.push({ text: prompt });
+                contentsParts.push({
+                    inlineData: {
+                        mimeType: currentMenuPhoto.mimeType,
+                        data: currentMenuPhoto.data
+                    }
+                });
+            } else {
+                prompt = `You are a professional, highly accurate translator for tourists in Germany, France, and Switzerland.
 Translate the following travel text directly from ${srcName} to ${targetName}.
 Focus on natural, respectful, and clear phrasing suitable for restaurants, road signs, hotel receptions, and travel conversations.
 If it's food or dietary (e.g., vegetarian, no coriander), ensure absolute culinary accuracy.
@@ -3013,9 +3471,11 @@ Provide only the direct translation text in your reply, with no extra chit-chat 
 
 Text to translate:
 "${text}"`;
+                contentsParts.push({ text: prompt });
+            }
 
-            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-1.5-flash';
-            const candidateModels = [primaryModel, 'gemini-1.5-pro', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-2.0-flash';
+            const candidateModels = [primaryModel, 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v, i, a) => a.indexOf(v) === i);
 
             let translatedOutput = '';
 
@@ -3026,14 +3486,14 @@ Text to translate:
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
+                            contents: [{ parts: contentsParts }]
                         })
                     });
 
                     const data = await response.json();
                     if (data.error) throw new Error(data.error.message);
 
-                    translatedOutput = data.candidates[0].content.parts[0].text.trim();
+                    translatedOutput = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
                     if (translatedOutput) break;
                 } catch (e) {
                     console.warn(`Translation attempt with ${model} failed, trying next...`, e);
@@ -3051,7 +3511,7 @@ Text to translate:
                 }
                 if (resultContainer) resultContainer.classList.remove('hidden');
             } else {
-                alert('שגיאה בתרגום. ייתכן והגענו למגבלת השימוש (Quota) או שאין אינטרנט.');
+                alert('שגיאה בתרגום. ייתכן והגענו למגבלת השימוש (Quota) או שאין חיבור אינטרנט.');
             }
         }
 
@@ -3306,9 +3766,11 @@ Text to translate:
         // 9. הפעלה ראשונית
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
+            loadCustomPlaces();
             initMap();
             initChatBoxes();
             renderPlacesList();
+            renderItinerary(1);
             updateOnlineStatus();
         });
     </script>
