@@ -556,26 +556,40 @@
 
         <!-- TAB 4: Daily Itinerary -->
         <section id="panel-itinerary" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-hidden">
-            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 shrink-0">
-                <div class="flex gap-2 overflow-x-auto hide-scrollbar flex-1 pl-2">
-                    <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-4 py-2 rounded-xl font-bold bg-teal-700 text-white shadow-sm shrink-0 leading-tight">19/9<br><span class="text-[10px] font-normal">נחיתה והתאקלמות</span></button>
-                    <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">20/9<br><span class="text-[10px] font-normal">טבע גועש</span></button>
-                    <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">21/9<br><span class="text-[10px] font-normal">פסגות ואגם</span></button>
-                    <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">22/9<br><span class="text-[10px] font-normal">חיות ואגדות</span></button>
-                    <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">23/9<br><span class="text-[10px] font-normal">צמרות ופרייבורג</span></button>
-                    <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">24/9<br><span class="text-[10px] font-normal">מעבר לאלזס</span></button>
-                    <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">25/9<br><span class="text-[10px] font-normal">שופינג וקסם</span></button>
-                    <button onclick="renderItinerary(8)" id="dayBtn-8" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">26/9<br><span class="text-[10px] font-normal">אבירים ויין</span></button>
-                    <button onclick="renderItinerary(9)" id="dayBtn-9" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">27/9<br><span class="text-[10px] font-normal">היסטוריה</span></button>
-                    <button onclick="renderItinerary(10)" id="dayBtn-10" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">28/9<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
-                    <button onclick="renderItinerary(11)" id="dayBtn-11" class="day-btn px-4 py-2 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-sm shrink-0 leading-tight">29/9<br><span class="text-[10px] font-normal">מפלי הריין וסיום</span></button>
-                <div id="itineraryHeaderActions" class="shrink-0 flex items-center gap-1.5">
-                    <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
-                        <i class="fa-solid fa-pen-to-square"></i> עריכה
-                    </button>
+            <!-- Top Sticky Header & Days Bar -->
+            <div class="shrink-0 bg-white p-2.5 rounded-2xl shadow-xs border border-slate-200 mb-2">
+                <div class="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs sm:text-sm font-bold text-teal-800 flex items-center gap-1.5">
+                            <i class="fa-regular fa-calendar-days text-teal-600"></i>
+                            <span>לו"ז יומי לפי תאריכים</span>
+                        </span>
+                    </div>
+                    <div id="itineraryHeaderActions" class="flex items-center gap-1.5">
+                        <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-amber-200 flex items-center gap-1.5" title="מצב עריכה">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <span>עריכה</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Days horizontally scrollable list -->
+                <div class="flex gap-2 overflow-x-auto hide-scrollbar py-0.5">
+                    <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-3.5 py-1.5 rounded-xl font-bold bg-teal-700 text-white shadow-xs shrink-0 leading-tight text-center text-xs">19/9<br><span class="text-[10px] font-normal opacity-90">נחיתה</span></button>
+                    <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">20/9<br><span class="text-[10px] font-normal">טבע גועש</span></button>
+                    <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">21/9<br><span class="text-[10px] font-normal">פסגות ואגם</span></button>
+                    <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">22/9<br><span class="text-[10px] font-normal">חיות ואגדות</span></button>
+                    <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">23/9<br><span class="text-[10px] font-normal">צמרות ופרייבורג</span></button>
+                    <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">24/9<br><span class="text-[10px] font-normal">מעבר לאלזס</span></button>
+                    <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">25/9<br><span class="text-[10px] font-normal">שופינג וקסם</span></button>
+                    <button onclick="renderItinerary(8)" id="dayBtn-8" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">26/9<br><span class="text-[10px] font-normal">אבירים ויין</span></button>
+                    <button onclick="renderItinerary(9)" id="dayBtn-9" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">27/9<br><span class="text-[10px] font-normal">היסטוריה</span></button>
+                    <button onclick="renderItinerary(10)" id="dayBtn-10" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">28/9<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
+                    <button onclick="renderItinerary(11)" id="dayBtn-11" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">29/9<br><span class="text-[10px] font-normal">מפלי הריין</span></button>
                 </div>
             </div>
-            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-2 space-y-4 pb-10"></div>
+
+            <div id="itineraryContent" class="flex-1 overflow-y-auto pt-1 space-y-4 pb-12"></div>
         </section>
 
         <!-- TAB 5: Waiter Dietary & Allergy Cards (Fullscreen optimized for mobile) -->
@@ -979,17 +993,30 @@
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto space-y-3">
+            <div class="flex-1 overflow-y-auto space-y-3.5 pr-0.5">
+                <!-- Quick Direction Presets -->
+                <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-1 text-xs">
+                    <span class="text-slate-400 font-bold text-[10px] shrink-0">כיוון מהיר:</span>
+                    <button onclick="setTranslateLangs('de', 'he')" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
+                        🇩🇪 גרמנית ➔ 🇮🇱 עברית
+                    </button>
+                    <button onclick="setTranslateLangs('fr', 'he')" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
+                        🇫🇷 צרפתית ➔ 🇮🇱 עברית
+                    </button>
+                    <button onclick="setTranslateLangs('he', 'de')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold shrink-0 border border-slate-200 transition-colors">
+                        🇮🇱 עברית ➔ 🇩🇪 גרמנית
+                    </button>
+                </div>
+
                 <!-- Language Selector with Swap Button -->
-                <div
-                    class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
+                <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
                     <div class="flex-1">
                         <label class="block text-[10px] text-slate-400 font-bold mb-1">משפה:</label>
                         <select id="translateFromLang" onchange="onTranslateLangChange()"
                             class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                            <option value="de">🇩🇪 גרמנית</option>
+                            <option value="de" selected>🇩🇪 גרמנית</option>
                             <option value="fr">🇫🇷 צרפתית</option>
-                            <option value="he" selected>🇮🇱 עברית</option>
+                            <option value="he">🇮🇱 עברית</option>
                             <option value="en">🇬🇧 אנגלית</option>
                         </select>
                     </div>
@@ -1005,47 +1032,58 @@
                         <label class="block text-[10px] text-slate-400 font-bold mb-1">לשפה:</label>
                         <select id="translateToLang" onchange="onTranslateLangChange()"
                             class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                            <option value="de" selected>🇩🇪 גרמנית</option>
+                            <option value="he" selected>🇮🇱 עברית</option>
+                            <option value="de">🇩🇪 גרמנית</option>
                             <option value="fr">🇫🇷 צרפתית</option>
-                            <option value="he">🇮🇱 עברית</option>
                             <option value="en">🇬🇧 אנגלית</option>
                         </select>
                     </div>
+                </div>
+
                 <!-- Photo Menu & Sign Translation Feature (Vision) -->
-                <div class="bg-gradient-to-r from-amber-50/80 to-indigo-50/80 border border-indigo-200/70 rounded-2xl p-3 flex flex-col gap-2 shadow-2xs">
+                <div class="bg-gradient-to-br from-indigo-50/90 via-amber-50/50 to-teal-50/80 border border-indigo-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
-                            <i class="fa-solid fa-camera text-indigo-600"></i>
-                            <span>תרגום תפריט או שלט מצילום 📷</span>
-                        </span>
-                        <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-sparkles text-amber-500"></i> Vision OCR
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">תרגום תפריט או שלט מצילום 📷</h3>
+                                <p class="text-[10px] text-slate-500">מפענח טקסט מצרפתית/גרמנית ומסמן מנות צמחוניות 🌱</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full font-bold flex items-center gap-1 shrink-0 border border-indigo-200">
+                            <i class="fa-solid fa-sparkles text-amber-500"></i> AI Vision
                         </span>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
+
+                    <div class="grid grid-cols-2 gap-2 mt-0.5">
                         <label for="menuPhotoCameraInput"
-                            class="cursor-pointer bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
-                            <i class="fa-solid fa-camera"></i>
+                            class="cursor-pointer bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                            <i class="fa-solid fa-camera text-sm"></i>
                             <span>צלם במצלמה</span>
                             <input type="file" id="menuPhotoCameraInput" class="hidden" accept="image/*" capture="environment" onchange="handleMenuPhotoUpload(event)">
                         </label>
                         <label for="menuPhotoGalleryInput"
-                            class="cursor-pointer bg-white hover:bg-indigo-50 active:scale-95 text-indigo-700 border border-indigo-200 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
-                            <i class="fa-solid fa-image"></i>
+                            class="cursor-pointer bg-white hover:bg-indigo-50 active:scale-95 text-indigo-700 border border-indigo-200 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                            <i class="fa-solid fa-image text-sm"></i>
                             <span>בחר מהגלריה</span>
                             <input type="file" id="menuPhotoGalleryInput" class="hidden" accept="image/*" onchange="handleMenuPhotoUpload(event)">
                         </label>
                     </div>
+
                     <!-- Photo preview if uploaded -->
-                    <div id="menuPhotoPreview" class="hidden items-center justify-between bg-white p-2 rounded-xl border border-indigo-100 mt-1 shadow-2xs">
-                        <div class="flex items-center gap-2 overflow-hidden">
+                    <div id="menuPhotoPreview" class="hidden items-center justify-between bg-white p-2.5 rounded-xl border border-indigo-200 shadow-xs mt-0.5">
+                        <div class="flex items-center gap-2.5 overflow-hidden">
                             <img id="menuPhotoThumb" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0" src="" alt="תמונת תפריט">
                             <div class="text-xs text-slate-700 truncate">
                                 <span class="font-bold block text-slate-900 truncate" id="menuPhotoFileName">תמונת תפריט נטענה</span>
-                                <span class="text-[10px] text-emerald-600 font-semibold">✓ מוכנה לתרגום מלא בלחיצה</span>
+                                <span class="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> מוכנה לתרגום מלא לעברית
+                                </span>
                             </div>
                         </div>
-                        <button type="button" onclick="clearMenuPhoto()" class="text-red-400 hover:text-red-600 p-1.5 text-sm" title="הסר תמונה">
+                        <button type="button" onclick="clearMenuPhoto()" class="text-red-400 hover:text-red-600 p-2 text-sm transition-colors rounded-lg hover:bg-red-50" title="הסר תמונה">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
@@ -1087,7 +1125,7 @@
 
                 <!-- Translate Action Button -->
                 <button onclick="executeTranslation()" id="translateActionBtn"
-                    class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span>תרגם עכשיו</span>
                 </button>
@@ -1114,7 +1152,7 @@
                         </div>
                     </div>
                     <div id="translatorResultText"
-                        class="p-3 bg-white border border-slate-200 rounded-xl text-slate-800 text-base font-semibold leading-relaxed select-text">
+                        class="p-3.5 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm leading-relaxed select-text space-y-2 overflow-x-auto">
                     </div>
                 </div>
             </div>
@@ -2087,16 +2125,17 @@
             if (isItineraryEditMode) {
                 container.innerHTML = `
                     <button onclick="saveItineraryEdit()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1 active:scale-95" title="שמור את כל השינויים בלו&quot;ז">
-                        <i class="fa-solid fa-check"></i> שמור שינויים
+                        <i class="fa-solid fa-check"></i> סיום ושמירה
                     </button>
-                    <button onclick="cancelItineraryEdit()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1 active:scale-95" title="בטל את כל השינויים שביצעת בעריכה זו">
+                    <button onclick="cancelItineraryEdit()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1.5 rounded-xl font-bold text-xs shadow-sm transition-all flex items-center gap-1 active:scale-95" title="בטל שינויים וצא ללא שמירה">
                         <i class="fa-solid fa-xmark"></i> ביטול
                     </button>
                 `;
             } else {
                 container.innerHTML = `
-                    <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl transition-colors font-bold text-xs shadow-sm border border-amber-200" title="מצב עריכה">
-                        <i class="fa-solid fa-pen-to-square"></i> עריכה
+                    <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-amber-200 flex items-center gap-1.5" title="מצב עריכה">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>עריכה</span>
                     </button>
                 `;
             }
@@ -2321,10 +2360,23 @@
             // Edit Mode Helper Banner
             if (isItineraryEditMode) {
                 html += `
-                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 text-amber-900 text-xs px-3.5 py-2.5 rounded-xl mb-4 flex items-center justify-between shadow-xs">
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 text-amber-950 p-3.5 rounded-2xl mb-3 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in-up">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-arrows-up-down-left-right text-amber-600 text-sm"></i>
-                            <span><strong>מצב עריכה:</strong> גרור פעילויות לשינוי הסדר, או היעזר בחיצים להקדמה/איחור. לחץ על השעה לעריכה.</span>
+                            <div class="w-7 h-7 rounded-lg bg-amber-200/80 text-amber-800 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            </div>
+                            <div>
+                                <strong class="text-xs sm:text-sm block">מצב עריכת לו"ז פעיל</strong>
+                                <span class="text-[11px] text-amber-800">היעזר בחיצים (▲ / ▼) להקדמת/איחור פעילות, או לחץ על השעה (✎) לעריכה.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            <button onclick="saveItineraryEdit()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-3 py-1.5 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-check"></i> סיום ושמירה
+                            </button>
+                            <button onclick="cancelItineraryEdit()" class="bg-white hover:bg-slate-100 active:scale-95 text-slate-700 border border-slate-300 px-3 py-1.5 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1">
+                                <i class="fa-solid fa-xmark"></i> ביטול
+                            </button>
                         </div>
                     </div>
                 `;
@@ -2476,8 +2528,16 @@
 
             if (isItineraryEditMode) {
                 html += `
-                    <div class="px-1 pb-4">
-                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-1.5">
+                    <div class="sticky bottom-2 z-20 bg-white/95 backdrop-blur-md p-2.5 rounded-2xl border border-slate-200 shadow-lg flex items-center justify-between gap-2 mt-4">
+                        <button onclick="saveItineraryEdit()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs shadow-sm flex items-center justify-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-check"></i> סיום ושמירת שינויים
+                        </button>
+                        <button onclick="cancelItineraryEdit()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-3 rounded-xl text-xs border border-slate-200 flex items-center justify-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-xmark"></i> ביטול ללא שמירה
+                        </button>
+                    </div>
+                    <div class="px-1 pb-4 pt-1">
+                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-2xs flex items-center justify-center gap-1.5 border border-red-200">
                             <i class="fa-solid fa-rotate-left"></i> איפוס לתוכנית המקורית מה-PDF
                         </button>
                     </div>
@@ -3344,6 +3404,14 @@
             }
         }
 
+        function setTranslateLangs(from, to) {
+            const fromSelect = document.getElementById('translateFromLang');
+            const toSelect = document.getElementById('translateToLang');
+            if (fromSelect) fromSelect.value = from;
+            if (toSelect) toSelect.value = to;
+            onTranslateLangChange();
+        }
+
         function insertTranslatePhrase(phrase) {
             const inputEl = document.getElementById('translatorInputText');
             const fromSelect = document.getElementById('translateFromLang');
@@ -3361,6 +3429,17 @@
         function handleMenuPhotoUpload(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
+
+            // When user uploads a photo of a menu or sign, default translation target to Hebrew!
+            const toLangSelect = document.getElementById('translateToLang');
+            const fromLangSelect = document.getElementById('translateFromLang');
+            if (toLangSelect && toLangSelect.value !== 'he') {
+                toLangSelect.value = 'he';
+            }
+            if (fromLangSelect && fromLangSelect.value === 'he') {
+                fromLangSelect.value = 'de';
+            }
+            onTranslateLangChange();
 
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -3442,18 +3521,22 @@
             let contentsParts = [];
 
             if (currentMenuPhoto) {
-                prompt = `You are a culinary and travel expert translator for an Israeli family vacationing in the Black Forest (Germany), Alsace (France), and Switzerland.
-Analyze this photo (restaurant menu, food label, or street sign) carefully.
-Extract and translate all food items, dish descriptions, ingredients, and prices into ${targetName} (${toLang === 'he' ? 'עברית ברורה וידידותית' : 'English'}).
+                prompt = `You are a friendly, highly skilled culinary and travel translator for an Israeli family traveling in the Black Forest (Germany), Alsace (France), and Switzerland.
+Examine this photo very carefully. It could be a restaurant menu, food label/packaging, receipt, or a road/street sign in German, French, or English.
+Translate and interpret everything into ${targetName} (${toLang === 'he' ? 'עברית קולחת, טבעית ומזמינה' : 'clear natural English'}).
 
-Special family instructions:
-1. Clearly mark vegetarian options with a 🌱 emoji (the 14-year-old daughter is vegetarian).
-2. Flag any dishes containing pork (חזיר), beef, or coriander/cilantro (the mother strongly hates cilantro!).
-3. Keep the original German/French dish name in parentheses alongside the translation so the family can point to it when ordering.
-4. If there are prices, note them in € or CHF.
-5. If the user provided additional notes or questions, answer them: "${text}"
+Guidelines:
+1. Extract dishes and items clearly. Write each item with its Hebrew title in bold, followed by its original German/French name in parentheses: למשל: **שפצל גבינה מסורתי (Käsespätzle)** או **טארט פלמבה (Tarte Flambée)**.
+2. Under each dish, provide a short 1-line description of what it is and its main ingredients.
+3. Special family dietary highlights:
+   - 🌱 **צמחוני**: סמן באופן בולט כל מנה שמתאימה לצמחונים (הבת בת ה-14 צמחונית!).
+   - ⚠️ **בשר חזיר**: ציין מפורשות אם מנה מכילה חזיר, שפק, בייקון או נקניק (Schwein / Speck / Jambon / Porc).
+   - ⚠️ **כוסברה**: ציין אם המנה כוללת כוסברה (האם לא סובלת כוסברה!).
+4. List prices clearly in € or CHF if visible.
+5. If it is a street/road sign, warning, or tourist notice, explain what it means simply and clearly in Hebrew.
+${text ? `6. התייחס לבקשת המשתמש: "${text}"` : ''}
 
-Format your response cleanly with clear section headings, dish names in bold, descriptions, and bullet points.`;
+Format your reply using beautiful Markdown with clear section headings, bold titles, and clean bullet points.`;
 
                 contentsParts.push({ text: prompt });
                 contentsParts.push({
@@ -3506,7 +3589,11 @@ Text to translate:
             if (translatedOutput) {
                 lastTranslatedText = translatedOutput;
                 if (resultTextEl) {
-                    resultTextEl.innerText = translatedOutput;
+                    if (typeof marked !== 'undefined') {
+                        resultTextEl.innerHTML = marked.parse(translatedOutput);
+                    } else {
+                        resultTextEl.innerText = translatedOutput;
+                    }
                     resultTextEl.dir = (toLang === 'he') ? 'rtl' : 'ltr';
                 }
                 if (resultContainer) resultContainer.classList.remove('hidden');
