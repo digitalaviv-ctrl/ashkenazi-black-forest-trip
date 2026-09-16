@@ -287,9 +287,9 @@
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
             <select id="modelSelector"
                 class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-2.0-flash" selected>Gemini 2.0 Flash (הכי חדיש: מהיר, מעולה לעברית ותמונות)</option>
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash (מומלץ ויציב: מכסה גבוהה, טוב לרוב השאלות)</option>
-                <option value="gemini-1.5-pro">Gemini 1.5 Pro (מתקדם: חכם במיוחד, מעולה לשאלות מורכבות)</option>
+                <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash (הכי חדיש: מהיר, מעולה לעברית ותמונות)</option>
+                <option value="gemini-flash-latest">Gemini Flash Latest (מומלץ ויציב: מכסה גבוהה, טוב לרוב השאלות)</option>
+                <option value="gemini-pro-latest">Gemini Pro Latest (מתקדם: חכם במיוחד, מעולה לשאלות מורכבות)</option>
             </select>
         </div>
     </div>
@@ -432,9 +432,9 @@
                 <div class="flex items-center gap-2">
                     <select id="modelSelector-mobile"
                         class="bg-slate-700 text-teal-200 text-xs rounded p-1 border border-slate-600">
-                        <option value="gemini-2.0-flash" selected>2.0 Flash (חדיש ומהיר)</option>
-                        <option value="gemini-1.5-flash">1.5 Flash (יציב)</option>
-                        <option value="gemini-1.5-pro">1.5 Pro (מתקדם)</option>
+                        <option value="gemini-3.5-flash" selected>3.5 Flash (חדיש ומהיר)</option>
+                        <option value="gemini-flash-latest">Flash Latest (יציב)</option>
+                        <option value="gemini-pro-latest">Pro Latest (מתקדם)</option>
                     </select>
                     <button onclick="clearChat()" class="text-xs text-slate-300 px-2 py-1 rounded bg-slate-700">
                         <i class="fa-solid fa-rotate-right"></i>
@@ -3400,8 +3400,8 @@
             });
 
             // מודל נבחר עם רשימת חלופות אוטומטית (Fallback) במקרה של עומס רגעי
-            const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-1.5-flash';
-            const candidateModels = [primaryModel, 'gemini-1.5-pro', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+            const primaryModel = document.getElementById('modelSelector')?.value || document.getElementById('modelSelector-mobile')?.value || 'gemini-flash-latest';
+            const candidateModels = [primaryModel, 'gemini-pro-latest', 'gemini-flash-latest'].filter((v, i, a) => a.indexOf(v) === i);
 
             let success = false;
             let lastError = null;
@@ -3927,8 +3927,8 @@ Text to translate:
                 contentsParts.push({ text: prompt });
             }
 
-            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-2.0-flash';
-            const candidateModels = [primaryModel, 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v, i, a) => a.indexOf(v) === i);
+            const primaryModel = document.getElementById('modelSelector')?.value || 'gemini-3.5-flash';
+            const candidateModels = [primaryModel, 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-pro-latest'].filter((v, i, a) => a.indexOf(v) === i);
 
             let translatedOutput = '';
 
