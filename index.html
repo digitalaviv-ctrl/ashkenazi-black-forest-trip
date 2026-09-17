@@ -1269,12 +1269,19 @@
                     </div>
                 </div>
 
-                <!-- Translate Action Button -->
-                <button onclick="executeTranslation()" id="translateActionBtn"
-                    class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>תרגם עכשיו</span>
-                </button>
+                <!-- Translate Action Buttons -->
+                <div class="flex gap-2">
+                    <button onclick="executeTranslation(false)" id="translateActionBtn"
+                        class="flex-1 bg-gradient-to-r from-indigo-600 to-teal-600 hover:from-indigo-700 hover:to-teal-700 active:scale-[0.99] text-white font-bold py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-language"></i>
+                        <span>תרגום מהיר ומדויק</span>
+                    </button>
+                    <button onclick="executeTranslation(true)" id="interpretActionBtn"
+                        class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 active:scale-[0.99] text-white font-bold py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>פרשנות AI</span>
+                    </button>
+                </div>
 
                 <!-- Translation Result Card -->
                 <div id="translatorResultContainer"
@@ -3241,11 +3248,12 @@
    - סופרמרקט Kaufland Waldshut (כתובת: Klettgaustraße 16, 79761 Waldshut-Tiengen): עצירת הצטיידות אסטרטגית מיד אחרי חציית הגבול משווייץ לקניות גדולות לפני ההגעה לדירה בדרום.
    - סופרמרקט Kaufland Lahr (כתובת: Kohlmattstraße 2, 77933 Lahr/Schwarzwald): סופר ענק להצטיידות מסיבית ביום המעבר צפונה לפני ההגעה לדירה השנייה (פתוח עד 22:00, סגור בראשון).
 4. איזון וקצב: טבע, עיירות, שופינג ואקסטרים. חלופות מקורות (Indoor) לימי גשם.
+5. תרגום (חשוב מאוד): במידה והמשתמש מבקש לתרגם טקסט או מעלה תמונה של טקסט לתרגום, עליך לספק אך ורק את הטקסט המקורי ואת התרגום המדויק שלו, ללא שום ברכות, הקדמות, טיפים, פרשנויות או שאלות המשך. תרגום נטו.
 
 פורמט תשובה:
 - שקופה ומאוזנת (Pros & Cons) מבוסס ביקורות.
 - ספציפיות: שמות מדויקים ולינקים להעמקה.
-- שאלת הנחיה: סיים תמיד בשאלת הכוונה להמשך התכנון.
+- שאלת הנחיה: סיים תמיד בשאלת הכוונה להמשך התכנון (למעט במקרים של תרגום טקסט/תמונה).
 - טון: ידידותי, מעשי, קצר ולעניין, ומוכוון פתרונות. ענה תמיד בעברית.`;
 
         const welcomeMessage = `
@@ -3863,7 +3871,7 @@
             lastTranslatedText = '';
         }
 
-        async function executeTranslation() {
+        async function executeTranslation(isInterpret = false) {
             const inputEl = document.getElementById('translatorInputText');
             const text = (inputEl?.value || '').trim();
 
@@ -3877,12 +3885,17 @@
             const toLang = document.getElementById('translateToLang')?.value || 'he';
 
             const actionBtn = document.getElementById('translateActionBtn');
+            const interpretBtn = document.getElementById('interpretActionBtn');
             const resultContainer = document.getElementById('translatorResultContainer');
             const resultTextEl = document.getElementById('translatorResultText');
 
-            const originalBtnHtml = actionBtn.innerHTML;
-            actionBtn.disabled = true;
-            actionBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentMenuPhoto ? 'מפענח ומנתח תמונה...' : 'מתרגם...'}`;
+            const activeBtn = (isInterpret && interpretBtn) ? interpretBtn : actionBtn;
+            const originalBtnHtml = activeBtn.innerHTML;
+            
+            if (actionBtn) actionBtn.disabled = true;
+            if (interpretBtn) interpretBtn.disabled = true;
+            
+            activeBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentMenuPhoto ? 'מפענח...' : 'מתרגם...'}`;
 
             const srcName = langNameMapping[fromLang] || fromLang;
             const targetName = langNameMapping[toLang] || toLang;
@@ -3891,7 +3904,8 @@
             let contentsParts = [];
 
             if (currentMenuPhoto) {
-                prompt = `You are a friendly, highly skilled culinary and travel translator for an Israeli family traveling in the Black Forest (Germany), Alsace (France), and Switzerland.
+                if (isInterpret) {
+                    prompt = `You are a friendly, highly skilled culinary and travel translator for an Israeli family traveling in the Black Forest (Germany), Alsace (France), and Switzerland.
 Examine this photo very carefully. It could be a restaurant menu, food label/packaging, receipt, or a road/street sign in German, French, or English.
 Translate and interpret everything into ${targetName} (${toLang === 'he' ? 'עברית קולחת, טבעית ומזמינה' : 'clear natural English'}).
 
@@ -3907,6 +3921,12 @@ Guidelines:
 ${text ? `6. התייחס לבקשת המשתמש: "${text}"` : ''}
 
 Format your reply using beautiful Markdown with clear section headings, bold titles, and clean bullet points.`;
+                } else {
+                    prompt = `You are an exact and fast translator.
+Translate the text found in the image exactly into ${targetName}, without any interpretation, explanations, or added commentary.
+Ensure the translation accurately reflects only what is written.
+${text ? `Additionally, consider the user's note: "${text}"` : ''}`;
+                }
 
                 contentsParts.push({ text: prompt });
                 contentsParts.push({
@@ -3953,8 +3973,9 @@ Text to translate:
                 }
             }
 
-            actionBtn.disabled = false;
-            actionBtn.innerHTML = originalBtnHtml;
+            if (actionBtn) actionBtn.disabled = false;
+            if (interpretBtn) interpretBtn.disabled = false;
+            activeBtn.innerHTML = originalBtnHtml;
 
             if (translatedOutput) {
                 lastTranslatedText = translatedOutput;
