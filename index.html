@@ -1370,8 +1370,9 @@
             <!-- Day & Time Row -->
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">יום בלו&quot;ז</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">יום בלו&quot;ז (רשות)</label>
                     <select id="newAttrDaySelect" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                        <option value="">-- ללא שיבוץ (אטרקציה נוספת) --</option>
                         <option value="1">יום 1: 19/9 (נחיתה והתאקלמות)</option>
                         <option value="2">יום 2: 20/9 (טבע גועש)</option>
                         <option value="3">יום 3: 21/9 (פסגות ואגם)</option>
@@ -1386,8 +1387,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">שעה בלו&quot;ז</label>
-                    <input type="time" id="newAttrTime" value="12:00"
+                    <label class="block text-xs font-bold text-slate-600 mb-1">שעה בלו&quot;ז (רשות)</label>
+                    <input type="time" id="newAttrTime" value=""
                         class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono font-bold text-center focus:outline-none focus:border-teal-500 bg-white">
                 </div>
             </div>
@@ -1707,7 +1708,7 @@
             { id: 19, name: "Gasthof Hirschen", region: "swiss", category: "orange", catName: "מסעדה", lat: 47.5750, lng: 8.5230, desc: "מסעדת סיום מרגשת על נהר הריין בשווייץ בדרך לשדה" },
 
             // אטרקציות וטבע (ירוק - green)
-            { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום" },
+            { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום", swCard: true, swCardDesc: "כניסה חינם למפלי טודנאו." },
             { id: 21, name: "מגלשות טודנאו (Hasenhorn Coaster)", region: "south", category: "green", catName: "אטרקציה", lat: 47.8285, lng: 7.9545, desc: "מגלשת ההרים הארוכה בגרמניה (2.9 ק\"מ) - אקסטרים מושלם" },
             { id: 22, name: "מתחם פלדברג ורכבל ההרים", region: "south", category: "green", catName: "טבע ומשפחה", lat: 47.8600, lng: 8.0360, desc: "הפסגה הגבוהה ביער השחור, פארק חבלים ונוף עוצר נשימה", swCard: true, swCardDesc: "50% הנחה על נסיעה הלוך ושוב ברכבל, כולל כניסה למגדל פלדברג." },
             { id: 23, name: "אגם טיטיזה (Titisee)", region: "south", category: "green", catName: "אגם ושייט", lat: 47.8988, lng: 8.1565, desc: "סירות פדלים, מדרחוב קניות מזכרות וגלידריות" },
@@ -2062,6 +2063,19 @@
         }
 
         function renderPlacesList() {
+            // Build placeItineraryMap
+            const placeItineraryMap = {};
+            const itinData = getItineraryData();
+            for (const [day, items] of Object.entries(itinData)) {
+                items.forEach(item => {
+                    const matchedPlace = findPlaceCoords(item);
+                    if (matchedPlace) {
+                        const dateStr = (parseInt(day) + 18) + "/9";
+                        placeItineraryMap[matchedPlace.id] = { day, dateStr };
+                    }
+                });
+            }
+
             const query = (document.getElementById('placesSearchInput')?.value || '').toLowerCase().trim();
             const grid = document.getElementById('placesCardsGrid');
             if (!grid) return;
@@ -2107,6 +2121,14 @@
                         </a>
                     </div>` : '';
 
+                let itineraryBadge = '';
+                if (placeItineraryMap[p.id]) {
+                    const mapped = placeItineraryMap[p.id];
+                    itineraryBadge = `<span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-regular fa-calendar-check"></i> מתוכנן ליום ${mapped.day} (${mapped.dateStr})</span>`;
+                } else {
+                    itineraryBadge = `<span class="bg-slate-100 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-lightbulb text-amber-400"></i> אטרקציה נוספת (גיבוי)</span>`;
+                }
+
                 return `
                     <div class="bg-white rounded-xl p-3.5 shadow-sm border ${borderStyle} hover:border-teal-400 transition-all flex flex-col justify-between">
                         <div>
@@ -2117,6 +2139,7 @@
                                 <div class="flex flex-col items-end gap-1 shrink-0">
                                     <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${p.catName}</span>
                                     ${p.swCard ? `<button onclick="showCardBenefit('${p.swCardDesc.replace(/'/g, "\\'")}')" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-white shadow-sm flex items-center gap-1 hover:bg-slate-700 transition-colors active:scale-95" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i> כרטיס היער השחור</button>` : ''}
+                                    ${itineraryBadge}
                                     ${userLocation ? `<span class="bg-indigo-100 text-indigo-800 text-[9px] px-1.5 py-0.5 rounded font-bold whitespace-nowrap"><i class="fa-solid fa-route"></i> ${(getDistanceKm(userLocation.lat, userLocation.lng, p.lat, p.lng)).toFixed(1)} ק"מ ממיקומך</span>` : ''}
                                 </div>
                             </div>
@@ -2156,65 +2179,65 @@
                 { id: "1-4", time: "19:00", title: "ארוחת ערב ב-Pizzeria Da Rocco", desc: "ארוחת ערב קלילה ומהירה. פיצות מעולות מתנור אבן.", icon: "fa-pizza-slice", color: "orange" }
             ],
             2: [
-                { id: "2-1", time: "10:00", title: "מגלשות הרים בטודנאו (Hasenhorn)", desc: "עלייה נופית ברכבל כיסאות וגלישה מהירה במסלול של 3 ק\"מ.", icon: "fa-mountain", color: "emerald" },
+                { id: "2-1", time: "10:00", placeId: 21, title: "מגלשות הרים בטודנאו (Hasenhorn)", desc: "עלייה נופית ברכבל כיסאות וגלישה מהירה במסלול של 3 ק\"מ.", icon: "fa-mountain", color: "emerald" },
                 { id: "2-2", time: "13:00", title: "הפסקת צהריים", desc: "פיקניק ביער או נשנוש בדוכנים שלמרגלות המפלים.", icon: "fa-sandwich", color: "orange" },
-                { id: "2-3", time: "14:30", title: "מפלי טודנאו והגשר התלוי (Blackforestline)", desc: "מסלול הליכה נעים אל המפל הגועש, וחציית הגשר התלוי העצום מעל המפלים.", icon: "fa-water", color: "blue" },
+                { id: "2-3", time: "14:30", placeId: 20, title: "מפלי טודנאו והגשר התלוי (Blackforestline)", desc: "מסלול הליכה נעים אל המפל הגועש, וחציית הגשר התלוי העצום מעל המפלים.", icon: "fa-water", color: "blue" },
                 { id: "2-4", time: "18:30", title: "ארוחת ערב ב-Restaurant Bierhäusle", desc: "ארוחה כפרית ואותנטית.", icon: "fa-utensils", color: "orange" }
             ],
             3: [
-                { id: "3-1", time: "10:00", title: "הגעה לפלדברג ופארק חבלים", desc: "הגעה למתחם חניון פלדברג. אלה ויעל יעלו לפארק החבלים (Kletterwald), נבו ייהנה במסע האינטראקטיבי.", icon: "fa-tree", color: "emerald" },
-                { id: "3-2", time: "12:00", title: "רכבל פלדברג", desc: "עלייה משותפת לתצפית נוף פנורמית.", icon: "fa-cable-car", color: "sky" },
-                { id: "3-3", time: "13:30", title: "ארוחת צהריים באגם טיטיזה", desc: "נסיעה לאגם וארוחה במדרחוב באחת המסעדות האיטלקיות.", icon: "fa-pizza-slice", color: "orange" },
-                { id: "3-4", time: "15:30", title: "שייט משפחתי באגם", desc: "השכרת סירת פדלים או מנוע באגם טיטיזה.", icon: "fa-ship", color: "blue" },
+                { id: "3-1", time: "10:00", placeId: 22, title: "הגעה לפלדברג ופארק חבלים", desc: "הגעה למתחם חניון פלדברג. אלה ויעל יעלו לפארק החבלים (Kletterwald), נבו ייהנה במסע האינטראקטיבי.", icon: "fa-tree", color: "emerald" },
+                { id: "3-2", time: "12:00", placeId: 22, title: "רכבל פלדברג", desc: "עלייה משותפת לתצפית נוף פנורמית.", icon: "fa-cable-car", color: "sky" },
+                { id: "3-3", time: "13:30", placeId: 23, title: "ארוחת צהריים באגם טיטיזה", desc: "נסיעה לאגם וארוחה במדרחוב באחת המסעדות האיטלקיות.", icon: "fa-pizza-slice", color: "orange" },
+                { id: "3-4", time: "15:30", placeId: 23, title: "שייט משפחתי באגם", desc: "השכרת סירת פדלים או מנוע באגם טיטיזה.", icon: "fa-ship", color: "blue" },
                 { id: "3-5", time: "18:30", title: "ארוחת ערב ב-Restaurant Peterle", desc: "ארוחת ערב שקטה.", icon: "fa-utensils", color: "orange" }
             ],
             4: [
-                { id: "4-1", time: "10:00", title: "פארק השעשועים שטיינוואסן", desc: "אזור חיות מקסים, גשר חבלים ומגלשות הרים (Bobbahn).", icon: "fa-ticket", color: "rose" },
+                { id: "4-1", time: "10:00", placeId: 24, title: "פארק השעשועים שטיינוואסן", desc: "אזור חיות מקסים, גשר חבלים ומגלשות הרים (Bobbahn).", icon: "fa-ticket", color: "rose" },
                 { id: "4-2", time: "13:30", title: "ארוחת צהריים", desc: "הפסקה מהירה במזנון של פארק שטיינוואסן.", icon: "fa-burger", color: "orange" },
-                { id: "4-3", time: "15:30", title: "קניון רוואנה (Ravennaschlucht)", desc: "הליכה קצרה בערוץ נחל תחת גשר רכבת אבן עתיק.", icon: "fa-person-hiking", color: "emerald" },
+                { id: "4-3", time: "15:30", placeId: 25, title: "קניון רוואנה (Ravennaschlucht)", desc: "הליכה קצרה בערוץ נחל תחת גשר רכבת אבן עתיק.", icon: "fa-person-hiking", color: "emerald" },
                 { id: "4-4", time: "19:00", title: "ארוחת ערב Pizzeria Bella Italia", desc: "פיצה מול אגם שלוכזה.", icon: "fa-pizza-slice", color: "orange" }
             ],
             5: [
-                { id: "5-1", time: "10:00", title: "שביל החושים וולדקירך", desc: "Baumkronenweg Waldkirch - הליכה פסטורלית בצמרות העצים וירידה במגלשת צינור.", icon: "fa-leaf", color: "emerald" },
-                { id: "5-2", time: "13:30", title: "ארוחת צהריים בפרייבורג", desc: "חניה בחניון P+R, ארוחת צהריים עירונית במרכז פרייבורג.", icon: "fa-city", color: "indigo" },
-                { id: "5-3", time: "15:00", title: "תעלות המים (Bächle) ופארק מים", desc: "שוטטות בעיר, ואז נסיעה לפארק המים באדפרדייס (Badeparadies).", icon: "fa-swimming-pool", color: "teal" },
+                { id: "5-1", time: "10:00", placeId: 34, title: "שביל החושים וולדקירך", desc: "Baumkronenweg Waldkirch - הליכה פסטורלית בצמרות העצים וירידה במגלשת צינור.", icon: "fa-leaf", color: "emerald" },
+                { id: "5-2", time: "13:30", placeId: 27, title: "ארוחת צהריים בפרייבורג", desc: "חניה בחניון P+R, ארוחת צהריים עירונית במרכז פרייבורג.", icon: "fa-city", color: "indigo" },
+                { id: "5-3", time: "15:00", placeId: 26, title: "תעלות המים (Bächle) ופארק מים", desc: "שוטטות בעיר, ואז נסיעה לפארק המים באדפרדייס (Badeparadies).", icon: "fa-swimming-pool", color: "teal" },
                 { id: "5-4", time: "19:30", title: "ארוחת ערב מהירה", desc: "אזור טיטיזה/דירה לאחר הבריכה.", icon: "fa-utensils", color: "orange" }
             ],
             6: [
                 { id: "6-1", time: "09:30", title: "אריזה ועזיבת פאלקאו", desc: "יום המעבר האסטרטגי. העמסת מזוודות לרכב.", icon: "fa-suitcase", color: "slate" },
                 { id: "6-2", time: "12:30", title: "גנגנבאך (Gengenbach)", desc: "סיור רגלי בין בתי קורות עץ צבעוניים וארוחת צהריים קלה באחת המאפיות.", icon: "fa-camera", color: "amber" },
-                { id: "6-3", time: "15:30", title: "סופרמרקט Kaufland Lahr", desc: "הצטיידות לקראת הסופ\"ש. לאחר מכן פריקה בדירה בשוואנאו.", icon: "fa-cart-shopping", color: "purple" },
+                { id: "6-3", time: "15:30", placeId: 49, title: "סופרמרקט Kaufland Lahr", desc: "הצטיידות לקראת הסופ\"ש. לאחר מכן פריקה בדירה בשוואנאו.", icon: "fa-cart-shopping", color: "purple" },
                 { id: "6-4", time: "19:00", title: "ארוחת ערב ב-Gasthaus Schwanen", desc: "פונדק שקרוב מאוד לדירה.", icon: "fa-utensils", color: "orange" }
             ],
             7: [
-                { id: "7-1", time: "09:30", title: "חציית הגבול לשטרסבורג", desc: "חניה ב-P+R Baggersee ונסיעה בחשמלית לשטרסבורג (צרפת).", icon: "fa-train", color: "sky" },
-                { id: "7-2", time: "11:00", title: "שופינג ממוקד", desc: "יעל מקבלת את הבמה לשופינג ממוקד ב-PRIMARK וב-SEPHORA.", icon: "fa-bag-shopping", color: "fuchsia" },
+                { id: "7-1", time: "09:30", placeId: 10, title: "חציית הגבול לשטרסבורג", desc: "חניה ב-P+R Baggersee ונסיעה בחשמלית לשטרסבורג (צרפת).", icon: "fa-train", color: "sky" },
+                { id: "7-2", time: "11:00", placeId: 43, title: "שופינג ממוקד", desc: "יעל מקבלת את הבמה לשופינג ממוקד ב-PRIMARK וב-SEPHORA.", icon: "fa-bag-shopping", color: "fuchsia" },
                 { id: "7-3", time: "13:30", title: "צהריים ב'צרפת הקטנה'", desc: "קרפים, פסטות ואווירה ברובע Petite France.", icon: "fa-utensils", color: "orange" },
-                { id: "7-4", time: "15:30", title: "שייט בספינת זכוכית", desc: "סיור רגלי לאורך התעלות ושייט מרגיע ב-Batorama.", icon: "fa-ship", color: "blue" },
+                { id: "7-4", time: "15:30", placeId: 9, title: "שייט בספינת זכוכית", desc: "סיור רגלי לאורך התעלות ושייט מרגיע ב-Batorama.", icon: "fa-ship", color: "blue" },
                 { id: "7-5", time: "19:00", title: "ארוחת ערב La Villetta", desc: "בעיר לאהר בדרך חזרה לדירה.", icon: "fa-pizza-slice", color: "orange" }
             ],
             8: [
-                { id: "8-1", time: "10:00", title: "טירת הוט-קניגסבורג", desc: "סיור מרשים בטירת אבירים החולשת על עמק הריין.", icon: "fa-chess-rook", color: "slate" },
-                { id: "8-2", time: "12:30", title: "פארק הקופים (Montagne des Singes)", desc: "הליכה ביער והאכלת קופי מקוק מכף היד.", icon: "fa-monkey", color: "amber" },
-                { id: "8-3", time: "14:30", title: "מופע העופות הדורסים", desc: "צפייה במופע במבצר קינצהיים. ארוחה קלה במזנונים.", icon: "fa-crow", color: "slate" },
-                { id: "8-4", time: "17:00", title: "פסטיבל היין באגיסהיים", desc: "שוטטות בין דוכני הפסטיבל בעיירה הציורית.", icon: "fa-wine-glass", color: "rose" },
+                { id: "8-1", time: "10:00", placeId: 28, title: "טירת הוט-קניגסבורג", desc: "סיור מרשים בטירת אבירים החולשת על עמק הריין.", icon: "fa-chess-rook", color: "slate" },
+                { id: "8-2", time: "12:30", placeId: 29, title: "פארק הקופים (Montagne des Singes)", desc: "הליכה ביער והאכלת קופי מקוק מכף היד.", icon: "fa-monkey", color: "amber" },
+                { id: "8-3", time: "14:30", placeId: 35, title: "מופע העופות הדורסים", desc: "צפייה במופע במבצר קינצהיים. ארוחה קלה במזנונים.", icon: "fa-crow", color: "slate" },
+                { id: "8-4", time: "17:00", placeId: 30, title: "פסטיבל היין באגיסהיים", desc: "שוטטות בין דוכני הפסטיבל בעיירה הציורית.", icon: "fa-wine-glass", color: "rose" },
                 { id: "8-5", time: "20:00", title: "ארוחת ערב ב-Au Cygne", desc: "ארוחת ערב אלזסית אותנטית.", icon: "fa-utensils", color: "orange" }
             ],
             9: [
-                { id: "9-1", time: "10:30", title: "המוזיאון הפתוח גוטאך", desc: "סיור אותנטי המציג את חיי הכפר של פעם.", icon: "fa-house-chimney", color: "amber" },
+                { id: "9-1", time: "10:30", placeId: 31, title: "המוזיאון הפתוח גוטאך", desc: "סיור אותנטי המציג את חיי הכפר של פעם.", icon: "fa-house-chimney", color: "amber" },
                 { id: "9-2", time: "13:30", title: "ארוחת צהריים", desc: "במסעדה המסורתית הצמודה למוזיאון.", icon: "fa-utensils", color: "orange" },
-                { id: "9-3", time: "15:30", title: "מגלשות ההרים בגוטאך", desc: "גלישה משפחתית מהנה.", icon: "fa-mountain", color: "emerald" },
+                { id: "9-3", time: "15:30", placeId: 31, title: "מגלשות ההרים בגוטאך", desc: "גלישה משפחתית מהנה.", icon: "fa-mountain", color: "emerald" },
                 { id: "9-4", time: "19:00", title: "ארוחת ערב Dammenmühle", desc: "בלאהר. חזרה לדירה וכביסה אחרונה לטיול.", icon: "fa-utensils", color: "orange" }
             ],
             10: [
-                { id: "10-1", time: "08:30", title: "פארק אירופה - הגעה מוקדמת", desc: "הגעה לפני פתיחת השערים. אלה ויעל על רכבות ההרים, נבו במתחמי הילדים.", icon: "fa-ticket", color: "rose" },
-                { id: "10-2", time: "13:30", title: "צהריים בפארק", desc: "במתחם היווני או האיטלקי (מגוון צמחוני עשיר).", icon: "fa-pizza-slice", color: "orange" },
-                { id: "10-3", time: "15:00", title: "המשך בילוי בפארק אירופה", desc: "עד הסגירה.", icon: "fa-star", color: "amber" },
+                { id: "10-1", time: "08:30", placeId: 31, title: "פארק אירופה - הגעה מוקדמת", desc: "הגעה לפני פתיחת השערים. אלה ויעל על רכבות ההרים, נבו במתחמי הילדים.", icon: "fa-ticket", color: "rose" },
+                { id: "10-2", time: "13:30", placeId: 31, title: "צהריים בפארק", desc: "במתחם היווני או האיטלקי (מגוון צמחוני עשיר).", icon: "fa-pizza-slice", color: "orange" },
+                { id: "10-3", time: "15:00", placeId: 31, title: "המשך בילוי בפארק אירופה", desc: "עד הסגירה.", icon: "fa-star", color: "amber" },
                 { id: "10-4", time: "19:00", title: "חזרה וארוחת ערב זריזה", desc: "התחלת אריזה.", icon: "fa-house", color: "slate" }
             ],
             11: [
                 { id: "11-1", time: "09:30", title: "עזיבת שוואנאו", desc: "התארגנות אחרונה והעמסת מזוודות.", icon: "fa-suitcase", color: "slate" },
-                { id: "11-2", time: "12:30", title: "מפלי הריין ופארק חבלים", desc: "חציית הגבול לשווייץ ושייט במפלים, פריקת אנרגיות בפארק החבלים.", icon: "fa-water", color: "blue" },
+                { id: "11-2", time: "12:30", placeId: 33, title: "מפלי הריין ופארק חבלים", desc: "חציית הגבול לשווייץ ושייט במפלים, פריקת אנרגיות בפארק החבלים.", icon: "fa-water", color: "blue" },
                 { id: "11-3", time: "16:00", title: "ארוחת פרידה ב-Gasthof Hirschen", desc: "חגיגית על נהר הריין (Eglisau).", icon: "fa-utensils", color: "orange" },
                 { id: "11-4", time: "18:00", title: "החזרת רכב בשדה", desc: "נסיעה לציריך, החזרת רכב.", icon: "fa-car", color: "slate" },
                 { id: "11-5", time: "20:50", title: "טיסה הביתה", desc: "המראה מציריך.", icon: "fa-plane-departure", color: "teal" }
@@ -2553,8 +2576,24 @@
         // ==========================================
         // Itinerary: find matching place GPS coords
         // ==========================================
-        function findPlaceCoords(title) {
-            if (!title || typeof places === 'undefined') return null;
+        function findPlaceCoords(itemOrTitle) {
+            if (!itemOrTitle || typeof places === 'undefined') return null;
+            
+            let title, placeId;
+            if (typeof itemOrTitle === 'object') {
+                title = itemOrTitle.title;
+                placeId = itemOrTitle.placeId;
+            } else {
+                title = itemOrTitle;
+                placeId = null;
+            }
+            
+            if (placeId !== undefined && placeId !== null) {
+                const match = places.find(p => p.id == placeId);
+                if (match) return match;
+            }
+
+            if (!title) return null;
             const lowerTitle = title.toLowerCase();
             // Try to find a place whose name overlaps with the item title
             const match = places.find(p => {
@@ -2747,7 +2786,7 @@
             for (const [dStr, items] of Object.entries(data)) {
                 let hasSwc = false;
                 items.forEach(item => {
-                    const matchedPlace = findPlaceCoords(item.title);
+                    const matchedPlace = findPlaceCoords(item);
                     if (matchedPlace && matchedPlace.swCard) hasSwc = true;
                 });
                 
@@ -2815,7 +2854,7 @@
                 const colorCode = item.color || 'teal';
 
                 // Resolve GPS coords from places data for nav buttons
-                const matchedPlace = findPlaceCoords(item.title);
+                const matchedPlace = findPlaceCoords(item);
                 const lat = matchedPlace ? matchedPlace.lat : null;
                 const lng = matchedPlace ? matchedPlace.lng : null;
 
@@ -2984,8 +3023,8 @@
             modal.classList.add('flex');
 
             const daySelect = document.getElementById('newAttrDaySelect');
-            if (daySelect) daySelect.value = _addAttractionDay.toString();
-            document.getElementById('newAttrTime').value = '12:00';
+            if (daySelect) daySelect.value = _addAttractionDay ? _addAttractionDay.toString() : "";
+            document.getElementById('newAttrTime').value = '';
             document.getElementById('newAttrTitle').value = '';
             document.getElementById('newAttrDesc').value = '';
             document.getElementById('newAttrIcon').value = 'fa-star';
@@ -3137,34 +3176,39 @@
             const lat = latStr ? parseFloat(latStr) : null;
             const lng = lngStr ? parseFloat(lngStr) : null;
 
-            // 1. Add to Itinerary
-            const data = getItineraryData();
-            if (!data[day]) data[day] = [];
+            const dayVal = document.getElementById('newAttrDaySelect')?.value;
+            const isBackupOnly = !dayVal;
 
-            const newItem = {
-                id: 'custom-' + Date.now().toString(),
-                time: time || '12:00',
-                title: title,
-                desc: desc || '',
-                icon: icon,
-                color: color,
-                lat: lat,
-                lng: lng,
-                address: address
-            };
+            if (!isBackupOnly) {
+                // 1. Add to Itinerary
+                const data = getItineraryData();
+                if (!data[day]) data[day] = [];
 
-            const dayList = data[day];
-            const insertIdx = dayList.findIndex(item => item.time > newItem.time);
-            if (insertIdx === -1) {
-                dayList.push(newItem);
-            } else {
-                dayList.splice(insertIdx, 0, newItem);
+                const newItem = {
+                    id: 'custom-' + Date.now().toString(),
+                    time: time || '12:00',
+                    title: title,
+                    desc: desc || '',
+                    icon: icon,
+                    color: color,
+                    lat: lat,
+                    lng: lng,
+                    address: address
+                };
+
+                const dayList = data[day];
+                const insertIdx = dayList.findIndex(item => item.time > newItem.time);
+                if (insertIdx === -1) {
+                    dayList.push(newItem);
+                } else {
+                    dayList.splice(insertIdx, 0, newItem);
+                }
+
+                saveItineraryData(data);
             }
 
-            saveItineraryData(data);
-
-            // 2. Sync to Map and Places List if requested
-            if (syncAll) {
+            // 2. Sync to Map and Places List if requested or if backup only
+            if (syncAll || isBackupOnly) {
                 const categoryNames = {
                     green: 'טבע ואטרקציות',
                     orange: 'מסעדה ואוכל',
@@ -3193,7 +3237,14 @@
             }
 
             closeAddAttractionModal();
-            renderItinerary(day);
+            if (!isBackupOnly) {
+                renderItinerary(day);
+            } else {
+                // If we're on the places tab, it will refresh the list. 
+                // Let's ensure it shows an alert or scrolls to places tab.
+                alert("האטרקציה נוספה לרשימת האטרקציות (גיבוי) בהצלחה!");
+                switchTab('places');
+            }
         }
 
         function setListCategory(cat) {
