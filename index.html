@@ -171,13 +171,23 @@
             border: none !important;
         }
 
+        /* Custom thin scrollbar for filter containers */
         .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+            display: block;
+            height: 6px;
+            width: 6px;
         }
-
+        .hide-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
         .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
         }
     </style>
 </head>
@@ -331,6 +341,9 @@
                         <button onclick="filterMap('shopping')" data-color="shopping"
                             class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap"><i
                                 class="fa-solid fa-bag-shopping text-pink-600"></i> שופינג</button>
+                        <button onclick="filterMap('swCard')" data-color="swCard"
+                            class="map-filter-btn px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 hover:bg-slate-200 font-medium whitespace-nowrap"><i
+                                class="fa-solid fa-tree text-slate-700"></i> כרטיס היער השחור</button>
                     </div>
 
                     <select id="mapRegionSelector" onchange="setRegionFilter(this.value)"
@@ -546,6 +559,9 @@
                         <button onclick="setListCategory('shopping')" data-color="shopping"
                             class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-pink-800 hover:bg-pink-50 font-medium whitespace-nowrap">🛍️
                             שופינג</button>
+                        <button onclick="setListCategory('swCard')" data-color="swCard"
+                            class="cat-pill px-3 py-1.5 rounded-full bg-slate-100 text-slate-800 hover:bg-slate-200 font-medium whitespace-nowrap">💳
+                            כרטיס היער השחור</button>
                     </div>
                 </div>
 
@@ -1708,9 +1724,9 @@
             { id: 19, name: "Gasthof Hirschen", region: "swiss", category: "orange", catName: "מסעדה", lat: 47.5750, lng: 8.5230, desc: "מסעדת סיום מרגשת על נהר הריין בשווייץ בדרך לשדה" },
 
             // אטרקציות וטבע (ירוק - green)
-            { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום", swCard: true, swCardDesc: "כניסה חינם למפלי טודנאו." },
+            { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום", swCard: true, swCardDesc: "כניסה חינם למפלי טודנאו.", swCardSaving: 15 },
             { id: 21, name: "מגלשות טודנאו (Hasenhorn Coaster)", region: "south", category: "green", catName: "אטרקציה", lat: 47.8285, lng: 7.9545, desc: "מגלשת ההרים הארוכה בגרמניה (2.9 ק\"מ) - אקסטרים מושלם" },
-            { id: 22, name: "מתחם פלדברג ורכבל ההרים", region: "south", category: "green", catName: "טבע ומשפחה", lat: 47.8600, lng: 8.0360, desc: "הפסגה הגבוהה ביער השחור, פארק חבלים ונוף עוצר נשימה", swCard: true, swCardDesc: "50% הנחה על נסיעה הלוך ושוב ברכבל, כולל כניסה למגדל פלדברג." },
+            { id: 22, name: "מתחם פלדברג ורכבל ההרים", region: "south", category: "green", catName: "טבע ומשפחה", lat: 47.8600, lng: 8.0360, desc: "הפסגה הגבוהה ביער השחור, פארק חבלים ונוף עוצר נשימה", swCard: true, swCardDesc: "50% הנחה על נסיעה הלוך ושוב ברכבל, כולל כניסה למגדל פלדברג.", swCardSaving: 16 },
             { id: 23, name: "אגם טיטיזה (Titisee)", region: "south", category: "green", catName: "אגם ושייט", lat: 47.8988, lng: 8.1565, desc: "סירות פדלים, מדרחוב קניות מזכרות וגלידריות" },
             { id: 24, name: "פארק שטיינוואסן (Steinwasen Park)", region: "south", category: "green", catName: "פארק שעשועים", lat: 47.8980, lng: 7.9220, desc: "גשר חבלים ענק, רכבות הרים, ומתחמי חיות שנבו יאהב" },
             { id: 25, name: "קניון רוואנה (Ravenna Gorge)", region: "south", category: "green", catName: "מסלול הליכה", lat: 47.9170, lng: 8.0730, desc: "מסלול הליכה קסום לצד פלגי מים תחת ויאדוקט הרכבת המפורסם" },
@@ -1719,18 +1735,18 @@
             { id: 28, name: "טירת הוט-קניגסבורג (Château du Haut-Kœnigsbourg)", region: "north", category: "green", catName: "טירה באלזס", lat: 48.2494, lng: 7.3442, desc: "טירת אבירים אותנטית על ראש הר באלזס עם תצפית עד האלפים" },
             { id: 29, name: "פארק הקופים באלזס (Montagne des Singes)", region: "north", category: "green", catName: "אטרקציה", lat: 48.2600, lng: 7.3780, desc: "הליכה חופשית ביער והאכלת פופקורן לקופי מקוק ברבריים" },
             { id: 30, name: "העיירה הציורית ריקוויר (Riquewihr)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.1667, lng: 7.2975, desc: "בתי עץ צבעוניים מהמאה ה-16, עיירת האגדות שבה נכתבה היפה והחיה" },
-            { id: 31, name: "פארק אירופה (Europa-Park)", region: "north", category: "green", catName: "גולת הכותרת", lat: 48.2660, lng: 7.7220, desc: "פארק השעשועים הטוב בעולם! רכבות הרים עולמיות, מופעים והנאה ענקית", swCard: true, swCardDesc: "כניסה יומית חינם (לבעלי גרסת הכרטיס הכוללת את פארק אירופה)." },
-            { id: 32, name: "מפלי טריברג (Triberg Waterfalls)", region: "north", category: "green", catName: "מפלים וטבע", lat: 48.1270, lng: 8.2280, desc: "המפלים הגבוהים בגרמניה, האכלת סנאים באגוזים ושעון הקוקייה הגדול", swCard: true, swCardDesc: "כניסה חינם למפלים." },
+            { id: 31, name: "פארק אירופה (Europa-Park)", region: "north", category: "green", catName: "גולת הכותרת", lat: 48.2660, lng: 7.7220, desc: "פארק השעשועים הטוב בעולם! רכבות הרים עולמיות, מופעים והנאה ענקית", swCard: true, swCardDesc: "כניסה יומית חינם (לבעלי גרסת הכרטיס הכוללת את פארק אירופה).", swCardSaving: 65 },
+            { id: 32, name: "מפלי טריברג (Triberg Waterfalls)", region: "north", category: "green", catName: "מפלים וטבע", lat: 48.1270, lng: 8.2280, desc: "המפלים הגבוהים בגרמניה, האכלת סנאים באגוזים ושעון הקוקייה הגדול", swCard: true, swCardDesc: "כניסה חינם למפלים.", swCardSaving: 8 },
             { id: 33, name: "מפלי הריין (Rhine Falls)", region: "swiss", category: "green", catName: "טבע בשווייץ", lat: 47.6779, lng: 8.6156, desc: "המפלים הרחבים באירופה! שייט סירה אל הסלע המרכזי ביום האחרון" },
 
             // מקומות נוספים מהמאסטר פלאן (Missing places added)
             { id: 34, name: "שביל החושים וולדקירך (Baumkronenweg Waldkirch)", region: "south", category: "green", catName: "אטרקציה בטבע", lat: 48.0930, lng: 7.9620, desc: "מסלול הליכה מוגבה בין צמרות העצים שיורד במגלשת צינור ייחודית" },
             { id: 35, name: "מבצר העיטים (Volerie des Aigles)", region: "north", category: "green", catName: "מופע נשרים", lat: 48.2580, lng: 7.3800, desc: "מופע מרהיב של עופות דורסים בתוך חורבות מבצר עתיק באלזס" },
-            { id: 36, name: "פארק הציפורים והקופים (Vogelpark Steinen)", region: "south", category: "green", catName: "חיות וטבע", lat: 47.6660, lng: 7.7550, desc: "הליכה חופשית בין קופי מקוק והאכלה מפופקורן, ומופעי עופות דורסים", swCard: true, swCardDesc: "כניסה חינם." },
-            { id: 37, name: "פארק החבלים אקשן פורסט (Action Forest Titisee)", region: "south", category: "green", catName: "אקסטרים", lat: 47.9000, lng: 8.1600, desc: "פארק חבלים אתגרי בלב יער אורנים קרוב לאגם טיטיזה. מתאים לבוגרות", swCard: true, swCardDesc: "משחק Explor Games אחד בחינם (לעד 5 אנשים) או משחק לייזר טאג אחד." },
+            { id: 36, name: "פארק הציפורים והקופים (Vogelpark Steinen)", region: "south", category: "green", catName: "חיות וטבע", lat: 47.6660, lng: 7.7550, desc: "הליכה חופשית בין קופי מקוק והאכלה מפופקורן, ומופעי עופות דורסים", swCard: true, swCardDesc: "כניסה חינם.", swCardSaving: 24 },
+            { id: 37, name: "פארק החבלים אקשן פורסט (Action Forest Titisee)", region: "south", category: "green", catName: "אקסטרים", lat: 47.9000, lng: 8.1600, desc: "פארק חבלים אתגרי בלב יער אורנים קרוב לאגם טיטיזה. מתאים לבוגרות", swCard: true, swCardDesc: "משחק Explor Games אחד בחינם (לעד 5 אנשים) או משחק לייזר טאג אחד.", swCardSaving: 26 },
             { id: 38, name: "שביל צמרות העצים באד וילדבאד (Baumwipfelpfad)", region: "north", category: "green", catName: "טבע", lat: 48.7490, lng: 8.5350, desc: "מסלול עץ ספירלי אדריכלי המטפס מעל צמרות היער עם מגלשת צינור במרכזו" },
-            { id: 39, name: "מפעל הזכוכית בוולפאך (Dorotheenhütte Wolfach)", region: "north", category: "green", catName: "סגור לגשם", lat: 48.2868, lng: 8.2255, desc: "צפייה והתנסות בניפוח זכוכית מסורתי, וביקור בכפר חג המולד הסגור. מעולה לגשם", swCard: true, swCardDesc: "כניסה חינם." },
-            { id: 40, name: "פארק הזאבים והדובים (Alternativer Wolf- und Bärenpark)", region: "north", category: "green", catName: "טבע וחיות", lat: 48.3842, lng: 8.3090, desc: "פארק אלטרנטיבי ופראי המאפשר צפייה בדובים וזאבים שחולצו בסביבה טבעית פתוחה", swCard: true, swCardDesc: "כניסה חינם." },
+            { id: 39, name: "מפעל הזכוכית בוולפאך (Dorotheenhütte Wolfach)", region: "north", category: "green", catName: "סגור לגשם", lat: 48.2868, lng: 8.2255, desc: "צפייה והתנסות בניפוח זכוכית מסורתי, וביקור בכפר חג המולד הסגור. מעולה לגשם", swCard: true, swCardDesc: "כניסה חינם.", swCardSaving: 8 },
+            { id: 40, name: "פארק הזאבים והדובים (Alternativer Wolf- und Bärenpark)", region: "north", category: "green", catName: "טבע וחיות", lat: 48.3842, lng: 8.3090, desc: "פארק אלטרנטיבי ופראי המאפשר צפייה בדובים וזאבים שחולצו בסביבה טבעית פתוחה", swCard: true, swCardDesc: "כניסה חינם.", swCardSaving: 8 },
             { id: 41, name: "אגם מומלזה (Mummelsee) וכביש 500", region: "north", category: "green", catName: "אגם", lat: 48.5973, lng: 8.2007, desc: "אגם קרחוני פסטורלי ושטוח על דרך הפנורמה של היער השחור עם מאפייה מקומית מצוינת" },
             { id: 42, name: "אגיסהיים (Eguisheim)", region: "north", category: "green", catName: "עיירת אגדות", lat: 48.0420, lng: 7.3060, desc: "עיירת יין ציורית באלזס הבנויה במעגלים. מארחת פסטיבל יין חגיגי" },
 
@@ -1962,7 +1978,7 @@
             markersGroup.clearLayers();
 
             const filtered = places.filter(p => {
-                const matchCat = (currentListFilter === 'all' || p.category === currentListFilter);
+                const matchCat = (currentListFilter === 'all' || (currentListFilter === 'swCard' ? p.swCard === true : p.category === currentListFilter));
                 const matchRegion = (currentRegionFilter === 'all' || p.region === currentRegionFilter);
                 return matchCat && matchRegion;
             });
@@ -1994,7 +2010,7 @@
                         <div class="flex items-center justify-between border-b pb-1 mb-1 gap-2">
                             <strong class="text-sm font-bold text-teal-800">${p.name}</strong>
                             <div class="flex items-center gap-1 shrink-0">
-                                ${p.swCard ? `<button onclick="showCardBenefit('${p.swCardDesc.replace(/'/g, "\\'")}')" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i></button>` : ''}
+                                ${p.swCard ? `<button onclick="showCardBenefit('${p.swCardDesc.replace(/'/g, "\\'")}')" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold inline-flex items-center" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree ml-1"></i>${p.swCardSaving ? `<span class="bg-emerald-500 text-white px-1 py-0.5 rounded text-[9px] mr-1">חיסכון €${p.swCardSaving}</span>` : ''}</button>` : ''}
                                 ${userLocation ? `<span class="bg-indigo-100 text-indigo-800 text-[10px] px-1.5 py-0.5 rounded font-bold" title="מרחק אווירי"><i class="fa-solid fa-route"></i> ${(getDistanceKm(userLocation.lat, userLocation.lng, p.lat, p.lng)).toFixed(1)} ק"מ</span>` : ''}
                                 <span class="text-[10px] px-1.5 py-0.5 rounded ${badgeClass}">${p.catName}</span>
                             </div>
@@ -2081,7 +2097,7 @@
             if (!grid) return;
 
             const filtered = places.filter(p => {
-                const matchCat = (currentListFilter === 'all' || p.category === currentListFilter);
+                const matchCat = (currentListFilter === 'all' || (currentListFilter === 'swCard' ? p.swCard === true : p.category === currentListFilter));
                 const matchRegion = (currentRegionFilter === 'all' || p.region === currentRegionFilter);
                 const matchQuery = !query || p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query) || p.catName.toLowerCase().includes(query) || (p.address && p.address.toLowerCase().includes(query));
                 return matchCat && matchRegion && matchQuery;
@@ -2138,7 +2154,7 @@
                                 </h3>
                                 <div class="flex flex-col items-end gap-1 shrink-0">
                                     <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${p.catName}</span>
-                                    ${p.swCard ? `<button onclick="showCardBenefit('${p.swCardDesc.replace(/'/g, "\\'")}')" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-white shadow-sm flex items-center gap-1 hover:bg-slate-700 transition-colors active:scale-95" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i> כרטיס היער השחור</button>` : ''}
+                                    ${p.swCard ? `<button onclick="showCardBenefit('${p.swCardDesc.replace(/'/g, "\\'")}')" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-white shadow-sm flex items-center gap-1 hover:bg-slate-700 transition-colors active:scale-95" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i> כרטיס היער השחור${p.swCardSaving ? `<span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded-full mr-1 shadow-sm text-[9px] tracking-wide">חסוך €${p.swCardSaving}</span>` : ''}</button>` : ''}
                                     ${itineraryBadge}
                                     ${userLocation ? `<span class="bg-indigo-100 text-indigo-800 text-[9px] px-1.5 py-0.5 rounded font-bold whitespace-nowrap"><i class="fa-solid fa-route"></i> ${(getDistanceKm(userLocation.lat, userLocation.lng, p.lat, p.lng)).toFixed(1)} ק"מ ממיקומך</span>` : ''}
                                 </div>
@@ -2277,6 +2293,55 @@
                 updateItineraryEditHeader();
                 renderItinerary(currentItineraryDay);
             }
+        }
+
+        function exportItineraryToFile() {
+            const data = {
+                itinerary: getItineraryData(),
+                customPlaces: JSON.parse(localStorage.getItem('blackForestCustomPlaces') || '[]')
+            };
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "black_forest_plan.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert("התוכנית יוצאה בהצלחה ונשמרה כקובץ.\nאפשר כעת לשתף את הקובץ 'black_forest_plan.json' בוואטסאפ עם המשפחה!");
+        }
+
+        function importItineraryFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const jsonStr = event.target.result;
+                        const data = JSON.parse(jsonStr);
+                        if (data.itinerary) {
+                            localStorage.setItem('blackForestItinerary', JSON.stringify(data.itinerary));
+                            if (data.customPlaces) {
+                                localStorage.setItem('blackForestCustomPlaces', JSON.stringify(data.customPlaces));
+                            }
+                            alert("התוכנית יובאה בהצלחה מקובץ! האפליקציה תתרענן כעת.");
+                            location.reload();
+                        } else {
+                            alert("הקובץ אינו מכיל נתוני תוכנית תקינים.");
+                        }
+                    } catch (err) {
+                        alert("שגיאה בפענוח הקובץ. ודא שזהו קובץ התוכנית הנכון.");
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
         }
 
         function startItineraryEditMode() {
@@ -2942,7 +3007,7 @@
 
                                 <div class="flex-1 min-w-0 pt-0.5">
                                     <h4 class="font-bold text-sm text-slate-800 mb-0.5 leading-tight">${item.title} 
-                                        ${matchedPlace && matchedPlace.swCard ? `<button onclick="event.stopPropagation(); showCardBenefit('${matchedPlace.swCardDesc.replace(/'/g, "\\'")}')" class="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-white shadow-sm inline-flex items-center gap-1 active:scale-95 hover:bg-slate-700 transition-colors ml-1 align-middle" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i></button>` : ''}
+                                        ${matchedPlace && matchedPlace.swCard ? `<button onclick="event.stopPropagation(); showCardBenefit('${matchedPlace.swCardDesc.replace(/'/g, "\\'")}')" class="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-white shadow-sm inline-flex items-center gap-1 active:scale-95 hover:bg-slate-700 transition-colors ml-1 align-middle" title="לחץ לפירוט ההטבה"><i class="fa-solid fa-tree"></i>${matchedPlace.swCardSaving ? `<span class="bg-emerald-500 text-white px-1 py-0.5 rounded text-[8px] mr-1">חיסכון €${matchedPlace.swCardSaving}</span>` : ''}</button>` : ''}
                                     </h4>
                                     <p class="text-[11px] text-slate-600 leading-relaxed">${item.desc}</p>
                                 </div>
@@ -3014,8 +3079,14 @@
                         </button>
                     </div>
                     <div class="px-1 pb-4 pt-1">
-                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-2xs flex items-center justify-center gap-1.5 border border-red-200">
+                        <button onclick="resetItineraryData()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-2xs flex items-center justify-center gap-1.5 border border-red-200 mb-2">
                             <i class="fa-solid fa-rotate-left"></i> איפוס לתוכנית המקורית מה-PDF
+                        </button>
+                        <button onclick="exportItineraryToFile()" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-2xs flex items-center justify-center gap-1.5 border border-blue-200 mb-2">
+                            <i class="fa-solid fa-file-export"></i> ייצוא התוכנית לקובץ (לשיתוף)
+                        </button>
+                        <button onclick="importItineraryFromFile()" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold text-xs py-2.5 rounded-xl transition-colors shadow-2xs flex items-center justify-center gap-1.5 border border-amber-200">
+                            <i class="fa-solid fa-file-import"></i> ייבוא תוכנית מקובץ
                         </button>
                     </div>
                 `;
