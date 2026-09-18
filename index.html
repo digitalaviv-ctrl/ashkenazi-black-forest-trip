@@ -2579,13 +2579,26 @@
         function findPlaceCoords(itemOrTitle) {
             if (!itemOrTitle || typeof places === 'undefined') return null;
             
-            let title, placeId;
+            let title, placeId, itemId;
             if (typeof itemOrTitle === 'object') {
                 title = itemOrTitle.title;
                 placeId = itemOrTitle.placeId;
+                itemId = itemOrTitle.id;
             } else {
                 title = itemOrTitle;
                 placeId = null;
+                itemId = null;
+            }
+
+            // Fallback for cached itinerary data missing placeId
+            if ((placeId === undefined || placeId === null) && itemId && typeof defaultItineraryData !== 'undefined') {
+                for (const dayItems of Object.values(defaultItineraryData)) {
+                    const defaultItem = dayItems.find(i => i.id === itemId);
+                    if (defaultItem && defaultItem.placeId !== undefined) {
+                        placeId = defaultItem.placeId;
+                        break;
+                    }
+                }
             }
             
             if (placeId !== undefined && placeId !== null) {
