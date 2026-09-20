@@ -177,13 +177,16 @@
             height: 6px;
             width: 6px;
         }
+
         .hide-scrollbar::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .hide-scrollbar::-webkit-scrollbar-thumb {
             background-color: #cbd5e1;
             border-radius: 10px;
         }
+
         .hide-scrollbar {
             -ms-overflow-style: auto;
             scrollbar-width: thin;
@@ -238,7 +241,8 @@
                 title="המרת מטבע בזמן אמת (ש״ח, אירו, פרנק שוויצרי)">
                 <i class="fa-solid fa-coins text-emerald-300 text-sm"></i>
                 <span class="hidden sm:inline">המרת מטבע</span>
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5 inline-block" title="שערים חיים ONLINE"></span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5 inline-block"
+                    title="שערים חיים ONLINE"></span>
             </button>
 
             <!-- PWA Install Button (Hidden by default, shown if install prompt ready) -->
@@ -297,8 +301,10 @@
             <span class="font-medium text-slate-500"><i class="fa-solid fa-microchip text-teal-600"></i> מודל AI:</span>
             <select id="modelSelector"
                 class="bg-slate-50 border border-slate-300 text-slate-800 text-xs rounded-lg p-1.5 font-medium focus:ring-teal-500 focus:border-teal-500">
-                <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash (הכי חדיש: מהיר, מעולה לעברית ותמונות)</option>
-                <option value="gemini-flash-latest">Gemini Flash Latest (מומלץ ויציב: מכסה גבוהה, טוב לרוב השאלות)</option>
+                <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash (הכי חדיש: מהיר, מעולה לעברית ותמונות)
+                </option>
+                <option value="gemini-flash-latest">Gemini Flash Latest (מומלץ ויציב: מכסה גבוהה, טוב לרוב השאלות)
+                </option>
                 <option value="gemini-pro-latest">Gemini Pro Latest (מתקדם: חכם במיוחד, מעולה לשאלות מורכבות)</option>
             </select>
         </div>
@@ -571,7 +577,8 @@
         </section>
 
         <!-- TAB 4: Daily Itinerary -->
-        <section id="panel-itinerary" class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-hidden">
+        <section id="panel-itinerary"
+            class="tab-panel hidden w-full h-full flex flex-col bg-slate-50 p-2 sm:p-4 overflow-hidden">
             <!-- Top Sticky Header & Days Bar -->
             <div class="shrink-0 bg-white p-2.5 rounded-2xl shadow-xs border border-slate-200 mb-2">
                 <div class="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-slate-100">
@@ -582,11 +589,15 @@
                         </span>
                     </div>
                     <div id="itineraryHeaderActions" class="flex items-center gap-1.5">
-                        <button onclick="openShareItineraryModal()" class="shrink-0 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-emerald-200 flex items-center gap-1.5 active:scale-95" title="ייצוא, שיתוף וסנכרון משפחתי בוואטסאפ">
+                        <button onclick="openShareItineraryModal()"
+                            class="shrink-0 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-emerald-200 flex items-center gap-1.5 active:scale-95"
+                            title="ייצוא, שיתוף וסנכרון משפחתי בוואטסאפ">
                             <i class="fa-solid fa-share-nodes text-emerald-600"></i>
                             <span>סנכרון וגיבוי</span>
                         </button>
-                        <button onclick="startItineraryEditMode()" id="editItineraryBtn" class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-amber-200 flex items-center gap-1.5 active:scale-95" title="מצב עריכה">
+                        <button onclick="startItineraryEditMode()" id="editItineraryBtn"
+                            class="shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-800 px-3 py-1.5 rounded-xl transition-colors font-bold text-xs shadow-xs border border-amber-200 flex items-center gap-1.5 active:scale-95"
+                            title="מצב עריכה">
                             <i class="fa-solid fa-pen-to-square"></i>
                             <span>עריכה</span>
                         </button>
@@ -595,17 +606,39 @@
 
                 <!-- Days horizontally scrollable list -->
                 <div class="flex gap-2 overflow-x-auto hide-scrollbar py-0.5">
-                    <button onclick="renderItinerary(1)" id="dayBtn-1" class="day-btn active px-3.5 py-1.5 rounded-xl font-bold bg-teal-700 text-white shadow-xs shrink-0 leading-tight text-center text-xs">19/9<br><span class="text-[10px] font-normal opacity-90">נחיתה</span></button>
-                    <button onclick="renderItinerary(2)" id="dayBtn-2" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">20/9<br><span class="text-[10px] font-normal">טבע גועש</span></button>
-                    <button onclick="renderItinerary(3)" id="dayBtn-3" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">21/9<br><span class="text-[10px] font-normal">פסגות ואגם</span></button>
-                    <button onclick="renderItinerary(4)" id="dayBtn-4" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">22/9<br><span class="text-[10px] font-normal">חיות ואגדות</span></button>
-                    <button onclick="renderItinerary(5)" id="dayBtn-5" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">23/9<br><span class="text-[10px] font-normal">צמרות ופרייבורג</span></button>
-                    <button onclick="renderItinerary(6)" id="dayBtn-6" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">24/9<br><span class="text-[10px] font-normal">מעבר לאלזס</span></button>
-                    <button onclick="renderItinerary(7)" id="dayBtn-7" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">25/9<br><span class="text-[10px] font-normal">שופינג וקסם</span></button>
-                    <button onclick="renderItinerary(8)" id="dayBtn-8" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">26/9<br><span class="text-[10px] font-normal">אבירים ויין</span></button>
-                    <button onclick="renderItinerary(9)" id="dayBtn-9" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">27/9<br><span class="text-[10px] font-normal">היסטוריה</span></button>
-                    <button onclick="renderItinerary(10)" id="dayBtn-10" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">28/9<br><span class="text-[10px] font-normal">פארק אירופה</span></button>
-                    <button onclick="renderItinerary(11)" id="dayBtn-11" class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">29/9<br><span class="text-[10px] font-normal">מפלי הריין</span></button>
+                    <button onclick="renderItinerary(1)" id="dayBtn-1"
+                        class="day-btn active px-3.5 py-1.5 rounded-xl font-bold bg-teal-700 text-white shadow-xs shrink-0 leading-tight text-center text-xs">19/9<br><span
+                            class="text-[10px] font-normal opacity-90">נחיתה</span></button>
+                    <button onclick="renderItinerary(2)" id="dayBtn-2"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">20/9<br><span
+                            class="text-[10px] font-normal">טבע גועש</span></button>
+                    <button onclick="renderItinerary(3)" id="dayBtn-3"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">21/9<br><span
+                            class="text-[10px] font-normal">פסגות ואגם</span></button>
+                    <button onclick="renderItinerary(4)" id="dayBtn-4"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">22/9<br><span
+                            class="text-[10px] font-normal">חיות ואגדות</span></button>
+                    <button onclick="renderItinerary(5)" id="dayBtn-5"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">23/9<br><span
+                            class="text-[10px] font-normal">צמרות ופרייבורג</span></button>
+                    <button onclick="renderItinerary(6)" id="dayBtn-6"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">24/9<br><span
+                            class="text-[10px] font-normal">מעבר לאלזס</span></button>
+                    <button onclick="renderItinerary(7)" id="dayBtn-7"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">25/9<br><span
+                            class="text-[10px] font-normal">שופינג וקסם</span></button>
+                    <button onclick="renderItinerary(8)" id="dayBtn-8"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">26/9<br><span
+                            class="text-[10px] font-normal">אבירים ויין</span></button>
+                    <button onclick="renderItinerary(9)" id="dayBtn-9"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">27/9<br><span
+                            class="text-[10px] font-normal">היסטוריה</span></button>
+                    <button onclick="renderItinerary(10)" id="dayBtn-10"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">28/9<br><span
+                            class="text-[10px] font-normal">פארק אירופה</span></button>
+                    <button onclick="renderItinerary(11)" id="dayBtn-11"
+                        class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">29/9<br><span
+                            class="text-[10px] font-normal">מפלי הריין</span></button>
                 </div>
             </div>
 
@@ -768,11 +801,13 @@
     <!-- ========================================== -->
     <div id="shareItineraryModal"
         class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden" style="direction: rtl;">
+        <div class="bg-white rounded-3xl p-4 sm:p-6 max-w-lg w-full shadow-2xl relative border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden"
+            style="direction: rtl;">
             <!-- Header -->
             <div class="flex items-center justify-between border-b pb-3 mb-3">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg shadow-xs">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg shadow-xs">
                         <i class="fa-solid fa-share-nodes"></i>
                     </div>
                     <div>
@@ -789,23 +824,30 @@
             <!-- Content -->
             <div class="flex-1 overflow-y-auto space-y-3.5 pr-0.5">
                 <!-- Status Banner -->
-                <div id="syncStatusBanner" class="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between text-xs">
+                <div id="syncStatusBanner"
+                    class="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2">
                         <span id="syncStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        <span id="syncStatusText" class="text-slate-700 font-semibold">תוכנית מותאמת אישית פעילה במכשירך</span>
+                        <span id="syncStatusText" class="text-slate-700 font-semibold">תוכנית מותאמת אישית פעילה
+                            במכשירך</span>
                     </div>
-                    <span id="syncItemsCount" class="text-[11px] bg-white border border-slate-200 px-2 py-0.5 rounded-lg text-slate-600 font-bold">11 ימים</span>
+                    <span id="syncItemsCount"
+                        class="text-[11px] bg-white border border-slate-200 px-2 py-0.5 rounded-lg text-slate-600 font-bold">11
+                        ימים</span>
                 </div>
 
                 <!-- Card 1: WhatsApp Rich Text Share -->
-                <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
+                <div
+                    class="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                         </div>
                         <div>
                             <h3 class="text-xs sm:text-sm font-bold text-slate-900">1. שיתוף לו"ז קריא בוואטסאפ 💬</h3>
-                            <p class="text-[10px] text-slate-600">שולח למשפחה הודעת וואטסאפ מעוצבת של כל הימים והשעות לקריאה נוחה</p>
+                            <p class="text-[10px] text-slate-600">שולח למשפחה הודעת וואטסאפ מעוצבת של כל הימים והשעות
+                                לקריאה נוחה</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-0.5">
@@ -823,14 +865,18 @@
                 </div>
 
                 <!-- Card 2: File / Sync Code Export -->
-                <div class="bg-gradient-to-r from-indigo-50/80 to-blue-50/80 border border-indigo-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
+                <div
+                    class="bg-gradient-to-r from-indigo-50/80 to-blue-50/80 border border-indigo-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                         </div>
                         <div>
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-900">2. ייצוא קובץ סנכרון לטלפונים אחרים 📤</h3>
-                            <p class="text-[10px] text-slate-600">שלח קובץ שכל בן משפחה יוכל לטעון בטלפון שלו כדי שכולם יראו אותו דבר</p>
+                            <h3 class="text-xs sm:text-sm font-bold text-slate-900">2. ייצוא קובץ סנכרון לטלפונים אחרים
+                                📤</h3>
+                            <p class="text-[10px] text-slate-600">שלח קובץ שכל בן משפחה יוכל לטעון בטלפון שלו כדי שכולם
+                                יראו אותו דבר</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-0.5">
@@ -850,20 +896,23 @@
                 <!-- Card 3: Import Plan -->
                 <div class="bg-white border-2 border-slate-200 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
+                        <div
+                            class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
                             <i class="fa-solid fa-file-import"></i>
                         </div>
                         <div>
                             <h3 class="text-xs sm:text-sm font-bold text-slate-900">3. ייבוא תוכנית מבן משפחה 📥</h3>
-                            <p class="text-[10px] text-slate-500">קיבלת קובץ או קוד סנכרון בוואטסאפ? טען אותו כאן לקבלת התוכנית המעודכנת</p>
+                            <p class="text-[10px] text-slate-500">קיבלת קובץ או קוד סנכרון בוואטסאפ? טען אותו כאן לקבלת
+                                התוכנית המעודכנת</p>
                         </div>
                     </div>
-                    
+
                     <label for="importItineraryFileInput"
                         class="cursor-pointer w-full bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-900 border border-dashed border-slate-300 hover:border-amber-300 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors text-center">
                         <i class="fa-solid fa-upload text-amber-600"></i>
                         <span>בחר קובץ שנשלח אליך (.json)</span>
-                        <input type="file" id="importItineraryFileInput" class="hidden" accept=".json,application/json" onchange="handleItineraryFileImport(event)">
+                        <input type="file" id="importItineraryFileInput" class="hidden" accept=".json,application/json"
+                            onchange="handleItineraryFileImport(event)">
                     </label>
 
                     <div class="flex items-center gap-2 text-slate-300 text-xs">
@@ -891,7 +940,8 @@
                         </span>
                     </div>
                     <p class="text-[11px] text-slate-500 leading-relaxed">
-                        אם עדכנת את גרסת האפליקציה בשרת ותרצה שהגרסה המקורית של האתר תקבע מעתה (ולא השינויים הישנים ששמרת מקומית בטלפון), תוכל לאפס את הזיכרון המקומי:
+                        אם עדכנת את גרסת האפליקציה בשרת ותרצה שהגרסה המקורית של האתר תקבע מעתה (ולא השינויים הישנים
+                        ששמרת מקומית בטלפון), תוכל לאפס את הזיכרון המקומי:
                     </p>
                     <div class="flex gap-2 mt-1">
                         <button onclick="resetItineraryToOrigin()"
@@ -920,7 +970,8 @@
                         <i class="fa-solid fa-cloud-sun"></i>
                     </div>
                     <div>
-                        <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לטיול: 19/9 - 29/9/2026 (°C)</h2>
+                        <h2 class="text-base sm:text-lg font-bold text-slate-800">תחזית מזג אוויר לטיול: 19/9 -
+                            29/9/2026 (°C)</h2>
                         <p id="weatherPlaceSubtitle"
                             class="text-xs text-teal-700 font-semibold flex items-center gap-1">
                             <i class="fa-solid fa-location-dot text-rose-500"></i>
@@ -1010,17 +1061,21 @@
     <!-- ========================================== -->
     <div id="currencyModal"
         class="hidden fixed inset-0 bg-slate-900/60 z-[1000] flex justify-center items-center p-3 sm:p-4 backdrop-blur-sm transition-opacity">
-        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col relative animate-fade-in-up border border-slate-100" style="direction: rtl;">
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col relative animate-fade-in-up border border-slate-100"
+            style="direction: rtl;">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3.5 flex items-center justify-between shadow-sm z-10">
+            <div
+                class="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3.5 flex items-center justify-between shadow-sm z-10">
                 <div class="flex items-center gap-2.5 text-white">
-                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
+                    <div
+                        class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
                         <i class="fa-solid fa-coins text-lg"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-1.5">
                             <h2 class="text-base font-bold text-white">המרת מטבע ONLINE</h2>
-                            <span class="bg-emerald-400 text-emerald-950 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+                            <span
+                                class="bg-emerald-400 text-emerald-950 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-900 animate-ping"></span> LIVE
                             </span>
                         </div>
@@ -1072,9 +1127,13 @@
                             </label>
                             <span class="text-[10px] text-slate-400">גרמניה וצרפת</span>
                         </div>
-                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
-                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">EUR €</span>
-                            <input type="number" id="currEur" oninput="convertCurrency('EUR')" placeholder="0.00" step="any"
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all"
+                            dir="ltr">
+                            <span
+                                class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">EUR
+                                €</span>
+                            <input type="number" id="currEur" oninput="convertCurrency('EUR')" placeholder="0.00"
+                                step="any"
                                 class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
                         </div>
                     </div>
@@ -1087,9 +1146,13 @@
                             </label>
                             <span class="text-[10px] text-slate-400">ישראל</span>
                         </div>
-                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
-                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">ILS ₪</span>
-                            <input type="number" id="currIls" oninput="convertCurrency('ILS')" placeholder="0.00" step="any"
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all"
+                            dir="ltr">
+                            <span
+                                class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">ILS
+                                ₪</span>
+                            <input type="number" id="currIls" oninput="convertCurrency('ILS')" placeholder="0.00"
+                                step="any"
                                 class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
                         </div>
                     </div>
@@ -1102,9 +1165,12 @@
                             </label>
                             <span class="text-[10px] text-slate-400">מפלי הריין וציריך</span>
                         </div>
-                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all" dir="ltr">
-                            <span class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">CHF</span>
-                            <input type="number" id="currChf" oninput="convertCurrency('CHF')" placeholder="0.00" step="any"
+                        <div class="flex items-center bg-white border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-emerald-500 shadow-sm transition-all"
+                            dir="ltr">
+                            <span
+                                class="bg-slate-100 px-3 py-2.5 text-slate-600 font-bold border-r border-slate-200 w-16 text-center text-sm">CHF</span>
+                            <input type="number" id="currChf" oninput="convertCurrency('CHF')" placeholder="0.00"
+                                step="any"
                                 class="flex-1 w-full p-2.5 font-bold text-slate-800 text-lg outline-none text-left">
                         </div>
                     </div>
@@ -1114,11 +1180,16 @@
                 <div class="pt-1">
                     <div class="text-[10px] font-bold text-slate-400 mb-1.5">הזנה מהירה (אירו):</div>
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="setQuickEuro(5)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">5€</button>
-                        <button onclick="setQuickEuro(10)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">10€</button>
-                        <button onclick="setQuickEuro(20)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">20€</button>
-                        <button onclick="setQuickEuro(50)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">50€</button>
-                        <button onclick="setQuickEuro(100)" class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">100€</button>
+                        <button onclick="setQuickEuro(5)"
+                            class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">5€</button>
+                        <button onclick="setQuickEuro(10)"
+                            class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">10€</button>
+                        <button onclick="setQuickEuro(20)"
+                            class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">20€</button>
+                        <button onclick="setQuickEuro(50)"
+                            class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">50€</button>
+                        <button onclick="setQuickEuro(100)"
+                            class="bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-700 text-xs font-bold py-1 px-2.5 rounded-lg transition-all shadow-2xs">100€</button>
                     </div>
                 </div>
 
@@ -1159,19 +1230,23 @@
                 <!-- Quick Direction Presets -->
                 <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar pb-1 text-xs">
                     <span class="text-slate-400 font-bold text-[10px] shrink-0">כיוון מהיר:</span>
-                    <button onclick="setTranslateLangs('de', 'he')" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
+                    <button onclick="setTranslateLangs('de', 'he')"
+                        class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
                         🇩🇪 גרמנית ➔ 🇮🇱 עברית
                     </button>
-                    <button onclick="setTranslateLangs('fr', 'he')" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
+                    <button onclick="setTranslateLangs('fr', 'he')"
+                        class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold shrink-0 border border-indigo-200 transition-colors">
                         🇫🇷 צרפתית ➔ 🇮🇱 עברית
                     </button>
-                    <button onclick="setTranslateLangs('he', 'de')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold shrink-0 border border-slate-200 transition-colors">
+                    <button onclick="setTranslateLangs('he', 'de')"
+                        class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold shrink-0 border border-slate-200 transition-colors">
                         🇮🇱 עברית ➔ 🇩🇪 גרמנית
                     </button>
                 </div>
 
                 <!-- Language Selector with Swap Button -->
-                <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
+                <div
+                    class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
                     <div class="flex-1">
                         <label class="block text-[10px] text-slate-400 font-bold mb-1">משפה:</label>
                         <select id="translateFromLang" onchange="onTranslateLangChange()"
@@ -1203,18 +1278,23 @@
                 </div>
 
                 <!-- Photo Menu & Sign Translation Feature (Vision) -->
-                <div class="bg-gradient-to-br from-indigo-50/90 via-amber-50/50 to-teal-50/80 border border-indigo-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
+                <div
+                    class="bg-gradient-to-br from-indigo-50/90 via-amber-50/50 to-teal-50/80 border border-indigo-200/80 rounded-2xl p-3.5 flex flex-col gap-2.5 shadow-xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
+                            <div
+                                class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
                                 <i class="fa-solid fa-camera"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">תרגום תפריט או שלט מצילום 📷</h3>
-                                <p class="text-[10px] text-slate-500">מפענח טקסט מצרפתית/גרמנית ומסמן מנות צמחוניות 🌱</p>
+                                <h3 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">תרגום תפריט או שלט
+                                    מצילום 📷</h3>
+                                <p class="text-[10px] text-slate-500">מפענח טקסט מצרפתית/גרמנית ומסמן מנות צמחוניות 🌱
+                                </p>
                             </div>
                         </div>
-                        <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full font-bold flex items-center gap-1 shrink-0 border border-indigo-200">
+                        <span
+                            class="text-[10px] bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full font-bold flex items-center gap-1 shrink-0 border border-indigo-200">
                             <i class="fa-solid fa-sparkles text-amber-500"></i> AI Vision
                         </span>
                     </div>
@@ -1224,28 +1304,36 @@
                             class="cursor-pointer bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
                             <i class="fa-solid fa-camera text-sm"></i>
                             <span>צלם במצלמה</span>
-                            <input type="file" id="menuPhotoCameraInput" class="hidden" accept="image/*" capture="environment" onchange="handleMenuPhotoUpload(event)">
+                            <input type="file" id="menuPhotoCameraInput" class="hidden" accept="image/*"
+                                capture="environment" onchange="handleMenuPhotoUpload(event)">
                         </label>
                         <label for="menuPhotoGalleryInput"
                             class="cursor-pointer bg-white hover:bg-indigo-50 active:scale-95 text-indigo-700 border border-indigo-200 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
                             <i class="fa-solid fa-image text-sm"></i>
                             <span>בחר מהגלריה</span>
-                            <input type="file" id="menuPhotoGalleryInput" class="hidden" accept="image/*" onchange="handleMenuPhotoUpload(event)">
+                            <input type="file" id="menuPhotoGalleryInput" class="hidden" accept="image/*"
+                                onchange="handleMenuPhotoUpload(event)">
                         </label>
                     </div>
 
                     <!-- Photo preview if uploaded -->
-                    <div id="menuPhotoPreview" class="hidden items-center justify-between bg-white p-2.5 rounded-xl border border-indigo-200 shadow-xs mt-0.5">
+                    <div id="menuPhotoPreview"
+                        class="hidden items-center justify-between bg-white p-2.5 rounded-xl border border-indigo-200 shadow-xs mt-0.5">
                         <div class="flex items-center gap-2.5 overflow-hidden">
-                            <img id="menuPhotoThumb" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0" src="" alt="תמונת תפריט">
+                            <img id="menuPhotoThumb"
+                                class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0" src=""
+                                alt="תמונת תפריט">
                             <div class="text-xs text-slate-700 truncate">
-                                <span class="font-bold block text-slate-900 truncate" id="menuPhotoFileName">תמונת תפריט נטענה</span>
+                                <span class="font-bold block text-slate-900 truncate" id="menuPhotoFileName">תמונת תפריט
+                                    נטענה</span>
                                 <span class="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
                                     <i class="fa-solid fa-circle-check"></i> מוכנה לתרגום מלא לעברית
                                 </span>
                             </div>
                         </div>
-                        <button type="button" onclick="clearMenuPhoto()" class="text-red-400 hover:text-red-600 p-2 text-sm transition-colors rounded-lg hover:bg-red-50" title="הסר תמונה">
+                        <button type="button" onclick="clearMenuPhoto()"
+                            class="text-red-400 hover:text-red-600 p-2 text-sm transition-colors rounded-lg hover:bg-red-50"
+                            title="הסר תמונה">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
@@ -1366,7 +1454,7 @@
     <div id="addAttractionModal"
         class="hidden fixed inset-0 bg-slate-900/60 z-[1000] justify-center items-end sm:items-center p-0 sm:p-4 backdrop-blur-sm">
         <div class="bg-white rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 w-full sm:max-w-lg shadow-2xl border border-slate-100 flex flex-col gap-3.5 max-h-[92vh] overflow-y-auto"
-             style="padding-bottom: max(1.25rem, env(safe-area-inset-bottom));">
+            style="padding-bottom: max(1.25rem, env(safe-area-inset-bottom));">
             <!-- Header -->
             <div class="flex items-center justify-between border-b pb-2.5">
                 <div class="flex items-center gap-2.5">
@@ -1378,7 +1466,8 @@
                         <p class="text-[11px] text-slate-500">מתעדכן אוטומטית בלו&quot;ז, במפה וברשימת היעדים</p>
                     </div>
                 </div>
-                <button onclick="closeAddAttractionModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
+                <button onclick="closeAddAttractionModal()"
+                    class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -1387,7 +1476,8 @@
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">יום בלו&quot;ז (רשות)</label>
-                    <select id="newAttrDaySelect" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                    <select id="newAttrDaySelect"
+                        class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
                         <option value="">-- ללא שיבוץ (אטרקציה נוספת) --</option>
                         <option value="1">יום 1: 19/9 (נחיתה והתאקלמות)</option>
                         <option value="2">יום 2: 20/9 (טבע גועש)</option>
@@ -1411,7 +1501,8 @@
 
             <!-- Title & Name -->
             <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1">שם האטרקציה / יעד <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-bold text-slate-600 mb-1">שם האטרקציה / יעד <span
+                        class="text-red-500">*</span></label>
                 <input type="text" id="newAttrTitle" placeholder="למשל: מגלשות הרים, פארק חבלים, מסעדה..."
                     class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white">
             </div>
@@ -1419,11 +1510,13 @@
             <!-- Automatic Address Search & Geocoding -->
             <div class="relative bg-teal-50/50 p-2.5 rounded-2xl border border-teal-200/80">
                 <label class="block text-xs font-bold text-teal-900 mb-1 flex items-center justify-between">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-500"></i> איתור כתובת ומיקום GPS במפה (אוטומטי)</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-500"></i> איתור
+                        כתובת ומיקום GPS במפה (אוטומטי)</span>
                     <span class="text-[10px] text-teal-600 font-normal">לחיפוש: שם מקום או כתובת</span>
                 </label>
                 <div class="flex gap-1.5">
-                    <input type="text" id="newAttrAddressSearch" placeholder="הקלד כתובת או עיר (למשל: Titisee, Europa-Park, Freiburg)..."
+                    <input type="text" id="newAttrAddressSearch"
+                        placeholder="הקלד כתובת או עיר (למשל: Titisee, Europa-Park, Freiburg)..."
                         class="flex-1 border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs focus:outline-none focus:border-teal-500 bg-white"
                         onkeypress="if(event.key==='Enter') { event.preventDefault(); searchAddressForNewAttr(); }">
                     <button type="button" onclick="searchAddressForNewAttr()" id="newAttrSearchBtn"
@@ -1433,15 +1526,19 @@
                     </button>
                 </div>
                 <!-- Autocomplete results dropdown -->
-                <div id="newAttrSearchResults" class="hidden absolute left-2 right-2 z-50 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 max-h-40 overflow-y-auto divide-y divide-slate-100 text-xs"></div>
+                <div id="newAttrSearchResults"
+                    class="hidden absolute left-2 right-2 z-50 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 max-h-40 overflow-y-auto divide-y divide-slate-100 text-xs">
+                </div>
 
                 <!-- Found location badge -->
-                <div id="newAttrFoundLocation" class="hidden mt-2 bg-white border border-teal-300 p-2 rounded-xl text-xs text-teal-900 flex items-center justify-between shadow-2xs">
+                <div id="newAttrFoundLocation"
+                    class="hidden mt-2 bg-white border border-teal-300 p-2 rounded-xl text-xs text-teal-900 flex items-center justify-between shadow-2xs">
                     <div class="flex items-center gap-1.5 truncate">
                         <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
                         <span id="newAttrFoundText" class="truncate font-semibold text-slate-800"></span>
                     </div>
-                    <button type="button" onclick="clearNewAttrFoundLocation()" class="text-slate-400 hover:text-red-500 text-xs px-1 font-bold">✕</button>
+                    <button type="button" onclick="clearNewAttrFoundLocation()"
+                        class="text-slate-400 hover:text-red-500 text-xs px-1 font-bold">✕</button>
                 </div>
                 <input type="hidden" id="newAttrLat" value="">
                 <input type="hidden" id="newAttrLng" value="">
@@ -1452,7 +1549,8 @@
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">קטגוריה</label>
-                    <select id="newAttrCategory" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                    <select id="newAttrCategory"
+                        class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
                         <option value="green">🌲 טבע ואטרקציות</option>
                         <option value="orange">🍽️ מסעדות ואוכל</option>
                         <option value="red">🛒 סופרים גדולים למעברים</option>
@@ -1463,7 +1561,8 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">אזור גיאוגרפי</label>
-                    <select id="newAttrRegion" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
+                    <select id="newAttrRegion"
+                        class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs font-semibold focus:outline-none focus:border-teal-500 bg-white">
                         <option value="south">🌲 דרום (עוגן פאלקאו)</option>
                         <option value="north">🥨 צפון ואלזס (עוגן שוואנאו)</option>
                         <option value="swiss">🇨🇭 שווייץ בדרך</option>
@@ -1482,7 +1581,8 @@
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">אייקון תצוגה</label>
-                    <select id="newAttrIcon" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
+                    <select id="newAttrIcon"
+                        class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
                         <option value="fa-star">⭐ כוכב (כללי)</option>
                         <option value="fa-tree">🌲 יער וטבע</option>
                         <option value="fa-mountain">⛰️ הרים ותצפית</option>
@@ -1499,7 +1599,8 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">צבע בלו&quot;ז</label>
-                    <select id="newAttrColor" class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
+                    <select id="newAttrColor"
+                        class="w-full border border-slate-300 rounded-xl px-2.5 py-2 text-xs focus:outline-none focus:border-teal-500 bg-white">
                         <option value="teal">🟢 ירוק-כחול</option>
                         <option value="emerald">🌿 ירוק</option>
                         <option value="amber">🟡 צהוב-כתום</option>
@@ -1514,17 +1615,21 @@
             </div>
 
             <!-- Sync Checkbox -->
-            <label class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 cursor-pointer select-none">
-                <input type="checkbox" id="newAttrSyncAll" checked class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4">
+            <label
+                class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 cursor-pointer select-none">
+                <input type="checkbox" id="newAttrSyncAll" checked
+                    class="rounded text-teal-600 focus:ring-teal-500 w-4 h-4">
                 <span>סנכרן והוסף אוטומטית גם למפה ולרשימת היעדים והניווט 📍</span>
             </label>
 
             <!-- Action Buttons -->
             <div class="flex gap-2 pt-1">
-                <button type="button" onclick="closeAddAttractionModal()" class="flex-none px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors">
+                <button type="button" onclick="closeAddAttractionModal()"
+                    class="flex-none px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-colors">
                     ביטול
                 </button>
-                <button type="button" onclick="saveNewAttraction()" class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs">
+                <button type="button" onclick="saveNewAttraction()"
+                    class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 active:scale-[0.99] text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-xs">
                     <i class="fa-solid fa-check"></i>
                     <span>הוסף ללו&quot;ז, למפה וליעדים ✨</span>
                 </button>
@@ -2208,11 +2313,10 @@
                 { id: "2-3", time: "19:00", title: "ארוחת ערב במסעדת OX", desc: "ארוחת ערב במסעדת ההמבורגרים OX Burger בעיירה קירכצארטן.", icon: "fa-burger", color: "orange" }
             ],
             3: [
-                { id: "3-1", time: "10:00", placeId: 22, title: "הגעה לפלדברג ופארק חבלים", desc: "הגעה למתחם חניון פלדברג. אלה ויעל יעלו לפארק החבלים (Kletterwald), נבו ייהנה במסע האינטראקטיבי.", icon: "fa-tree", color: "emerald" },
-                { id: "3-2", time: "12:00", placeId: 22, title: "רכבל פלדברג", desc: "עלייה משותפת לתצפית נוף פנורמית.", icon: "fa-cable-car", color: "sky" },
-                { id: "3-3", time: "13:30", placeId: 23, title: "ארוחת צהריים באגם טיטיזה", desc: "נסיעה לאגם וארוחה במדרחוב באחת המסעדות האיטלקיות.", icon: "fa-pizza-slice", color: "orange" },
-                { id: "3-4", time: "15:30", placeId: 23, title: "שייט משפחתי באגם", desc: "השכרת סירת פדלים או מנוע באגם טיטיזה.", icon: "fa-ship", color: "blue" },
-                { id: "3-5", time: "18:30", title: "ארוחת ערב ב-Restaurant Peterle", desc: "ארוחת ערב שקטה.", icon: "fa-utensils", color: "orange" }
+                { id: "3-1", time: "10:00", title: "פסגת הפלדברג (Feldbergbahn)", desc: "עלייה ברכבל הקרוניות לתצפית (חינם בכרטיס היער השחור). הליכה לאנדרטת ביסמרק לתצפית על אגם פלדזה ולמגדל התצפית. חובה להביא עליוניות/מעילי רוח!", icon: "fa-mountain", color: "sky" },
+                { id: "3-2", time: "13:00", title: "צהריים ומגלשות הרים בטודנאו (Hasenhorn)", desc: "ארוחת צהריים בעיירה טודנאו (פיצות/פסטות לאלה, בשר למורן) ומיד לאחריה 5 גלישות משפחתיות במגלשות ההרים.", icon: "fa-ticket", color: "amber" },
+                { id: "3-3", time: "15:30", title: "מפלי טודנאו + הגשר התלוי", desc: "פיצול חוויה: 1) מסלול תחתון קליל למפלים מחניון Aftersteg. 2) נסיעה לחניון העליון והליכה על הגשר התלוי השקוף Blackforestline מעל המפלים.", icon: "fa-water", color: "blue" },
+                { id: "3-4", time: "18:30", title: "ארוחת ערב ב-Restaurant Peterle", desc: "חזרה צפונה לכיוון הדירה וארוחת ערב שקטה וטעימה קרוב לבית.", icon: "fa-utensils", color: "orange" }
             ],
             4: [
                 { id: "4-1", time: "10:00", placeId: 24, title: "פארק השעשועים שטיינוואסן", desc: "אזור חיות מקסים, גשר חבלים ומגלשות הרים (Bobbahn).", icon: "fa-ticket", color: "rose" },
@@ -2650,7 +2754,7 @@
         // ==========================================
         function findPlaceCoords(itemOrTitle) {
             if (!itemOrTitle || typeof places === 'undefined') return null;
-            
+
             let title, placeId, itemId;
             if (typeof itemOrTitle === 'object') {
                 title = itemOrTitle.title;
@@ -2672,7 +2776,7 @@
                     }
                 }
             }
-            
+
             if (placeId !== undefined && placeId !== null) {
                 const match = places.find(p => p.id == placeId);
                 if (match) return match;
@@ -2684,7 +2788,7 @@
             const match = places.find(p => {
                 const pName = p.name.toLowerCase();
                 return pName.includes(lowerTitle.substring(0, Math.min(8, lowerTitle.length))) ||
-                       lowerTitle.includes(pName.substring(0, Math.min(8, pName.length)));
+                    lowerTitle.includes(pName.substring(0, Math.min(8, pName.length)));
             });
             return match || null;
         }
@@ -2874,7 +2978,7 @@
                     const matchedPlace = findPlaceCoords(item);
                     if (matchedPlace && matchedPlace.swCard) hasSwc = true;
                 });
-                
+
                 const btn = document.getElementById(`dayBtn-${dStr}`);
                 if (btn) {
                     const existingIcon = btn.querySelector('.swc-indicator');
@@ -4081,10 +4185,10 @@
 
             const activeBtn = (isInterpret && interpretBtn) ? interpretBtn : actionBtn;
             const originalBtnHtml = activeBtn.innerHTML;
-            
+
             if (actionBtn) actionBtn.disabled = true;
             if (interpretBtn) interpretBtn.disabled = true;
-            
+
             activeBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${currentMenuPhoto ? 'מפענח...' : 'מתרגם...'}`;
 
             const srcName = langNameMapping[fromLang] || fromLang;
