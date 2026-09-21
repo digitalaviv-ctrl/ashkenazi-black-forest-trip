@@ -626,16 +626,16 @@
                             class="text-[10px] font-normal">מעבר לאלזס</span></button>
                     <button onclick="renderItinerary(7)" id="dayBtn-7"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">25/9<br><span
-                            class="text-[10px] font-normal">שופינג וקסם</span></button>
+                            class="text-[10px] font-normal">פארק אירופה</span></button>
                     <button onclick="renderItinerary(8)" id="dayBtn-8"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">26/9<br><span
-                            class="text-[10px] font-normal">אבירים ויין</span></button>
+                            class="text-[10px] font-normal">שופינג וקסם</span></button>
                     <button onclick="renderItinerary(9)" id="dayBtn-9"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">27/9<br><span
-                            class="text-[10px] font-normal">היסטוריה</span></button>
+                            class="text-[10px] font-normal">אבירים ויין</span></button>
                     <button onclick="renderItinerary(10)" id="dayBtn-10"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">28/9<br><span
-                            class="text-[10px] font-normal">פארק אירופה</span></button>
+                            class="text-[10px] font-normal">היסטוריה ונופים</span></button>
                     <button onclick="renderItinerary(11)" id="dayBtn-11"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">29/9<br><span
                             class="text-[10px] font-normal">מפלי הריין</span></button>
@@ -2337,30 +2337,33 @@
                 { id: "6-4", time: "19:00", title: "ארוחת ערב ב-Gasthaus Schwanen", desc: "פונדק שקרוב מאוד לדירה.", icon: "fa-utensils", color: "orange" }
             ],
             7: [
-                { id: "7-1", time: "09:30", placeId: 10, title: "חציית הגבול לשטרסבורג", desc: "חניה ב-P+R Baggersee ונסיעה בחשמלית לשטרסבורג (צרפת).", icon: "fa-train", color: "sky" },
-                { id: "7-2", time: "11:00", placeId: 43, title: "שופינג ממוקד", desc: "יעל מקבלת את הבמה לשופינג ממוקד ב-PRIMARK וב-SEPHORA.", icon: "fa-bag-shopping", color: "fuchsia" },
-                { id: "7-3", time: "13:30", title: "צהריים ב'צרפת הקטנה'", desc: "קרפים, פסטות ואווירה ברובע Petite France.", icon: "fa-utensils", color: "orange" },
-                { id: "7-4", time: "15:30", placeId: 9, title: "שייט בספינת זכוכית", desc: "סיור רגלי לאורך התעלות ושייט מרגיע ב-Batorama.", icon: "fa-ship", color: "blue" },
-                { id: "7-5", time: "19:00", title: "ארוחת ערב La Villetta", desc: "בעיר לאהר בדרך חזרה לדירה.", icon: "fa-pizza-slice", color: "orange" }
+                { id: "7-1", time: "08:30", placeId: 31, title: "פארק אירופה - הגעה מוקדמת", desc: "הגעה לפני פתיחת השערים. אלה ויעל על רכבות ההרים, נבו במתחמי הילדים.", icon: "fa-ticket", color: "rose" },
+                { id: "7-2", time: "13:30", placeId: 31, title: "צהריים בפארק", desc: "במתחם היווני או האיטלקי (מגוון צמחוני עשיר).", icon: "fa-pizza-slice", color: "orange" },
+                { id: "7-3", time: "15:00", placeId: 31, title: "המשך בילוי בפארק אירופה", desc: "עד הסגירה.", icon: "fa-star", color: "amber" },
+                { id: "7-4", time: "19:00", title: "חזרה וארוחת ערב זריזה", desc: "התחלת אריזה.", icon: "fa-house", color: "slate" }
             ],
             8: [
-                { id: "8-1", time: "10:00", placeId: 28, title: "טירת הוט-קניגסבורג", desc: "סיור מרשים בטירת אבירים החולשת על עמק הריין.", icon: "fa-chess-rook", color: "slate" },
-                { id: "8-2", time: "12:30", placeId: 29, title: "פארק הקופים (Montagne des Singes)", desc: "הליכה ביער והאכלת קופי מקוק מכף היד.", icon: "fa-monkey", color: "amber" },
-                { id: "8-3", time: "14:30", placeId: 35, title: "מופע העופות הדורסים", desc: "צפייה במופע במבצר קינצהיים. ארוחה קלה במזנונים.", icon: "fa-crow", color: "slate" },
-                { id: "8-4", time: "17:00", placeId: 30, title: "פסטיבל היין באגיסהיים", desc: "שוטטות בין דוכני הפסטיבל בעיירה הציורית.", icon: "fa-wine-glass", color: "rose" },
-                { id: "8-5", time: "20:00", title: "ארוחת ערב ב-Au Cygne", desc: "ארוחת ערב אלזסית אותנטית.", icon: "fa-utensils", color: "orange" }
+                { id: "8-1", time: "09:30", title: "חניה בגרמניה וחציית הגבול", desc: "חניה ב-Parkplatz am Bahnhof Kehl. קניית כרטיס יומי משפחתי (24h/Trio) מחוץ לתחנה - חובה לתקף לפני העלייה! נסיעה בחשמלית קו D וירידה ב-Homme de Fer בשטרסבורג.", icon: "fa-train", color: "sky" },
+                { id: "8-2", time: "11:00", placeId: 43, title: "שופינג ממוקד", desc: "יעל מקבלת את הבמה לשופינג ממוקד ב-PRIMARK וב-SEPHORA.", icon: "fa-bag-shopping", color: "fuchsia" },
+                { id: "8-3", time: "13:30", title: "צהריים ב'צרפת הקטנה'", desc: "קרפים, פסטות ואווירה ברובע Petite France.", icon: "fa-utensils", color: "orange" },
+                { id: "8-4", time: "15:30", placeId: 9, title: "שייט בספינת זכוכית", desc: "סיור רגלי לאורך התעלות ושייט מרגיע ב-Batorama.", icon: "fa-ship", color: "blue" },
+                { id: "8-5", time: "19:00", title: "ארוחת ערב La Villetta", desc: "בעיר לאהר בדרך חזרה לדירה.", icon: "fa-pizza-slice", color: "orange" }
             ],
             9: [
-                { id: "9-1", time: "10:30", placeId: 31, title: "המוזיאון הפתוח גוטאך", desc: "סיור אותנטי המציג את חיי הכפר של פעם.", icon: "fa-house-chimney", color: "amber" },
-                { id: "9-2", time: "13:30", title: "ארוחת צהריים", desc: "במסעדה המסורתית הצמודה למוזיאון.", icon: "fa-utensils", color: "orange" },
-                { id: "9-3", time: "15:30", placeId: 31, title: "מגלשות ההרים בגוטאך", desc: "גלישה משפחתית מהנה.", icon: "fa-mountain", color: "emerald" },
-                { id: "9-4", time: "19:00", title: "ארוחת ערב Dammenmühle", desc: "בלאהר. חזרה לדירה וכביסה אחרונה לטיול.", icon: "fa-utensils", color: "orange" }
+                { id: "9-1", time: "09:00", title: "נסיעה לטירת Haut-Kœnigsbourg", desc: "חציית הגבול לצרפת. מומלץ להגיע בשעת הפתיחה לחניה קרובה.", icon: "fa-car", color: "slate" },
+                { id: "9-2", time: "09:45", placeId: 28, title: "טירת או-קניגסבורג", desc: "סיור עצמאי בטירת אבירים החולשת על עמק הריין. תמונות נהדרות ונבו ירגיש בתוך סיפור אגדה.", icon: "fa-chess-rook", color: "slate" },
+                { id: "9-3", time: "12:00", placeId: 29, title: "פארק הקופים (Montagne des Singes)", desc: "5 דקות נסיעה. הליכה ביער והאכלת קופי מקוק מכף היד - חוויה אדירה לכל המשפחה.", icon: "fa-monkey", color: "amber" },
+                { id: "9-4", time: "14:00", title: "הכפר ריקוויר (Riquewihr) + ארוחת צהריים", desc: "עצרו לארוחת Tarte Flambée (יש גרסאות צמחוניות לאלה, ומטבח אלזסי שחף מכוסברה עבור מורן).", icon: "fa-house-chimney", color: "rose" },
+                { id: "9-5", time: "16:30", title: "העיר קולמר (Colmar)", desc: "נסיעה דרומה. חניה בחניון Parking Rapp. שוטטות ברובע 'ונציה הקטנה' וקינוחים.", icon: "fa-city", color: "indigo" },
+                { id: "9-6", time: "19:15", title: "ארוחת ערב (Au Cygne או חלופה)", desc: "חזרה צפונה לכיוון שוואנאו וסיום היום בארוחת הערב המתוכננת שלכם ב-Au Cygne.", icon: "fa-utensils", color: "orange" }
             ],
             10: [
-                { id: "10-1", time: "08:30", placeId: 31, title: "פארק אירופה - הגעה מוקדמת", desc: "הגעה לפני פתיחת השערים. אלה ויעל על רכבות ההרים, נבו במתחמי הילדים.", icon: "fa-ticket", color: "rose" },
-                { id: "10-2", time: "13:30", placeId: 31, title: "צהריים בפארק", desc: "במתחם היווני או האיטלקי (מגוון צמחוני עשיר).", icon: "fa-pizza-slice", color: "orange" },
-                { id: "10-3", time: "15:00", placeId: 31, title: "המשך בילוי בפארק אירופה", desc: "עד הסגירה.", icon: "fa-star", color: "amber" },
-                { id: "10-4", time: "19:00", title: "חזרה וארוחת ערב זריזה", desc: "התחלת אריזה.", icon: "fa-house", color: "slate" }
+                { id: "10-1", time: "10:00", title: "נסיעה לעמק הקינציג", desc: "נסיעה נוחה מהדירה באזור 2 על כביש B33 (דרומה).", icon: "fa-car", color: "slate" },
+                { id: "10-2", time: "10:45", placeId: 31, title: "המוזיאון הפתוח של היער השחור (Vogtsbauernhof)", desc: "סיור אותנטי המציג את חיי הכפר של פעם. מישורי, מושלם לנבו. עלול לשעמם את הבוגרות אם יימשך מעל שעתיים.", icon: "fa-house-chimney", color: "amber" },
+                { id: "10-3", time: "13:00", title: "צהריים במסעדה של המוזיאון", desc: "אוכל גרמני קלאסי. שפצלה גבינה מצוין לאלה. התיבול אירופאי מסורתי, ללא כוסברה.", icon: "fa-utensils", color: "orange" },
+                { id: "10-4", time: "14:15", placeId: 31, title: "מגלשות ההרים בגוטאך", desc: "גלישה משפחתית מהנה ושבירת שגרה. מסלול קצר ומתון יחסית.", icon: "fa-mountain", color: "emerald" },
+                { id: "10-5", time: "15:30", title: "העיירה גנגנבאך (Gengenbach)", desc: "נסיעה מגוטאך צפונה. עיירה עתיקה וציורית מעולה לתמונות וגלידה.", icon: "fa-camera", color: "sky" },
+                { id: "10-6", time: "18:30", title: "ארוחת ערב ב-Dammenmühle", desc: "מסעדה עם מבשלת בירה באזור לאהר. תפריט גרמני פרימיום. חזרה לדירה לכביסה.", icon: "fa-utensils", color: "orange" }
             ],
             11: [
                 { id: "11-1", time: "09:30", title: "עזיבת שוואנאו", desc: "התארגנות אחרונה והעמסת מזוודות.", icon: "fa-suitcase", color: "slate" },
@@ -2580,10 +2583,10 @@
                 4: "22/9 - חיות ואגדות (באדן-באדן & אגם מומלזה)",
                 5: "23/9 - צמרות ופרייבורג (ואלדקירך & פרייבורג)",
                 6: "24/9 - מעבר לאלזס (גנגנבאך & שוואנאו)",
-                7: "25/9 - שופינג וקסם (שטרסבורג & צרפת הקטנה)",
-                8: "26/9 - אבירים ויין (טירת הוט-קניגסבורג, קופים & אגיסהיים)",
-                9: "27/9 - היסטוריה ונופים (המוזיאון הפתוח גוטאך & מגלשות)",
-                10: "28/9 - פארק אירופה (Europa-Park)",
+                7: "25/9 - פארק אירופה (Europa-Park)",
+                8: "26/9 - שופינג וקסם (שטרסבורג & צרפת הקטנה)",
+                9: "27/9 - אבירים ויין (טירת הוט-קניגסבורג, קופים, ריקוויר וקולמר)",
+                10: "28/9 - היסטוריה ונופים (המוזיאון הפתוח, מגלשות וגנגנבאך)",
                 11: "29/9 - מפלי הריין וחזרה הביתה"
             };
 
