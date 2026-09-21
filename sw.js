@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ashkenazi-trip-v19';
+const CACHE_NAME = 'ashkenazi-trip-v20';
 const STATIC_ASSETS = [
   './',
   './index.html',
