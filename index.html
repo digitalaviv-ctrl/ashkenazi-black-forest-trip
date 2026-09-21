@@ -1838,6 +1838,8 @@
 
             // אטרקציות וטבע (ירוק - green)
             { id: 20, name: "מפלי טודנאו והגשר התלוי (Blackforestline)", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8427, lng: 7.9376, desc: "מפל גועש מרשים וגשר תלוי מעל התהום" },
+            { id: 80, name: "הגשר התלוי (Blackforestline) - חניון עליון", address: "Außer Ort 38, 79674 Todtnau", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.8306, lng: 7.9454, desc: "חניון עליון לגישה ישירה אל הגשר התלוי השקוף מעל המפלים." },
+            { id: 81, name: "מפלי טודנאו - חניון תחתון (Aftersteg)", address: "Haldenweide 2, 79674 Todtnau", region: "south", category: "green", catName: "טבע ואקסטרים", lat: 47.843397, lng: 7.938911, desc: "חניון תחתון להליכה רגלית וקלילה עד למרגלות המפל." },
             { id: 21, name: "מגלשות טודנאו (Hasenhorn Coaster)", region: "south", category: "green", catName: "אטרקציה", lat: 47.8285, lng: 7.9545, desc: "מגלשת ההרים הארוכה בגרמניה (2.9 ק\"מ) - אקסטרים מושלם" },
             { id: 22, name: "פסגת הפלדברג ורכבל ההרים (Feldbergbahn)", region: "south", category: "green", catName: "טבע ומשפחה", lat: 47.8600, lng: 8.0360, desc: "הפסגה הגבוהה ביער השחור, פארק חבלים ונוף עוצר נשימה", swCard: true, swCardDesc: "50% הנחה על נסיעה הלוך ושוב ברכבל, כולל כניסה למגדל פלדברג.", swCardSaving: 34 },
             { id: 23, name: "אגם טיטיזה (Titisee)", region: "south", category: "green", catName: "אגם ושייט", lat: 47.8988, lng: 8.1565, desc: "סירות פדלים, מדרחוב קניות מזכרות וגלידריות" },
@@ -2317,8 +2319,9 @@
             3: [
                 { id: "3-1", time: "10:00", placeId: 22, title: "פסגת הפלדברג (Feldbergbahn)", desc: "עלייה ברכבל הקרוניות לתצפית (50% הנחה בכרטיס היער השחור החל מ-2026). הליכה לאנדרטת ביסמרק לתצפית על אגם פלדזה ולמגדל התצפית. חובה להביא עליוניות/מעילי רוח!", icon: "fa-mountain", color: "sky" },
                 { id: "3-2", time: "13:00", title: "צהריים ומגלשות הרים בטודנאו (Hasenhorn)", desc: "ארוחת צהריים בעיירה טודנאו (פיצות/פסטות לאלה, בשר למורן) ומיד לאחריה 5 גלישות משפחתיות במגלשות ההרים.", icon: "fa-ticket", color: "amber" },
-                { id: "3-3", time: "15:30", title: "מפלי טודנאו + הגשר התלוי", desc: "פיצול חוויה: 1) מסלול תחתון קליל למפלים מחניון Aftersteg. 2) נסיעה לחניון העליון והליכה על הגשר התלוי השקוף Blackforestline מעל המפלים.", icon: "fa-water", color: "blue" },
-                { id: "3-4", time: "18:30", title: "ארוחת ערב ב-Restaurant Peterle", desc: "חזרה צפונה לכיוון הדירה וארוחת ערב שקטה וטעימה קרוב לבית.", icon: "fa-utensils", color: "orange" }
+                { id: "3-3", time: "15:30", placeId: 80, title: "הגשר התלוי (Blackforestline) - חניון עליון", desc: "נסיעה לחניון העליון והליכה על הגשר התלוי השקוף והעצום מעל המפלים.<br><strong>ניווט:</strong> Außer Ort 38, 79674 Todtnau", icon: "fa-bridge-water", color: "blue" },
+                { id: "3-4", time: "17:00", placeId: 81, title: "מפלי טודנאו - חניון תחתון (Aftersteg)", desc: "ירידה לחניון התחתון והליכה קלילה ונגישה בשביל המוסדר עד למרגלות המפל המרשים.<br><strong>ניווט:</strong> Haldenweide 2, 79674 Todtnau", icon: "fa-water", color: "cyan" },
+                { id: "3-5", time: "18:45", title: "ארוחת ערב ב-Restaurant Peterle", desc: "חזרה צפונה לכיוון הדירה וארוחת ערב שקטה וטעימה קרוב לבית.", icon: "fa-utensils", color: "orange" }
             ],
             4: [
                 { id: "4-1", time: "10:00", placeId: 24, title: "פארק השעשועים שטיינוואסן", desc: "אזור חיות מקסים, גשר חבלים ומגלשות הרים (Bobbahn).", icon: "fa-ticket", color: "rose" },
@@ -2387,7 +2390,13 @@
             }
             const saved = localStorage.getItem('blackForestItinerary');
             if (saved) {
-                return JSON.parse(saved);
+                let parsed = JSON.parse(saved);
+                // MIGRATION: split Todtnau for Day 3 if it hasn't been split yet
+                if (parsed['3'] && parsed['3'].some(i => i.id === '3-3' && i.title && i.title.includes('מפלי טודנאו + הגשר התלוי'))) {
+                    parsed['3'] = defaultItineraryData['3'];
+                    localStorage.setItem('blackForestItinerary', JSON.stringify(parsed));
+                }
+                return parsed;
             }
             return JSON.parse(JSON.stringify(defaultItineraryData));
         }
