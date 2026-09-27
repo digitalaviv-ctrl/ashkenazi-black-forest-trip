@@ -2371,9 +2371,9 @@
             ],
             9: [
                 { id: "9-1", time: "10:30", title: "Departure & Bakery Stop (Marckolsheim, France)", desc: "Drive south via German A5 and cross the Rhine (bypassing tolls/pollution zones). Stop for pastries (Vegetarian/No Cilantro friendly).<br><br>📍 <b>Navigation:</b> <a href='https://maps.app.goo.gl/tZ8xY4w7q2x6y7z9A' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Bakery (Boulangerie L'Epi d'Or)</a>", icon: "fa-bread-slice", color: "amber" },
-                { id: "9-2", time: "11:30", title: "Colmar (Boat Tour & Market)", desc: "Park at Montagne Verte. Head to 'La Petite Venise' for a boat tour (La Petite Venise, Promenade En Barque), then buy picnic supplies at the Covered Market (closes at 14:00).<br><br>📍 <b>Navigation:</b> <a href='https://maps.app.goo.gl/3Q8xY4w7q2x6y7z9A' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Colmar Parking (Montagne Verte)</a>", icon: "fa-ship", color: "blue" },
-                { id: "9-3", time: "14:15", title: "Lac Blanc Afternoon (Choice Module)", desc: "<div class='bg-slate-100 p-3 rounded-xl mt-2 border border-slate-200'><p class='font-bold text-slate-800 mb-2'>What's the vibe for the afternoon?</p><div class='flex flex-col gap-2'><div class='bg-white p-2 rounded-lg border-r-4 border-rose-500 shadow-sm'><p class='font-bold text-sm text-rose-700 flex items-center gap-1.5'><i class='fa-solid fa-link'></i> Option A: Extreme (Ropes Course)</p><p class='text-xs text-slate-600 mt-1'>High ropes and ziplines at Parc Aventure Lac Blanc. Safe belay for the 7-year-old, extreme routes for the teens.</p></div><div class='bg-white p-2 rounded-lg border-r-4 border-emerald-500 shadow-sm'><p class='font-bold text-sm text-emerald-700 flex items-center gap-1.5'><i class='fa-solid fa-shoe-prints'></i> Option B: Nature (Hiking)</p><p class='text-xs text-slate-600 mt-1'>Sentier des Crêtes. A flat, scenic ridge walk over the lake. Great views, free, and relaxing.</p></div></div><div class='mt-3 text-xs'>📍 <b>Shared Parking:</b> <a href='https://maps.app.goo.gl/qX8sW29mE89HwUf86' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Col du Calvaire</a></div></div>", icon: "fa-code-branch", color: "indigo" },
-                { id: "9-4", time: "17:00", title: "Kaysersberg (Village Walk & Castle Ruins)", desc: "Descend to the village. Walk the bridges and hike 15 mins up to Château de Kaysersberg for sunset views.", icon: "fa-chess-rook", color: "slate" },
+                { id: "9-2", time: "11:30", title: "Colmar (Boat Tour & Market)", desc: "Park at Montagne Verte. Head to 'La Petite Venise' for a boat tour (La Petite Venise, Promenade En Barque), then buy picnic supplies at the Covered Market (closes at 14:00).<br><br>📍 <b>Navigation:</b> <a href='https://maps.app.goo.gl/3Q8xY4w7q2x6y7z9A' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Colmar Parking (Montagne Verte)</a>", icon: "fa-ship", color: "blue", exact_parking_target: "48.0747, 7.3541" },
+                { id: "9-3", time: "14:15", title: "Lac Blanc Afternoon (Choice Module)", desc: "<div class='bg-slate-100 p-3 rounded-xl mt-2 border border-slate-200'><p class='font-bold text-slate-800 mb-2'>What's the vibe for the afternoon?</p><div class='flex flex-col gap-2'><div class='bg-white p-2 rounded-lg border-r-4 border-rose-500 shadow-sm'><p class='font-bold text-sm text-rose-700 flex items-center gap-1.5'><i class='fa-solid fa-link'></i> Option A: Extreme (Ropes Course)</p><p class='text-xs text-slate-600 mt-1'>High ropes and ziplines at Parc Aventure Lac Blanc. Safe belay for the 7-year-old, extreme routes for the teens.</p></div><div class='bg-white p-2 rounded-lg border-r-4 border-emerald-500 shadow-sm'><p class='font-bold text-sm text-emerald-700 flex items-center gap-1.5'><i class='fa-solid fa-shoe-prints'></i> Option B: Nature (Hiking)</p><p class='text-xs text-slate-600 mt-1'>Sentier des Crêtes. A flat, scenic ridge walk over the lake. Great views, free, and relaxing.</p></div></div><div class='mt-3 text-xs'>📍 <b>Shared Parking:</b> <a href='https://maps.app.goo.gl/qX8sW29mE89HwUf86' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Col du Calvaire</a></div></div>", icon: "fa-code-branch", color: "indigo", exact_parking_target: "48.1345, 7.0982" },
+                { id: "9-4", time: "17:00", title: "Kaysersberg (Village Walk & Castle Ruins)", desc: "Descend to the village. Walk the bridges and hike 15 mins up to Château de Kaysersberg for sunset views.", icon: "fa-chess-rook", color: "slate", exact_parking_target: "48.1381, 7.2654" },
                 { id: "9-5", time: "19:00", title: "Dinner in Kaysersberg", desc: "Authentic Alsatian Winstub dinner (e.g., Restaurant du Château).<br><br><strong class='text-amber-700 bg-amber-50 px-2 py-1 rounded-md text-xs mt-1 inline-block border border-amber-200'>⚠️ ALLERGY NOTE: For Ela (vegetarian) - Order Käsespätzle but explicitly instruct the waiter: \"Sans lardons, cuit au beurre\" (No bacon, cooked in butter only). No cilantro in this region.</strong>", icon: "fa-utensils", color: "orange" }
             ],
             10: [
@@ -3075,13 +3075,28 @@
                 const lat = matchedPlace ? matchedPlace.lat : null;
                 const lng = matchedPlace ? matchedPlace.lng : null;
 
-                const wazeUrl = lat
-                    ? `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`
-                    : `https://waze.com/ul?q=${encodeURIComponent(item.title)}&navigate=yes`;
-                const gmapsUrl = lat
+                let gmapsUrl = lat
                     ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
                     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.title)}`;
-                const navAddress = (matchedPlace && matchedPlace.address) ? matchedPlace.address : (lat && lng ? `${lat},${lng}` : item.title);
+                let navAddress = (matchedPlace && matchedPlace.address) ? matchedPlace.address : (lat && lng ? `${lat},${lng}` : item.title);
+
+                if (item.exact_parking_target) {
+                    if (item.exact_parking_target.includes('http')) {
+                        gmapsUrl = item.exact_parking_target;
+                        navAddress = item.exact_parking_target;
+                    } else {
+                        const coords = item.exact_parking_target.split(',');
+                        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+                            const pLat = coords[0].trim();
+                            const pLng = coords[1].trim();
+                            gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${pLat},${pLng}`;
+                            navAddress = `${pLat}, ${pLng}`;
+                        } else {
+                            gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.exact_parking_target)}`;
+                            navAddress = item.exact_parking_target;
+                        }
+                    }
+                }
                 const safeNavAddress = navAddress.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 const weatherLat = lat || 48.1;
                 const weatherLng = lng || 7.9;
@@ -3164,26 +3179,19 @@
 
                             <!-- Navigation buttons row (non-edit mode only) -->
                             ${!isItineraryEditMode ? `
-                            <div class="grid grid-cols-5 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
-                                <button onclick="event.stopPropagation(); copyNavAddress('${safeNavAddress}')"
-                                    class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 shadow-sm transition-all active:scale-95 border border-slate-200"
-                                    title="העתק כתובת לניווט">
-                                    <i class="fa-regular fa-copy text-[11px]"></i>
-                                    <span>העתק</span>
+                            <div class="grid grid-cols-4 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
+                                <button onclick="event.stopPropagation(); copyForWaze(this, '${safeNavAddress}')"
+                                    class="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 shadow-sm transition-all active:scale-95 border border-slate-200 relative"
+                                    title="העתק עבור Waze">
+                                    <i class="fa-regular fa-copy text-sky-600 text-[11px]"></i>
+                                    <span class="btn-text">Waze (העתק)</span>
                                 </button>
-                                <a href="${wazeUrl}" target="_blank"
-                                   onclick="event.stopPropagation()"
-                                   class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
-                                   style="background-color:#0284c7 !important; color:#fff !important; text-decoration:none !important;">
-                                    <i class="fa-brands fa-waze text-[11px]" style="color:#fff !important"></i>
-                                    <span style="color:#fff !important">Waze</span>
-                                </a>
                                 <a href="${gmapsUrl}" target="_blank"
                                    onclick="event.stopPropagation()"
-                                   class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
+                                   class="flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
                                    style="background-color:#1d4ed8 !important; color:#fff !important; text-decoration:none !important;">
-                                    <i class="fa-solid fa-location-arrow text-[11px]" style="color:#fff !important"></i>
-                                    <span style="color:#fff !important">Maps</span>
+                                    <i class="fa-brands fa-google text-[11px]" style="color:#fff !important"></i>
+                                    <span style="color:#fff !important">Google Maps</span>
                                 </a>
                                 <button onclick="event.stopPropagation(); openWeatherModal('${safeName}', ${weatherLat}, ${weatherLng})"
                                     class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-sm transition-all active:scale-95"
@@ -3834,6 +3842,25 @@
                 navigator.clipboard.writeText(item.rawText).then(() => {
                     alert('הטקסט הועתק בהצלחה ללוח!');
                 });
+            }
+        }
+
+        function copyForWaze(btn, text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const span = btn.querySelector('.btn-text');
+                    const originalText = span.innerText;
+                    span.innerText = 'Copied!';
+                    btn.classList.add('bg-green-100', 'text-green-800', 'border-green-300');
+                    setTimeout(() => {
+                        span.innerText = originalText;
+                        btn.classList.remove('bg-green-100', 'text-green-800', 'border-green-300');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            } else {
+                alert('הדפדפן שלך לא תומך בהעתקה אוטומטית.');
             }
         }
 
