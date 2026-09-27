@@ -632,7 +632,7 @@
                             class="text-[10px] font-normal">Operation Alsace</span></button>
                     <button onclick="renderItinerary(9)" id="dayBtn-9"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">27/9<br><span
-                            class="text-[10px] font-normal">אבירים ויין</span></button>
+                            class="text-[10px] font-normal">קולמר ואקסטרים</span></button>
                     <button onclick="renderItinerary(10)" id="dayBtn-10"
                         class="day-btn px-3.5 py-1.5 rounded-xl font-bold bg-white text-slate-600 border border-slate-200 shadow-xs shrink-0 leading-tight text-center text-xs">28/9<br><span
                             class="text-[10px] font-normal">היסטוריה ונופים</span></button>
@@ -2371,12 +2371,11 @@
                 { id: "8-8", time: "21:25", title: "Final Objective: Supermarket Sweep", desc: "<strong class='text-red-700 bg-red-50 px-2 py-1 rounded-md text-xs mt-1 inline-block border border-red-200'>⚠️ URGENT DEADLINE: All German supermarkets close exactly at 22:00 and remain closed on Sunday.</strong> Execute a rapid grocery run for fresh meat (ribs/goulash) and vegetables.<br><br>📍 <b>Primary (Closest to Tram):</b> E center Kohler - Am Läger 22, 77694 Kehl<br>🧭 <a href='https://waze.com/ul?q=Am+L%C3%A4ger+22,+77694+Kehl' target='_blank' class='text-teal-600 underline font-semibold'>Waze</a> | <a href='https://maps.google.com/?q=Am+L%C3%A4ger+22,+77694+Kehl' target='_blank' class='text-teal-600 underline font-semibold'>Google Maps</a><br><br>📍 <b>Secondary (Cheaper):</b> Kaufland - Am Sundheimer Fort 9, 77694 Kehl<br>🧭 <a href='https://waze.com/ul?q=Am+Sundheimer+Fort+9,+77694+Kehl' target='_blank' class='text-teal-600 underline font-semibold'>Waze</a> | <a href='https://maps.google.com/?q=Am+Sundheimer+Fort+9,+77694+Kehl' target='_blank' class='text-teal-600 underline font-semibold'>Google Maps</a>", icon: "fa-cart-shopping", color: "red" }
             ],
             9: [
-                { id: "9-1", time: "09:00", title: "נסיעה לטירת Haut-Kœnigsbourg", desc: "חציית הגבול לצרפת. מומלץ להגיע בשעת הפתיחה לחניה קרובה.", icon: "fa-car", color: "slate" },
-                { id: "9-2", time: "09:45", placeId: 28, title: "טירת או-קניגסבורג", desc: "סיור עצמאי בטירת אבירים החולשת על עמק הריין. תמונות נהדרות ונבו ירגיש בתוך סיפור אגדה.", icon: "fa-chess-rook", color: "slate" },
-                { id: "9-3", time: "12:00", placeId: 29, title: "פארק הקופים (Montagne des Singes)", desc: "5 דקות נסיעה. הליכה ביער והאכלת קופי מקוק מכף היד - חוויה אדירה לכל המשפחה.", icon: "fa-paw", color: "amber" },
-                { id: "9-4", time: "14:00", title: "הכפר ריקוויר (Riquewihr) + ארוחת צהריים", desc: "עצרו לארוחת Tarte Flambée (יש גרסאות צמחוניות לאלה, ומטבח אלזסי שחף מכוסברה עבור מורן).", icon: "fa-house-chimney", color: "rose" },
-                { id: "9-5", time: "16:30", title: "העיר קולמר (Colmar)", desc: "נסיעה דרומה. חניה בחניון Parking Rapp. שוטטות ברובע 'ונציה הקטנה' וקינוחים.", icon: "fa-city", color: "indigo" },
-                { id: "9-6", time: "19:15", title: "ארוחת ערב (Au Cygne או חלופה)", desc: "חזרה צפונה לכיוון שוואנאו וסיום היום בארוחת הערב המתוכננת שלכם ב-Au Cygne.", icon: "fa-utensils", color: "orange" }
+                { id: "9-1", time: "10:30", title: "Departure & Bakery Stop (Marckolsheim, France)", desc: "Drive south via German A5 and cross the Rhine (bypassing tolls/pollution zones). Stop for pastries (Vegetarian/No Cilantro friendly).<br><br>📍 <b>Navigation:</b> <a href='https://maps.app.goo.gl/tZ8xY4w7q2x6y7z9A' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Bakery (Boulangerie L'Epi d'Or)</a>", icon: "fa-bread-slice", color: "amber" },
+                { id: "9-2", time: "11:30", title: "Colmar (Boat Tour & Market)", desc: "Park at Montagne Verte. Head to 'La Petite Venise' for a boat tour (La Petite Venise, Promenade En Barque), then buy picnic supplies at the Covered Market (closes at 14:00).<br><br>📍 <b>Navigation:</b> <a href='https://maps.app.goo.gl/3Q8xY4w7q2x6y7z9A' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Colmar Parking (Montagne Verte)</a>", icon: "fa-ship", color: "blue" },
+                { id: "9-3", time: "14:15", title: "Lac Blanc Afternoon (Choice Module)", desc: "<div class='bg-slate-100 p-3 rounded-xl mt-2 border border-slate-200'><p class='font-bold text-slate-800 mb-2'>What's the vibe for the afternoon?</p><div class='flex flex-col gap-2'><div class='bg-white p-2 rounded-lg border-r-4 border-rose-500 shadow-sm'><p class='font-bold text-sm text-rose-700 flex items-center gap-1.5'><i class='fa-solid fa-link'></i> Option A: Extreme (Ropes Course)</p><p class='text-xs text-slate-600 mt-1'>High ropes and ziplines at Parc Aventure Lac Blanc. Safe belay for the 7-year-old, extreme routes for the teens.</p></div><div class='bg-white p-2 rounded-lg border-r-4 border-emerald-500 shadow-sm'><p class='font-bold text-sm text-emerald-700 flex items-center gap-1.5'><i class='fa-solid fa-shoe-prints'></i> Option B: Nature (Hiking)</p><p class='text-xs text-slate-600 mt-1'>Sentier des Crêtes. A flat, scenic ridge walk over the lake. Great views, free, and relaxing.</p></div></div><div class='mt-3 text-xs'>📍 <b>Shared Parking:</b> <a href='https://maps.app.goo.gl/qX8sW29mE89HwUf86' target='_blank' class='text-teal-600 underline font-semibold'>Navigate to Col du Calvaire</a></div></div>", icon: "fa-code-branch", color: "indigo" },
+                { id: "9-4", time: "17:00", title: "Kaysersberg (Village Walk & Castle Ruins)", desc: "Descend to the village. Walk the bridges and hike 15 mins up to Château de Kaysersberg for sunset views.", icon: "fa-chess-rook", color: "slate" },
+                { id: "9-5", time: "19:00", title: "Dinner in Kaysersberg", desc: "Authentic Alsatian Winstub dinner (e.g., Restaurant du Château).<br><br><strong class='text-amber-700 bg-amber-50 px-2 py-1 rounded-md text-xs mt-1 inline-block border border-amber-200'>⚠️ ALLERGY NOTE: For Ela (vegetarian) - Order Käsespätzle but explicitly instruct the waiter: \"Sans lardons, cuit au beurre\" (No bacon, cooked in butter only). No cilantro in this region.</strong>", icon: "fa-utensils", color: "orange" }
             ],
             10: [
                 { id: "10-1", time: "10:00", title: "נסיעה לעמק הקינציג", desc: "נסיעה נוחה מהדירה באזור 2 על כביש B33 (דרומה).", icon: "fa-car", color: "slate" },
@@ -2612,7 +2611,7 @@
                 6: "24/9 - מעבר לשוואנאו (גנגנבאך & שוואנאו)",
                 7: "25/9 - פארק אירופה (Europa-Park)",
                 8: "26/9 - שופינג וקסם (שטרסבורג & צרפת הקטנה)",
-                9: "27/9 - אבירים ויין (טירת הוט-קניגסבורג, קופים, ריקוויר וקולמר)",
+                9: "27/9 - קולמר ואקסטרים (קולמר, אגם לאק בלאנק וקייזרסברג)",
                 10: "28/9 - היסטוריה ונופים (המוזיאון הפתוח, מגלשות וגנגנבאך)",
                 11: "29/9 - מפלי הריין וחזרה הביתה"
             };
