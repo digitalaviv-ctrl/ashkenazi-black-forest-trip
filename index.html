@@ -2107,6 +2107,8 @@
             filtered.forEach(p => {
                 const wazeUrl = p.wazeUrl || `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
                 const gmapsUrl = p.gmapsUrl || `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+                const navAddress = p.address ? p.address : `${p.lat},${p.lng}`;
+                const safeNavAddress = navAddress.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                 const addressRow = p.address ? `
                     <div class="text-[11px] text-slate-600 mb-1.5 flex items-start gap-1 bg-slate-50 p-1 rounded border border-slate-100">
@@ -2139,7 +2141,7 @@
                         <div class="text-xs text-slate-600 mb-1 leading-relaxed overflow-y-auto max-h-[160px] pl-1 hide-scrollbar">${p.desc}</div>
                         ${addressRow}
                         ${websiteRow}
-                        <div class="grid grid-cols-2 gap-1.5 mb-1.5">
+                        <div class="grid grid-cols-[1fr_1fr_auto] gap-1.5 mb-1.5">
                             <a href="${wazeUrl}" target="_blank" class="nav-btn nav-btn-waze active:scale-95 text-center py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all" style="background-color: #0284c7 !important; color: #ffffff !important; text-decoration: none !important;">
                                 <i class="fa-brands fa-waze text-sm" style="color: #ffffff !important;"></i>
                                 <span style="color: #ffffff !important; font-weight: 700;">Waze</span>
@@ -2148,6 +2150,9 @@
                                 <i class="fa-solid fa-location-arrow text-sm" style="color: #ffffff !important;"></i>
                                 <span style="color: #ffffff !important; font-weight: 700;">Maps</span>
                             </a>
+                            <button onclick="copyNavAddress('${safeNavAddress}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-2.5 rounded-xl shadow-sm transition-all flex items-center justify-center active:scale-95 border border-slate-200" title="העתק כתובת לניווט">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
                         </div>
                         <div class="grid grid-cols-2 gap-1 mb-2">
                             <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-center py-1 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 shadow-sm transition-all" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
@@ -2227,6 +2232,8 @@
             grid.innerHTML = filtered.map(p => {
                 const wazeUrl = p.wazeUrl || `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes`;
                 const gmapsUrl = p.gmapsUrl || `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`;
+                const navAddress = p.address ? p.address : `${p.lat},${p.lng}`;
+                const safeNavAddress = navAddress.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                 let badgeClass = "bg-emerald-100 text-emerald-800";
                 if (p.category === 'orange') badgeClass = "bg-amber-100 text-amber-800";
@@ -2293,6 +2300,9 @@
                                 <i class="fa-solid fa-location-arrow text-sm" style="color: #ffffff !important;"></i>
                                 <span style="color: #ffffff !important; font-weight: 700;">Maps</span>
                             </a>
+                            <button onclick="copyNavAddress('${safeNavAddress}')" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl shadow-xs transition-all flex items-center justify-center active:scale-95 border border-slate-200" title="העתק כתובת לניווט">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
                             <button onclick="openWeatherModal('${p.name.replace(/'/g, "\\'")}', ${p.lat}, ${p.lng})" class="px-2.5 py-2 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white rounded-xl shadow-xs transition-all flex items-center justify-center" title="תחזית מזג אוויר לשבוע הקרוב במעלות צלזיוס">
                                 <i class="fa-solid fa-cloud-sun text-sm"></i>
                             </button>
@@ -3073,6 +3083,8 @@
                 const gmapsUrl = lat
                     ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`
                     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.title)}`;
+                const navAddress = (matchedPlace && matchedPlace.address) ? matchedPlace.address : (lat && lng ? `${lat},${lng}` : item.title);
+                const safeNavAddress = navAddress.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 const weatherLat = lat || 48.1;
                 const weatherLng = lng || 7.9;
                 const safeName = item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
@@ -3154,7 +3166,13 @@
 
                             <!-- Navigation buttons row (non-edit mode only) -->
                             ${!isItineraryEditMode ? `
-                            <div class="grid grid-cols-4 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
+                            <div class="grid grid-cols-5 gap-1 px-2 pb-2 pt-0 border-t border-slate-50">
+                                <button onclick="event.stopPropagation(); copyNavAddress('${safeNavAddress}')"
+                                    class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 shadow-sm transition-all active:scale-95 border border-slate-200"
+                                    title="העתק כתובת לניווט">
+                                    <i class="fa-regular fa-copy text-[11px]"></i>
+                                    <span>העתק</span>
+                                </button>
                                 <a href="${wazeUrl}" target="_blank"
                                    onclick="event.stopPropagation()"
                                    class="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition-all active:scale-95"
@@ -3818,6 +3836,18 @@
                 navigator.clipboard.writeText(item.rawText).then(() => {
                     alert('הטקסט הועתק בהצלחה ללוח!');
                 });
+            }
+        }
+
+        function copyNavAddress(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('כתובת הניווט הועתקה ללוח בהצלחה!');
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            } else {
+                alert('הדפדפן שלך לא תומך בהעתקה אוטומטית.');
             }
         }
 
